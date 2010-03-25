@@ -24,7 +24,7 @@ namespace GameClay
 			/// <summary>
 			/// Sets the SystemData structure this Simulation should use to store output data.
 			/// </summary>
-			object SystemData { get; set; }
+			SystemData SystemData { get; set; }
 			
 			/// <summary>
 			/// Advance the simulation by a number of seconds.
@@ -53,7 +53,7 @@ namespace GameClay
 			/// <param name="particlesToAdd"> [in] The initial data values for the added particles. </param>
 			///
 			/// <returns> The number of particles added to the Simulation. </returns>
-			int addParticles(ref Object particlesToAdd);
+			int addParticles(ref SystemData particlesToAdd);
 			
 			/// <summary>
 			/// Removes all the particles from the Simulation.
