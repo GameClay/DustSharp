@@ -24,7 +24,7 @@ namespace GameClay
 			/// <summary>
 			/// Sets the SystemData structure this Simulation should use to store output data.
 			/// </summary>
-			Object SystemData { get; set; }
+			object SystemData { get; set; }
 			
 			/// <summary>
 			/// Advance the simulation by a number of seconds.

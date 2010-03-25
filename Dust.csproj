@@ -37,6 +37,7 @@
     <Compile Include="Effecter.cs" />
     <Compile Include="Emitter.cs" />
     <Compile Include="Simulation.cs" />
+    <Compile Include="SystemData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

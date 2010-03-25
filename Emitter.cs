@@ -21,7 +21,7 @@ namespace GameClay
 			/// <summary>
 			/// An object-to-world transform for this Emitter.
 			/// </summary>
-			Object Transform { get; set; } // TODO: Matrix
+			object Transform { get; set; } // TODO: Matrix
 			
 			/// <summary>
 			/// The random number seed this Emitter is using.

@@ -23,7 +23,7 @@ namespace GameClay
 			/// <summary>
 			/// An object-to-world transform for this Effecter.
 			/// </summary>
-			Object Transform { get; set; } // TODO: Matrix
+			object Transform { get; set; } // TODO: Matrix
 			
 			/// <summary>
 			/// Advances the Effecter physics by a number of seconds.
