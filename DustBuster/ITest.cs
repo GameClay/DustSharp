@@ -25,7 +25,7 @@ namespace GameClay
 			/// </summary>
 			/// 
 			/// <returns> Returns the <see cref="Result"/> of the test. </returns>
-			Result RunTest();
+			Result RunTest(); // TODO: Pass in a test delegate which is fed a boolean?
 		}
 	}
 }

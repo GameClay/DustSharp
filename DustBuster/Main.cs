@@ -13,6 +13,7 @@ namespace GameClay
 				List<ITest> testList = new List<ITest>();
 				
 				// Add some tests
+				testList.Add (new SoADataTest ());
 				
 				// Run all the tests
 				Console.WriteLine ("DustBuster running " + testList.Count + " automated tests.");
@@ -21,19 +22,23 @@ namespace GameClay
 				
 				foreach (ITest test in testList)
 				{
+					Console.Write (" - " + test);
 					switch (test.RunTest ())
 					{
 					case Result.Passed:
+						Console.Write(" passed!\n");
 						testsPassed++;
 						break;
 						
 					case Result.Failed:
+						Console.Write(" failed!\n");
 						testsFailed++;
 						break;
 					}
 				}
 				
 				// Report to the console (kind of lame)
+				Console.WriteLine ("\nDustBuster results:");
 				Console.WriteLine ("   " + testsPassed + " tests passed.");
 				Console.WriteLine ("   " + testsFailed + " tests failed.");
 				
