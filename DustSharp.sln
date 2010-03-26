@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust", "Dust.csproj", "{0E44AB3B-39B3-4E9C-8611-D75922AFF759}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustBuster", "DustBuster\DustBuster.csproj", "{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,8 +15,12 @@ Global
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Dust.csproj
+		StartupItem = DustBuster\DustBuster.csproj
 	EndGlobalSection
 EndGlobal
