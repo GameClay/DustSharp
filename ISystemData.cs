@@ -55,7 +55,7 @@ namespace GameClay
 			/// A Simulation is not required to take the MassElement into account when updating the physics
 			/// of a particle system.
 			/// </remarks>
-			float Mass { get; }
+			float[] Mass { get; }
 			
 			/// <summary>
 			/// A single component element which contains a unique id for each particle.
