@@ -11,8 +11,8 @@ namespace GameClay
 		/// </summary>
 		///
 		/// <remarks>
-		/// This structure wraps a set of data which is used to describe the state of a Dust system. 
-		/// The structure is set up as individual streams of data so that the host engine and/or underlying
+		/// This interface wraps a set of data which is used to describe the state of a Dust system. 
+		/// The structure is set up as individual streams of data so that the underlying
 		/// simulation may elect to store data in any configuration they desire.
 		/// </remarks>
 		public interface ISystemData
@@ -23,7 +23,7 @@ namespace GameClay
 			int NumParticles { get; }
 			
 			/// <summary>
-			/// Maximum number of particles that can stored in these buffers.
+			/// Maximum number of particles that can stored in the system.
 			/// </summary>
 			int MaxNumParticles { get; }
 			
@@ -37,10 +37,14 @@ namespace GameClay
 			/// </summary>
 			float[] Lifespan { get; }
 			
-			/// <summary> A single component element which indicates the amount of time the particle has left to live.  </summary>
+			/// <summary>
+			/// A single component element which indicates the amount of time the particle has left to live.
+			/// </summary>
 			float[] TimeRemaining { get; }
 			
-			/// <summary> A 3-component float vector element indicating the velocity of the particle.  </summary>
+			/// <summary> 
+			/// A 3-component float vector element indicating the velocity of the particle.
+			/// </summary>
 			object[] Velocity { get; } // TODO: Point3F
 			
 			/// <summary>
