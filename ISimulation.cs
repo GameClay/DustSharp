@@ -22,9 +22,9 @@ namespace GameClay
 		public interface ISimulation
 		{
 			/// <summary>
-			/// Sets the SystemData structure this Simulation should use to store output data.
+			/// The SystemData structure this Simulation uses to store output data.
 			/// </summary>
-			SystemData SystemData { get; set; }
+			ISystemData SystemData { get; }
 			
 			/// <summary>
 			/// Advance the simulation by a number of seconds.
@@ -53,7 +53,7 @@ namespace GameClay
 			/// <param name="particlesToAdd"> [in] The initial data values for the added particles. </param>
 			///
 			/// <returns> The number of particles added to the Simulation. </returns>
-			int addParticles(ref SystemData particlesToAdd);
+			int addParticles(ref ISystemData particlesToAdd);
 			
 			/// <summary>
 			/// Removes all the particles from the Simulation.

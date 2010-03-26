@@ -34,10 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Effecter.cs" />
-    <Compile Include="Emitter.cs" />
-    <Compile Include="Simulation.cs" />
-    <Compile Include="SystemData.cs" />
+    <Compile Include="simulation\ConstantSimulation.cs" />
+    <Compile Include="IEffecter.cs" />
+    <Compile Include="IEmitter.cs" />
+    <Compile Include="ISimulation.cs" />
+    <Compile Include="ISystemData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
