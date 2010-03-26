@@ -14,7 +14,7 @@ excluded_files = effecters + emitters + game_objects + parameters + representati
 dust_files = Glob('*.cs', strings=True)
 dust_files = [f for f in dust_files if f not in excluded_files]
 
-dust_cli = env.CLILibrary('Dust',
+dust_cli = env.CLILibrary('GameClay.Dust.dll',
 	dust_files,
 	CSCLIBFLAGS=[]
 )
