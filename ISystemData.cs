@@ -6,6 +6,25 @@ namespace GameClay
 	namespace Dust
 	{
 		/// <summary>
+		/// Temporary Vector.
+		/// </summary>
+		/// 
+		/// <remarks>
+		/// I am not convinced that this should a struct, and not
+		/// some kind of interface that would allow for a pure SoA setup. Basically,
+		/// any use of the Properties on an ISystemData is a non-optimized access. They
+		/// should not be used to iterate in performance-critical loops.
+		/// 
+		/// Mostly I am not sure about many things regarding the attempted data abstraction here.
+		/// </remarks>
+		public struct TempVector
+		{
+			public float x;
+			public float y;
+			public float z;
+		}
+		
+		/// <summary>
 		/// Structure containing the streams of data which describe the state of the
 		/// particle system.
 		/// </summary>
@@ -30,7 +49,7 @@ namespace GameClay
 			/// <summary>
 			/// A 3-component float vector element storing the position of the particle.
 			/// </summary>
-			object[] Position { get; } // TODO: Point3F
+			TempVector[] Position { get; }
 			
 			/// <summary>
 			/// A single component element which indicates the lifespan of the particle.
@@ -40,7 +59,7 @@ namespace GameClay
 			/// <summary> 
 			/// A 3-component float vector element indicating the velocity of the particle.
 			/// </summary>
-			object[] Velocity { get; } // TODO: Point3F
+			TempVector[] Velocity { get; }
 			
 			/// <summary>
 			/// A single component element which indicates the mass of the particle.

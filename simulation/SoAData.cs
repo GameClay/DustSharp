@@ -25,7 +25,7 @@ namespace GameClay
 			}
 			
 			
-			public object[] Position {
+			public TempVector[] Position {
 				get {
 					return _positionStream;
 				}
@@ -39,7 +39,7 @@ namespace GameClay
 			}
 			
 			
-			public object[] Velocity {
+			public TempVector[] Velocity {
 				get {
 					return _velocityStream;
 				}
@@ -58,28 +58,17 @@ namespace GameClay
 				int capacityLeft = MaxNumParticles - NumParticles;
 				int numToCopy = count < capacityLeft ? count : capacityLeft;
 				
-				// Use Buffer.BlockCopy instead of Array.CopyTo because Buffer.BlockCopy 
-				// is a much faster method for moving arrays of data around.
-				
 				// Position
-				Buffer.BlockCopy(src.Position, srcOffset,
-				                 _positionStream, offset,
-				                 numToCopy);
+				Array.Copy(src.Position, srcOffset, _positionStream, offset, numToCopy);
 				
 				// Lifespan
-				Buffer.BlockCopy(src.Lifespan, srcOffset,
-				                 _lifespanStream, offset,
-				                 numToCopy);
+				Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
 				
 				// Velocity
-				Buffer.BlockCopy(src.Velocity, srcOffset,
-				                 _velocityStream, offset,
-				                 numToCopy);
+				Array.Copy(src.Velocity, srcOffset, _velocityStream, offset, numToCopy);
 				
 				// Mass
-				Buffer.BlockCopy(src.Mass, srcOffset,
-				                 _massStream, offset,
-				                 numToCopy);
+				Array.Copy(src.Mass, srcOffset, _massStream, offset, numToCopy);
 				
 				// Update number of particles
 				_numParticles += numToCopy;
@@ -104,18 +93,18 @@ namespace GameClay
 				_numParticles = 0;
 				_maxNumParticles = maxNumParticles;
 				
-				_positionStream = new object[MaxNumParticles];
+				_positionStream = new TempVector[MaxNumParticles];
 				_lifespanStream = new float[MaxNumParticles];
-				_velocityStream = new object[MaxNumParticles];
+				_velocityStream = new TempVector[MaxNumParticles];
 				_massStream = new float[MaxNumParticles];
 			}
 			
 			#region Data
 			public int _numParticles;
 			public int _maxNumParticles;
-			public object[] _positionStream;
+			public TempVector[] _positionStream;
 			public float[] _lifespanStream;
-			public object[] _velocityStream;
+			public TempVector[] _velocityStream;
 			public float[] _massStream;
 			#endregion
 		}
