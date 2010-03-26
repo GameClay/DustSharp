@@ -15,7 +15,7 @@ namespace GameClay
 		/// The structure is set up as individual streams of data so that the host engine and/or underlying
 		/// simulation may elect to store data in any configuration they desire.
 		/// </remarks>
-		public interface SystemData
+		public interface ISystemData
 		{
 			/// <summary>
 			/// Number of active particles in the system.

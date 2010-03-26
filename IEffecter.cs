@@ -15,9 +15,11 @@ namespace GameClay
 		/// can create dazzling effects. Each Effecter attached to a Simulation adds
 		/// at least an additional iteration over the SimulationData each frame.
 		/// </remarks>
-		public interface Effecter
+		public interface IEffecter
 		{
-			/// <summary> Assigns the Simulation this Effecter will manipulate</summary>
+			/// <summary>
+			/// Assigns the Simulation this Effecter will manipulate.
+			/// </summary>
 			bool Simulation { get; set; }
 			
 			/// <summary>

@@ -19,7 +19,7 @@ namespace GameClay
 		/// 
 		/// @see SystemData
 		/// </remarks>
-		public interface Simulation
+		public interface ISimulation
 		{
 			/// <summary>
 			/// Sets the SystemData structure this Simulation should use to store output data.

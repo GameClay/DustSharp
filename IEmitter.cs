@@ -13,9 +13,11 @@ namespace GameClay
 		/// Emitter provides the initial velocity, position, lifespan, mass and time remaining 
 		/// values to a particle, and than does not alter that particle any further.
 		/// </remarks>
-		public interface Emitter
+		public interface IEmitter
 		{
-			/// <summary> The Simulation into which this Emitter is submitting particles. </summary>
+			/// <summary>
+			/// The Simulation into which this Emitter is submitting particles.
+			/// </summary>
 			bool Simulation { get; set; }
 			
 			/// <summary>
