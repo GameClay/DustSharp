@@ -37,11 +37,6 @@ namespace GameClay
 			/// </summary>
 			float[] Lifespan { get; }
 			
-			/// <summary>
-			/// A single component element which indicates the amount of time the particle has left to live.
-			/// </summary>
-			float[] TimeRemaining { get; }
-			
 			/// <summary> 
 			/// A 3-component float vector element indicating the velocity of the particle.
 			/// </summary>
@@ -58,13 +53,36 @@ namespace GameClay
 			float[] Mass { get; }
 			
 			/// <summary>
-			/// A single component element which contains a unique id for each particle.
+			/// Copies data from a source ISystemData in to this instance.
 			/// </summary>
 			/// 
 			/// <remarks>
-			/// This value is always assigned by a Simulation, and is never read by a Simulation.
+			/// This method will increment the value of NumParticles by the quantity returned.
+			/// 
+			/// If the following arrays in src are null, the corisponding default value 
+			/// will be initialized.
+			/// <list>
+	        /// 		<item>Lifespan - float.PositiveInfinity</item>
+	        /// 		<item>Velocity - ZERO VECTOR CONST</item>
+	        /// 		<item>Mass - 1.0</item>
+	        /// </list>
 			/// </remarks>
-			int[] ParticleId { get; }
+			///
+			/// <param name="offset">    The target start index in this structure for copying. </param>
+			/// <param name="src">       [in] The source <see cref="ISystemData"/>. </param>
+			/// <param name="srcOffset"> The starting index in the source data streams to begin copying. </param>
+			/// <param name="count">     Number of elements to copy. </param>
+			/// 
+			/// <returns> The number of elements which were added to this system data. </returns>
+			int CopyFrom (int offset, ref ISystemData src, int srcOffset, int count);
+			
+			/// <summary>
+			/// Copies the array data located at srcIndex in to the arrays at dstIndex.
+			/// </summary>
+			/// 
+			/// <param name="srcIndex"> Source element index. </param>
+			/// <param name="dstIndex"> Destination element index. </param>
+			void CopyElement (int srcIndex, int dstIndex);
 		}
 	}
 }

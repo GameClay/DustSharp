@@ -39,13 +39,6 @@ namespace GameClay
 			}
 			
 			
-			public float[] TimeRemaining {
-				get {
-					return _timeRemainingStream;
-				}
-			}
-			
-			
 			public object[] Velocity {
 				get {
 					return _velocityStream;
@@ -60,24 +53,61 @@ namespace GameClay
 			}
 			
 			
-			public int[] ParticleId {
-				get {
-					return _idStream;
-				}
+			public int CopyFrom (int offset, ref ISystemData src, int srcOffset, int count)
+			{
+				int capacityLeft = MaxNumParticles - NumParticles;
+				int numToCopy = count < capacityLeft ? count : capacityLeft;
+				
+				// Use Buffer.BlockCopy instead of Array.CopyTo because Buffer.BlockCopy 
+				// is a much faster method for moving arrays of data around.
+				
+				// Position
+				Buffer.BlockCopy(src.Position, srcOffset,
+				                 _positionStream, offset,
+				                 numToCopy);
+				
+				// Lifespan
+				Buffer.BlockCopy(src.Lifespan, srcOffset,
+				                 _lifespanStream, offset,
+				                 numToCopy);
+				
+				// Velocity
+				Buffer.BlockCopy(src.Velocity, srcOffset,
+				                 _velocityStream, offset,
+				                 numToCopy);
+				
+				// Mass
+				Buffer.BlockCopy(src.Mass, srcOffset,
+				                 _massStream, offset,
+				                 numToCopy);
+				
+				// Update number of particles
+				_numParticles += numToCopy;
+				
+				// Return number copied
+				return numToCopy;
+			}
+			
+			public void CopyElement (int srcIndex, int dstIndex)
+			{
+				// This isn't super awesome, in the SoA case, but what can ya do
+				_positionStream[dstIndex] = _positionStream[srcIndex];
+				_lifespanStream[dstIndex] = _lifespanStream[srcIndex];
+				_velocityStream[dstIndex] = _velocityStream[srcIndex];
+				_massStream[dstIndex]     = _massStream[srcIndex];
 			}
 			
 			#endregion
 			
-			public SoAData(int maxNumParticles)
+			public SoAData (int maxNumParticles)
 			{
 				_numParticles = 0;
 				_maxNumParticles = maxNumParticles;
+				
 				_positionStream = new object[MaxNumParticles];
 				_lifespanStream = new float[MaxNumParticles];
-				_timeRemainingStream = new float[MaxNumParticles];
 				_velocityStream = new object[MaxNumParticles];
 				_massStream = new float[MaxNumParticles];
-				_idStream = new int[MaxNumParticles];
 			}
 			
 			#region Data
@@ -85,10 +115,8 @@ namespace GameClay
 			public int _maxNumParticles;
 			public object[] _positionStream;
 			public float[] _lifespanStream;
-			public float[] _timeRemainingStream;
 			public object[] _velocityStream;
 			public float[] _massStream;
-			public int[] _idStream;
 			#endregion
 		}
 	}

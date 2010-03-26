@@ -39,6 +39,7 @@
     <Compile Include="IEmitter.cs" />
     <Compile Include="ISimulation.cs" />
     <Compile Include="ISystemData.cs" />
+    <Compile Include="simulation\SoAData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
