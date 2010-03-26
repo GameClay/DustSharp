@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0E44AB3B-39B3-4E9C-8611-D75922AFF759}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DustSharp</RootNamespace>
-    <AssemblyName>DustSharp</AssemblyName>
+    <RootNamespace>GameClay.Dust</RootNamespace>
+    <AssemblyName>GameClay.Dust</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
