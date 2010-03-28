@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) 2007-2010 SlimDX Group
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -98,11 +98,12 @@ namespace SlimMath
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than two elements.</exception>
         public Vector2(float[] values)
         {
+#if DEBUG
             if (values == null)
                 throw new ArgumentNullException("values");
             if (values.Length != 2)
                 throw new ArgumentOutOfRangeException("values", "There must be two and only two input values for Vector2.");
-
+#endif
             X = values[0];
             Y = values[1];
         }
@@ -123,8 +124,9 @@ namespace SlimMath
                     case 0: return X;
                     case 1: return Y;
                 }
-
+#if DEBUG
                 throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
+#endif
             }
 
             set
@@ -133,7 +135,9 @@ namespace SlimMath
                 {
                     case 0: X = value; break;
                     case 1: Y = value; break;
+#if DEBUG
                     default: throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
+#endif
                 }
             }
         }

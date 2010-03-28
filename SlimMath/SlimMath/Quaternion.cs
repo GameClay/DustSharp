@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) 2007-2010 SlimDX Group
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -150,11 +150,12 @@ namespace SlimMath
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than four elements.</exception>
         public Quaternion(float[] values)
         {
+#if DEBUG
             if (values == null)
                 throw new ArgumentNullException("values");
             if (values.Length != 4)
                 throw new ArgumentOutOfRangeException("values", "There must be four and only four input values for Quaternion.");
-
+#endif
             X = values[0];
             Y = values[1];
             Z = values[2];
@@ -223,8 +224,9 @@ namespace SlimMath
                     case 2: return Z;
                     case 3: return W;
                 }
-
+#if DEBUG
                 throw new ArgumentOutOfRangeException("index", "Indices for Quaternion run from 0 to 3, inclusive.");
+#endif
             }
 
             set
@@ -235,7 +237,9 @@ namespace SlimMath
                     case 1: Y = value; break;
                     case 2: Z = value; break;
                     case 3: W = value; break;
+#if DEBUG
                     default: throw new ArgumentOutOfRangeException("index", "Indices for Quaternion run from 0 to 3, inclusive.");
+#endif
                 }
             }
         }
