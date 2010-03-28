@@ -1,5 +1,4 @@
 using System;
-using SlimMath;
 
 namespace GameClay
 {
@@ -26,7 +25,7 @@ namespace GameClay
          /// <summary>
          /// An object-to-world transform for this Effecter.
          /// </summary>
-         Matrix Transform { get; set; }
+         object Transform { get; set; } // TODO: Matrix
 
          /// <summary>
          /// Advances the Effecter physics by a number of seconds.

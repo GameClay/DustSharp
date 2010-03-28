@@ -42,10 +42,4 @@
     <Compile Include="simulation\SoAData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="SlimMath\SlimMath\SlimMath.csproj">
-      <Project>{DC7A5C99-7C3B-4225-A2C5-D5DE54453D31}</Project>
-      <Name>SlimMath</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

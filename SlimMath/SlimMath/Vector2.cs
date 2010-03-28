@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) 2007-2010 SlimDX Group
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -98,12 +98,11 @@ namespace SlimMath
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than two elements.</exception>
         public Vector2(float[] values)
         {
-#if DEBUG
             if (values == null)
                 throw new ArgumentNullException("values");
             if (values.Length != 2)
                 throw new ArgumentOutOfRangeException("values", "There must be two and only two input values for Vector2.");
-#endif
+
             X = values[0];
             Y = values[1];
         }
@@ -124,9 +123,8 @@ namespace SlimMath
                     case 0: return X;
                     case 1: return Y;
                 }
-#if DEBUG
+
                 throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
-#endif
             }
 
             set
@@ -135,9 +133,7 @@ namespace SlimMath
                 {
                     case 0: X = value; break;
                     case 1: Y = value; break;
-#if DEBUG
                     default: throw new ArgumentOutOfRangeException("index", "Indices for Vector2 run from 0 to 1, inclusive.");
-#endif
                 }
             }
         }
@@ -607,6 +603,7 @@ namespace SlimMath
         /// <param name="result">When the method completes, contains the normalized vector.</param>
         public static void Normalize(ref Vector2 vector, out Vector2 result)
         {
+            Vector2 temp = vector;
             result = vector;
             result.Normalize();
         }
@@ -694,10 +691,14 @@ namespace SlimMath
             float x = rotation.X + rotation.X;
             float y = rotation.Y + rotation.Y;
             float z = rotation.Z + rotation.Z;
+            float wx = rotation.W * x;
+            float wy = rotation.W * y;
             float wz = rotation.W * z;
             float xx = rotation.X * x;
             float xy = rotation.X * y;
+            float xz = rotation.X * z;
             float yy = rotation.Y * y;
+            float yz = rotation.Y * z;
             float zz = rotation.Z * z;
 
             result = new Vector2((vector.X * (1.0f - yy - zz)) + (vector.Y * (xy - wz)), (vector.X * (xy + wz)) + (vector.Y * (1.0f - xx - zz)));

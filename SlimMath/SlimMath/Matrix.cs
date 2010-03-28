@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) 2007-2010 SlimDX Group
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -139,12 +139,11 @@ namespace SlimMath
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than sixteen elements.</exception>
         public Matrix(float[] values)
         {
-#if DEBUG
             if (values == null)
                 throw new ArgumentNullException("values");
             if (values.Length != 16)
                 throw new ArgumentOutOfRangeException("values", "There must be sixteen and only sixteen input values for Matrix.");
-#endif
+
             M11 = values[0];
             M12 = values[1];
             M13 = values[2];
@@ -207,9 +206,8 @@ namespace SlimMath
                     case 14: return M43;
                     case 15: return M44;
                 }
-#if DEBUG
+
                 throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
-#endif
             }
 
             set
@@ -232,9 +230,7 @@ namespace SlimMath
                     case 13: M42 = value; break;
                     case 14: M43 = value; break;
                     case 15: M44 = value; break;
-#if DEBUG
                     default: throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
-#endif
                 }
             }
         }
@@ -251,23 +247,21 @@ namespace SlimMath
         {
             get
             {
-#if DEBUG
                 if (row < 0 || row > 3)
                     throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
                 if (column < 0 || column > 3)
                     throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
-#endif
+
                 return this[(row * 4) + column];
             }
 
             set
             {
-#if DEBUG
                 if (row < 0 || row > 3)
                     throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
                 if (column < 0 || column > 3)
                     throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
-#endif
+
                 this[(row * 4) + column] = value;
             }
         }

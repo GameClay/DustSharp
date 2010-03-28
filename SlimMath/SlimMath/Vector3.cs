@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (c) 2007-2010 SlimDX Group
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -123,12 +123,11 @@ namespace SlimMath
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than three elements.</exception>
         public Vector3(float[] values)
         {
-#if DEBUG        
             if (values == null)
                 throw new ArgumentNullException("values");
             if (values.Length != 3)
                 throw new ArgumentOutOfRangeException("values", "There must be three and only three input values for Vector3.");
-#endif
+
             X = values[0];
             Y = values[1];
             Z = values[2];
@@ -151,9 +150,8 @@ namespace SlimMath
                     case 1: return Y;
                     case 2: return Z;
                 }
-#if DEBUG
+
                 throw new ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
-#endif
             }
 
             set
@@ -163,9 +161,7 @@ namespace SlimMath
                     case 0: X = value; break;
                     case 1: Y = value; break;
                     case 2: Z = value; break;
-#if DEBUG
                     default: throw new ArgumentOutOfRangeException("index", "Indices for Vector3 run from 0 to 2, inclusive.");
-#endif
                 }
             }
         }
