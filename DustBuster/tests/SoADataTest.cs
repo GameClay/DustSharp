@@ -88,8 +88,8 @@ namespace GameClay
             // Test CopyFrom
             _numParticles = 0;
             Dust.ISystemData isd = (Dust.ISystemData)d2;
-            int copyFromResult = CopyFrom(0, ref isd, NumParticles, NumParticles);
-            passed &= (copyFromResult == NumParticles);
+            int copyFromResult = CopyFrom(0, ref isd, 0, isd.NumParticles);
+            passed &= (copyFromResult == isd.NumParticles);
 
             for (int i = 0; i < NumParticles; i++)
             {
