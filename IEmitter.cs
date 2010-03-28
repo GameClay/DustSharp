@@ -18,7 +18,7 @@ namespace GameClay
          /// <summary>
          /// The Simulation into which this Emitter is submitting particles.
          /// </summary>
-         bool Simulation { get; set; }
+         ISimulation Simulation { get; set; }
 
          /// <summary>
          /// An object-to-world transform for this Emitter.
