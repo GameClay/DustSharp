@@ -1,4 +1,5 @@
 using System;
+using SlimMath;
 
 namespace GameClay
 {
@@ -23,7 +24,7 @@ namespace GameClay
          /// <summary>
          /// An object-to-world transform for this Emitter.
          /// </summary>
-         object Transform { get; set; } // TODO: Matrix
+         Matrix Transform { get; set; }
 
          /// <summary>
          /// The random number seed this Emitter is using.
