@@ -19,20 +19,34 @@ namespace GameClay
             d2._numParticles = MaxNumParticles;
             for (int i = 0; i < MaxNumParticles; i++)
             {
-               //_positionStream[i] = null;
+               _positionStream[i].X = (float)rand.NextDouble();
+               _positionStream[i].Y = (float)rand.NextDouble();
+               _positionStream[i].Z = (float)rand.NextDouble();
+               
                _lifespanStream[i] = (float)rand.NextDouble();
-               //_velocityStream[i] = null;
+               
+               _velocityStream[i].X = (float)rand.NextDouble();
+               _velocityStream[i].Y = (float)rand.NextDouble();
+               _velocityStream[i].Z = (float)rand.NextDouble();
+               
                _massStream[i] = 1.0f;
 
-               //passed &= (Position[i] == _positionStream[i]);
+               passed &= (Position[i] == _positionStream[i]);
                passed &= (Lifespan[i] == _lifespanStream[i]);
-               //passed &= (Velocity[i] == _velocityStream[i]);
+               passed &= (Velocity[i] == _velocityStream[i]);
                passed &= (Mass[i] == _massStream[i]);
 
                // Initialize the second SoAData
-               //d2._positionStream[i] = null;
+               d2._positionStream[i].X = (float)rand.NextDouble();
+               d2._positionStream[i].Y = (float)rand.NextDouble();
+               d2._positionStream[i].Z = (float)rand.NextDouble();
+               
                d2._lifespanStream[i] = (float)rand.NextDouble();
-               //d2._velocityStream[i] = null;
+               
+               d2._velocityStream[i].X = (float)rand.NextDouble();
+               d2._velocityStream[i].Y = (float)rand.NextDouble();
+               d2._velocityStream[i].Z = (float)rand.NextDouble();
+               
                d2._massStream[i] = float.PositiveInfinity;
 
                if (!passed)
@@ -48,9 +62,9 @@ namespace GameClay
 
                CopyElement(src, dst);
 
-               //passed &= (Position[src] == Position[dst]);
+               passed &= (Position[src] == Position[dst]);
                passed &= (Lifespan[src] == Lifespan[dst]);
-               //passed &= (Velocity[src] == Velocity[dst]);
+               passed &= (Velocity[src] == Velocity[dst]);
                passed &= (Mass[src] == Mass[dst]);
 
                if (!passed)
@@ -65,9 +79,9 @@ namespace GameClay
 
             for (int i = 0; i < NumParticles; i++)
             {
-               //passed &= (Position[i] == d2.Position[i]);
+               passed &= (Position[i] == d2.Position[i]);
                passed &= (Lifespan[i] == d2.Lifespan[i]);
-               //passed &= (Velocity[i] == d2.Velocity[i]);
+               passed &= (Velocity[i] == d2.Velocity[i]);
                passed &= (Mass[i] == d2.Mass[i]);
 
                if (!passed)

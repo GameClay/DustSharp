@@ -1,5 +1,6 @@
 
 using System;
+using SlimMath;
 
 namespace GameClay
 {
@@ -29,7 +30,7 @@ namespace GameClay
          }
 
 
-         public TempVector[] Position
+         public Vector3[] Position
          {
             get
             {
@@ -47,7 +48,7 @@ namespace GameClay
          }
 
 
-         public TempVector[] Velocity
+         public Vector3[] Velocity
          {
             get
             {
@@ -105,18 +106,18 @@ namespace GameClay
             _numParticles = 0;
             _maxNumParticles = maxNumParticles;
 
-            _positionStream = new TempVector[MaxNumParticles];
+            _positionStream = new Vector3[MaxNumParticles];
             _lifespanStream = new float[MaxNumParticles];
-            _velocityStream = new TempVector[MaxNumParticles];
+            _velocityStream = new Vector3[MaxNumParticles];
             _massStream = new float[MaxNumParticles];
          }
 
          #region Data
          public int _numParticles;
          public int _maxNumParticles;
-         public TempVector[] _positionStream;
+         public Vector3[] _positionStream;
          public float[] _lifespanStream;
-         public TempVector[] _velocityStream;
+         public Vector3[] _velocityStream;
          public float[] _massStream;
          #endregion
       }
