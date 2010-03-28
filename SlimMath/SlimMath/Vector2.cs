@@ -607,7 +607,6 @@ namespace SlimMath
         /// <param name="result">When the method completes, contains the normalized vector.</param>
         public static void Normalize(ref Vector2 vector, out Vector2 result)
         {
-            Vector2 temp = vector;
             result = vector;
             result.Normalize();
         }
@@ -695,14 +694,10 @@ namespace SlimMath
             float x = rotation.X + rotation.X;
             float y = rotation.Y + rotation.Y;
             float z = rotation.Z + rotation.Z;
-            float wx = rotation.W * x;
-            float wy = rotation.W * y;
             float wz = rotation.W * z;
             float xx = rotation.X * x;
             float xy = rotation.X * y;
-            float xz = rotation.X * z;
             float yy = rotation.Y * y;
-            float yz = rotation.Y * z;
             float zz = rotation.Z * z;
 
             result = new Vector2((vector.X * (1.0f - yy - zz)) + (vector.Y * (xy - wz)), (vector.X * (xy + wz)) + (vector.Y * (1.0f - xx - zz)));
