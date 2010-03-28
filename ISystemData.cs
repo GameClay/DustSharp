@@ -14,7 +14,9 @@ namespace GameClay
       /// <remarks>
       /// This interface wraps a set of data which is used to describe the state of a Dust system. 
       /// The structure is set up as individual streams of data so that the underlying
-      /// simulation may elect to store data in any configuration they desire.
+      /// simulation may elect to store data in any configuration they desire. While this is
+      /// intended to wrap a Structure-of-Arrays (SoA), alternative underlying data organization
+      /// can be used if desired. 
       /// </remarks>
       public interface ISystemData
       {
@@ -29,19 +31,39 @@ namespace GameClay
          int MaxNumParticles { get; }
 
          /// <summary>
-         /// A 3-component float vector element storing the position of the particle.
+         /// The X co-ordinate of the particles position, in world space.
          /// </summary>
-         Vector3[] Position { get; }
+         float[] PositionX { get; }
+         
+         /// <summary>
+         /// The Y co-ordinate of the particles position, in world space.
+         /// </summary>
+         float[] PositionY { get; }
+         
+         /// <summary>
+         /// The Z co-ordinate of the particles position, in world space.
+         /// </summary>
+         float[] PositionZ { get; }
 
          /// <summary>
-         /// A single component element which indicates the lifespan of the particle.
+         /// The remaining lifespan of the particle
          /// </summary>
          float[] Lifespan { get; }
 
-         /// <summary> 
-         /// A 3-component float vector element indicating the velocity of the particle.
+         /// <summary>
+         /// The X co-ordinate of the particles velocity.
          /// </summary>
-         Vector3[] Velocity { get; }
+         float[] VelocityX { get; }
+         
+         /// <summary>
+         /// The Y co-ordinate of the particles velocity.
+         /// </summary>
+         float[] VelocityY { get; }
+         
+         /// <summary>
+         /// The Z co-ordinate of the particles velocity.
+         /// </summary>
+         float[] VelocityZ { get; }
 
          /// <summary>
          /// A single component element which indicates the mass of the particle.
@@ -63,9 +85,9 @@ namespace GameClay
          /// If the following arrays in src are null, the corisponding default value 
          /// will be initialized.
          /// <list>
-         /// 		<item>Lifespan - float.PositiveInfinity</item>
-         /// 		<item>Velocity - ZERO VECTOR CONST</item>
-         /// 		<item>Mass - 1.0</item>
+         ///    <item>Lifespan - float.PositiveInfinity</item>
+         ///    <item>Velocity - ZERO VECTOR CONST</item>
+         ///    <item>Mass - 1.0</item>
          /// </list>
          /// </remarks>
          ///
