@@ -19,33 +19,40 @@ namespace GameClay
             d2._numParticles = MaxNumParticles;
             for (int i = 0; i < MaxNumParticles; i++)
             {
-               _positionStream[i].X = (float)rand.NextDouble();
-               _positionStream[i].Y = (float)rand.NextDouble();
-               _positionStream[i].Z = (float)rand.NextDouble();
+               _positionStreamX[i] = (float)rand.NextDouble();
+               _positionStreamY[i] = (float)rand.NextDouble();
+               _positionStreamZ[i] = (float)rand.NextDouble();
                
                _lifespanStream[i] = (float)rand.NextDouble();
                
-               _velocityStream[i].X = (float)rand.NextDouble();
-               _velocityStream[i].Y = (float)rand.NextDouble();
-               _velocityStream[i].Z = (float)rand.NextDouble();
+               _velocityStreamX[i] = (float)rand.NextDouble();
+               _velocityStreamY[i] = (float)rand.NextDouble();
+               _velocityStreamZ[i] = (float)rand.NextDouble();
                
                _massStream[i] = 1.0f;
 
-               passed &= (Position[i] == _positionStream[i]);
+               passed &= (PositionX[i] == _positionStreamX[i]);
+               passed &= (PositionY[i] == _positionStreamY[i]);
+               passed &= (PositionZ[i] == _positionStreamZ[i]);
+               
                passed &= (Lifespan[i] == _lifespanStream[i]);
-               passed &= (Velocity[i] == _velocityStream[i]);
+               
+               passed &= (VelocityX[i] == _velocityStreamX[i]);
+               passed &= (VelocityY[i] == _velocityStreamY[i]);
+               passed &= (VelocityZ[i] == _velocityStreamZ[i]);
+               
                passed &= (Mass[i] == _massStream[i]);
 
                // Initialize the second SoAData
-               d2._positionStream[i].X = (float)rand.NextDouble();
-               d2._positionStream[i].Y = (float)rand.NextDouble();
-               d2._positionStream[i].Z = (float)rand.NextDouble();
+               d2._positionStreamX[i] = (float)rand.NextDouble();
+               d2._positionStreamY[i] = (float)rand.NextDouble();
+               d2._positionStreamZ[i] = (float)rand.NextDouble();
                
                d2._lifespanStream[i] = (float)rand.NextDouble();
                
-               d2._velocityStream[i].X = (float)rand.NextDouble();
-               d2._velocityStream[i].Y = (float)rand.NextDouble();
-               d2._velocityStream[i].Z = (float)rand.NextDouble();
+               d2._velocityStreamX[i] = (float)rand.NextDouble();
+               d2._velocityStreamY[i] = (float)rand.NextDouble();
+               d2._velocityStreamZ[i] = (float)rand.NextDouble();
                
                d2._massStream[i] = float.PositiveInfinity;
 
@@ -62,9 +69,16 @@ namespace GameClay
 
                CopyElement(src, dst);
 
-               passed &= (Position[src] == Position[dst]);
+               passed &= (PositionX[src] == PositionX[dst]);
+               passed &= (PositionY[src] == PositionY[dst]);
+               passed &= (PositionZ[src] == PositionZ[dst]);
+               
                passed &= (Lifespan[src] == Lifespan[dst]);
-               passed &= (Velocity[src] == Velocity[dst]);
+               
+               passed &= (VelocityX[src] == VelocityX[dst]);
+               passed &= (VelocityY[src] == VelocityY[dst]);
+               passed &= (VelocityZ[src] == VelocityZ[dst]);
+               
                passed &= (Mass[src] == Mass[dst]);
 
                if (!passed)
@@ -79,9 +93,16 @@ namespace GameClay
 
             for (int i = 0; i < NumParticles; i++)
             {
-               passed &= (Position[i] == d2.Position[i]);
+               passed &= (PositionX[i] == d2.PositionX[i]);
+               passed &= (PositionY[i] == d2.PositionY[i]);
+               passed &= (PositionZ[i] == d2.PositionZ[i]);
+               
                passed &= (Lifespan[i] == d2.Lifespan[i]);
-               passed &= (Velocity[i] == d2.Velocity[i]);
+               
+               passed &= (VelocityX[i] == d2.VelocityX[i]);
+               passed &= (VelocityY[i] == d2.VelocityY[i]);
+               passed &= (VelocityZ[i] == d2.VelocityZ[i]);
+               
                passed &= (Mass[i] == d2.Mass[i]);
 
                if (!passed)
