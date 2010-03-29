@@ -23,7 +23,7 @@ namespace GameClay.Dust
     /// </summary>
     /// 
     /// <remarks>
-    /// This class takes care of the <see cref="IEmitter.advanceTime"/> implementation and
+    /// This class takes care of the <see cref="IEmitter.AdvanceTime"/> implementation and
     /// instead only requires that the derived class implement the <see cref="_EmitParticles"/>
     /// method.
     /// 
@@ -34,7 +34,7 @@ namespace GameClay.Dust
     {
 
         #region IEmitter implementation
-        public int advanceTime(float dt, float pt)
+        public int AdvanceTime(float dt, float pt)
         {
             int numParticlesEmitted = 0;
 

@@ -62,10 +62,10 @@ namespace GameClay.Dust
         /// progression of time. 
         /// </remarks>
         ///
-        /// <param name="dt"> The time, in seconds, since the last call to advanceTime(). </param>
+        /// <param name="dt"> The time, in seconds, since the last call to AdvanceTime(). </param>
         /// <param name="pt"> A normalized value which is to used by the Emitter as an interpolation parameter. </param>
         ///
         /// <returns> The number of particles this Emitter tried to add to the Simulation during the method call. </returns>
-        int advanceTime(float dt, float pt);
+        int AdvanceTime(float dt, float pt);
     }
 }

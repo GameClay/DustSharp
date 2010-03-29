@@ -32,7 +32,7 @@ namespace GameClay.Dust
       /// 
       /// <remarks>
       /// This property allows you to make "one-shot" emitters, which emits a number of particles equal
-      /// to the value of <see cref="ParticlesPerSecond"/> during the first call to <see cref="IEmitter.advanceTime"/>,
+      /// to the value of <see cref="ParticlesPerSecond"/> during the first call to <see cref="IEmitter.AdvanceTime"/>,
       /// and then deactivates (<see cref="IEmitter.Active"/>).
       /// </remarks>
       public bool Persistent

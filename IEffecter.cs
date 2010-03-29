@@ -47,7 +47,7 @@ namespace GameClay
          /// Advances the Effecter physics by a number of seconds.
          /// </summary>
          ///
-         /// <param name="dt">The time which has passed since the last call to advanceTime(), in seconds.</param>
+         /// <param name="dt">The time which has passed since the last call to AdvanceTime(), in seconds.</param>
          void advanceTime(float dt);
       }
    }
