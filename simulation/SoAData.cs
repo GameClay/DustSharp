@@ -17,6 +17,10 @@ namespace GameClay
             {
                return _numParticles;
             }
+            set
+            {
+               _numParticles = NumParticles;
+            }
          }
 
          public int MaxNumParticles
@@ -24,6 +28,10 @@ namespace GameClay
             get
             {
                return _maxNumParticles;
+            }
+            set
+            {
+               _maxNumParticles = MaxNumParticles;
             }
          }
 
@@ -33,6 +41,10 @@ namespace GameClay
             {
                return _positionStreamX;
             }
+            set
+            {
+               _positionStreamX = PositionX;
+            }
          }
          
          public float[] PositionY
@@ -40,6 +52,10 @@ namespace GameClay
             get
             {
                return _positionStreamY;
+            }
+            set
+            {
+               _positionStreamY = PositionY;
             }
          }
          
@@ -49,6 +65,10 @@ namespace GameClay
             {
                return _positionStreamZ;
             }
+            set
+            {
+               _positionStreamZ = PositionZ;
+            }
          }
 
          public float[] Lifespan
@@ -56,6 +76,10 @@ namespace GameClay
             get
             {
                return _lifespanStream;
+            }
+            set
+            {
+               _lifespanStream = Lifespan;
             }
          }
 
@@ -65,6 +89,10 @@ namespace GameClay
             {
                return _velocityStreamX;
             }
+            set
+            {
+               _velocityStreamX = VelocityX;
+            }
          }
          
          public float[] VelocityY
@@ -72,6 +100,10 @@ namespace GameClay
             get
             {
                return _velocityStreamY;
+            }
+            set
+            {
+               _velocityStreamY = VelocityY;
             }
          }
          
@@ -81,6 +113,10 @@ namespace GameClay
             {
                return _velocityStreamZ;
             }
+            set
+            {
+               _velocityStreamZ = VelocityZ;
+            }
          }
 
          public float[] Mass
@@ -88,6 +124,10 @@ namespace GameClay
             get
             {
                return _massStream;
+            }
+            set
+            {
+               _massStream = Mass;
             }
          }
 
