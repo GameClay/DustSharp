@@ -285,45 +285,104 @@ namespace GameClay.Dust
 #endif
 
             // Avoid clumping by doing some pre-simulation
-            if (Configuration.Persistent)
+            if (i > 0 && Configuration.Persistent)
             {
                posX[0] += velX[0] * partialFrameTime;
                posY[0] += velY[0] * partialFrameTime;
                posZ[0] += velZ[0] * partialFrameTime;
             }
 
+            // Write output result to _particlesToEmit
+            int iTimesFour = i * 4;
+
             // Assign position
 #if !DUST_SIMD
-            Buffer.BlockCopy(posX, 0, _particlesToEmit.PositionX, i * 4, 4);
-            Buffer.BlockCopy(posY, 0, _particlesToEmit.PositionY, i * 4, 4);
-            Buffer.BlockCopy(posZ, 0, _particlesToEmit.PositionZ, i * 4, 4);
+            Array.Copy(posX, 0, _particlesToEmit._positionStreamX, iTimesFour, 4);
+            Array.Copy(posY, 0, _particlesToEmit._positionStreamY, iTimesFour, 4);
+            Array.Copy(posZ, 0, _particlesToEmit._positionStreamZ, iTimesFour, 4);
 #else
 #endif
 
             // Assign velocity
 #if !DUST_SIMD
-            Buffer.BlockCopy(velX, 0, _particlesToEmit.VelocityX, i * 4, 4);
-            Buffer.BlockCopy(velY, 0, _particlesToEmit.VelocityY, i * 4, 4);
-            Buffer.BlockCopy(velZ, 0, _particlesToEmit.VelocityZ, i * 4, 4);
+            Array.Copy(velX, 0, _particlesToEmit._velocityStreamX, iTimesFour, 4);
+            Array.Copy(velY, 0, _particlesToEmit._velocityStreamY, iTimesFour, 4);
+            Array.Copy(velZ, 0, _particlesToEmit._velocityStreamZ, iTimesFour, 4);
 #else
 #endif
 
             // Assign lifespan and mass
-            Buffer.BlockCopy(initialLifespan, 0, _particlesToEmit.Lifespan, i * 4, 4);
-            Buffer.BlockCopy(initialMass, 0, _particlesToEmit.Mass, i * 4, 4);
+            Array.Copy(initialLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
+            Array.Copy(initialMass, 0, _particlesToEmit.Mass, iTimesFour, 4);
          }
 
 
 #if !DUST_BATCH_EMISSION_ONLY
          // Emit remaining particles individually
+         int numBatchesTimesFour = numBatches * 4;
          for (int i = 0; i < numRemainder; i++)
          {
+            // Get random position
+            posX[0] = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
+            posY[0] = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
+            posZ[0] = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
 
+            // If this emitter is supposed to emit only on the surface
+            // do the needed clipping
+            if (BoxConfiguration.EmitOnSurfaceOnly)
+            {
+               switch (RandomSource.Next() % 3)
+               {
+                  case 0:
+                     posX[0] = posX[0] < 0.0f ? negWidth : _boxConfiguration.Width;
+                     break;
+
+                  case 1:
+                     posY[0] = posY[0] < 0.0f ? negDepth : _boxConfiguration.Height;
+                     break;
+
+                  case 2:
+                     posZ[0] = posZ[0] < 0.0f ? negHeight : _boxConfiguration.Depth;
+                     break;
+               }
+            }
+
+            // Transform position
+            // TODO: Matrix and transform stuff
+
+            // Copy and normalize to get velocity
+            len[0] = (float)Math.Sqrt((posX[0] * posX[0]) + (posY[0] * posY[0]) + (posZ[0] * posZ[0]));
+
+            velX[0] = posX[0] / len[0];
+            velY[0] = posY[0] / len[0];
+            velZ[0] = posZ[0] / len[0];
+
+            // Avoid clumping by doing some pre-simulation
+            if (i > 0 && Configuration.Persistent)
+            {
+               posX[0] += velX[0] * i * oneOverPPS;
+               posY[0] += velY[0] * i * oneOverPPS;
+               posZ[0] += velZ[0] * i * oneOverPPS;
+            }
+
+            // Store out position
+            _particlesToEmit._positionStreamX[numBatchesTimesFour + i] = posX[0];
+            _particlesToEmit._positionStreamY[numBatchesTimesFour + i] = posY[0];
+            _particlesToEmit._positionStreamZ[numBatchesTimesFour + i] = posZ[0];
+
+            // Store out velocity
+            _particlesToEmit._velocityStreamX[numBatchesTimesFour + i] = velX[0];
+            _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY[0];
+            _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ[0];
+
+            // Store out initial lifespan and mass
+            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = Configuration.InitialLifespan;
+            _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
          }
 #endif
 
          // Assign number of particles
-         _particlesToEmit.NumParticles = numParticlesToEmit;
+         _particlesToEmit._numParticles = numParticlesToEmit;
 
          // Assign the output variable
          particlesToEmit = _particlesToEmit;
