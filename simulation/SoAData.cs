@@ -1,19 +1,19 @@
-// Dust - A particle system
-// Copyright (C) 2009-2010 GameClay LLC
+/* Dust -- Copyright (C) 2009-2010 GameClay LLC
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
 
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation;
-// version 2.1 of the License.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
 
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 using System;
 
 namespace GameClay
@@ -32,10 +32,6 @@ namespace GameClay
             {
                return _numParticles;
             }
-            set
-            {
-               _numParticles = value;
-            }
          }
 
          public int MaxNumParticles
@@ -43,10 +39,6 @@ namespace GameClay
             get
             {
                return _maxNumParticles;
-            }
-            set
-            {
-               _maxNumParticles = value;
             }
          }
 
@@ -56,10 +48,6 @@ namespace GameClay
             {
                return _positionStreamX;
             }
-            set
-            {
-               _positionStreamX = value;
-            }
          }
 
          public float[] PositionY
@@ -67,10 +55,6 @@ namespace GameClay
             get
             {
                return _positionStreamY;
-            }
-            set
-            {
-               _positionStreamY = value;
             }
          }
 
@@ -80,10 +64,6 @@ namespace GameClay
             {
                return _positionStreamZ;
             }
-            set
-            {
-               _positionStreamZ = value;
-            }
          }
 
          public float[] Lifespan
@@ -91,10 +71,6 @@ namespace GameClay
             get
             {
                return _lifespanStream;
-            }
-            set
-            {
-               _lifespanStream = value;
             }
          }
 
@@ -104,10 +80,6 @@ namespace GameClay
             {
                return _velocityStreamX;
             }
-            set
-            {
-               _velocityStreamX = value;
-            }
          }
 
          public float[] VelocityY
@@ -115,10 +87,6 @@ namespace GameClay
             get
             {
                return _velocityStreamY;
-            }
-            set
-            {
-               _velocityStreamY = value;
             }
          }
 
@@ -128,10 +96,6 @@ namespace GameClay
             {
                return _velocityStreamZ;
             }
-            set
-            {
-               _velocityStreamZ = value;
-            }
          }
 
          public float[] Mass
@@ -140,10 +104,6 @@ namespace GameClay
             {
                return _massStream;
             }
-            set
-            {
-               _massStream = value;
-            }
          }
 
          public int CopyFrom(int offset, ref ISystemData src, int srcOffset, int count)
@@ -151,23 +111,21 @@ namespace GameClay
             int capacityLeft = MaxNumParticles - NumParticles;
             int numToCopy = count < capacityLeft ? count : capacityLeft;
 
-            // TODO: Test the speed of Array.Copy vs Buffer.BlockCopy 
-
             // Position
-            Buffer.BlockCopy(src.PositionX, srcOffset, _positionStreamX, offset, numToCopy);
-            Buffer.BlockCopy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
-            Buffer.BlockCopy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
+            Array.Copy(src.PositionX, srcOffset, _positionStreamX, offset, numToCopy);
+            Array.Copy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
+            Array.Copy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
 
             // Lifespan
-            Buffer.BlockCopy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
+            Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
 
             // Velocity
-            Buffer.BlockCopy(src.VelocityX, srcOffset, _velocityStreamX, offset, numToCopy);
-            Buffer.BlockCopy(src.VelocityY, srcOffset, _velocityStreamY, offset, numToCopy);
-            Buffer.BlockCopy(src.VelocityZ, srcOffset, _velocityStreamZ, offset, numToCopy);
+            Array.Copy(src.VelocityX, srcOffset, _velocityStreamX, offset, numToCopy);
+            Array.Copy(src.VelocityY, srcOffset, _velocityStreamY, offset, numToCopy);
+            Array.Copy(src.VelocityZ, srcOffset, _velocityStreamZ, offset, numToCopy);
 
             // Mass
-            Buffer.BlockCopy(src.Mass, srcOffset, _massStream, offset, numToCopy);
+            Array.Copy(src.Mass, srcOffset, _massStream, offset, numToCopy);
 
             // Update number of particles
             _numParticles += numToCopy;
