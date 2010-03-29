@@ -4,11 +4,22 @@ using System;
 namespace GameClay.Dust
 {
 
-
-   public class EmitterConfiguration
+  /// <summary>
+  /// The base configuration class for an emitter.
+  /// </summary>
+   public abstract class EmitterConfiguration
    {
 
       #region Properties
+      /// <summary>
+      /// If false, this emitter will emit it's <see cref="ParticlesPerSecond"/> once, and then deactivate.
+      /// </summary>
+      /// 
+      /// <remarks>
+      /// This property allows you to make "one-shot" emitters, which emits a number of particles equal
+      /// to the value of <see cref="ParticlesPerSecond"/> during the first call to <see cref="IEmitter.advanceTime"/>,
+      /// and then deactivates (<see cref="IEmitter.Active"/>).
+      /// </remarks>
       public bool Persistent 
       {
          get 
@@ -21,7 +32,9 @@ namespace GameClay.Dust
          }
       }
       
-      
+      /// <summary>
+      /// The number of particles to emit per second. 
+      /// </summary>
       public float ParticlesPerSecond
       {
          get 
@@ -34,7 +47,9 @@ namespace GameClay.Dust
          }
       }
       
-      
+      /// <summary>
+      /// The initial speed of the particles emitted.
+      /// </summary>
       public float InitialSpeed 
       {
          get 
@@ -47,7 +62,9 @@ namespace GameClay.Dust
          }
       }
       
-      
+      /// <summary>
+      /// The initial mass of the particles emitted.
+      /// </summary>
       public float InitialMass 
       {
          get 
@@ -60,7 +77,9 @@ namespace GameClay.Dust
          }
       }
       
-      
+      /// <summary>
+      /// Initial lifespan of the particles emitted.
+      /// </summary>
       public float InitialLifespan 
       {
          get 
@@ -74,8 +93,13 @@ namespace GameClay.Dust
       }
       #endregion
       
-      public EmitterConfiguration ()
+      public EmitterConfiguration()
       {
+         _particlesPerSecond = 1.0f;
+         _initialLifespan = 1.0f;
+         _initialSpeed = 1.0f;
+         _initialMass = 1.0f;
+         _persistent = true;
       }
       
       #region Data
