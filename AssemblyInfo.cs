@@ -21,10 +21,10 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("Dust")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A flexible, high-performance, managed particle system.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyCompany("GameClay")]
+[assembly: AssemblyProduct("Dust")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
