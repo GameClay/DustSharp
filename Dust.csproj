@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,16 +33,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="simulation\ConstantSimulation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulation\ConstantSimulation.cs" />
     <Compile Include="IEffecter.cs" />
     <Compile Include="IEmitter.cs" />
     <Compile Include="ISimulation.cs" />
     <Compile Include="ISystemData.cs" />
-    <Compile Include="simulation\SoAData.cs" />
-    <Compile Include="emission\BoxEmitter.cs" />
-    <Compile Include="emission\EmitterImpl.cs" />
-    <Compile Include="emission\EmitterConfiguration.cs" />
+    <Compile Include="Core\SoAData.cs" />
+    <Compile Include="Emission\BoxEmitter.cs" />
+    <Compile Include="Emission\EmitterImpl.cs" />
+    <Compile Include="Emission\EmitterConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
