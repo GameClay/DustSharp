@@ -33,12 +33,12 @@ namespace GameClay
          /// The X co-ordinate of the particles position, in world space.
          /// </summary>
          float[] PositionX { get; }
-         
+
          /// <summary>
          /// The Y co-ordinate of the particles position, in world space.
          /// </summary>
          float[] PositionY { get; }
-         
+
          /// <summary>
          /// The Z co-ordinate of the particles position, in world space.
          /// </summary>
@@ -53,12 +53,12 @@ namespace GameClay
          /// The X co-ordinate of the particles velocity.
          /// </summary>
          float[] VelocityX { get; }
-         
+
          /// <summary>
          /// The Y co-ordinate of the particles velocity.
          /// </summary>
          float[] VelocityY { get; }
-         
+
          /// <summary>
          /// The Z co-ordinate of the particles velocity.
          /// </summary>

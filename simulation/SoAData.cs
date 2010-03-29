@@ -19,7 +19,7 @@ namespace GameClay
             }
             set
             {
-               _numParticles = NumParticles;
+               _numParticles = value;
             }
          }
 
@@ -31,7 +31,7 @@ namespace GameClay
             }
             set
             {
-               _maxNumParticles = MaxNumParticles;
+               _maxNumParticles = value;
             }
          }
 
@@ -43,10 +43,10 @@ namespace GameClay
             }
             set
             {
-               _positionStreamX = PositionX;
+               _positionStreamX = value;
             }
          }
-         
+
          public float[] PositionY
          {
             get
@@ -55,10 +55,10 @@ namespace GameClay
             }
             set
             {
-               _positionStreamY = PositionY;
+               _positionStreamY = value;
             }
          }
-         
+
          public float[] PositionZ
          {
             get
@@ -67,7 +67,7 @@ namespace GameClay
             }
             set
             {
-               _positionStreamZ = PositionZ;
+               _positionStreamZ = value;
             }
          }
 
@@ -79,7 +79,7 @@ namespace GameClay
             }
             set
             {
-               _lifespanStream = Lifespan;
+               _lifespanStream = value;
             }
          }
 
@@ -91,10 +91,10 @@ namespace GameClay
             }
             set
             {
-               _velocityStreamX = VelocityX;
+               _velocityStreamX = value;
             }
          }
-         
+
          public float[] VelocityY
          {
             get
@@ -103,10 +103,10 @@ namespace GameClay
             }
             set
             {
-               _velocityStreamY = VelocityY;
+               _velocityStreamY = value;
             }
          }
-         
+
          public float[] VelocityZ
          {
             get
@@ -115,7 +115,7 @@ namespace GameClay
             }
             set
             {
-               _velocityStreamZ = VelocityZ;
+               _velocityStreamZ = value;
             }
          }
 
@@ -127,7 +127,7 @@ namespace GameClay
             }
             set
             {
-               _massStream = Mass;
+               _massStream = value;
             }
          }
 
@@ -135,7 +135,7 @@ namespace GameClay
          {
             int capacityLeft = MaxNumParticles - NumParticles;
             int numToCopy = count < capacityLeft ? count : capacityLeft;
-            
+
             // TODO: Test the speed of Array.Copy vs Buffer.BlockCopy 
 
             // Position
@@ -167,13 +167,13 @@ namespace GameClay
             _positionStreamX[dstIndex] = _positionStreamX[srcIndex];
             _positionStreamY[dstIndex] = _positionStreamY[srcIndex];
             _positionStreamZ[dstIndex] = _positionStreamZ[srcIndex];
-            
+
             _lifespanStream[dstIndex] = _lifespanStream[srcIndex];
-            
+
             _velocityStreamX[dstIndex] = _velocityStreamX[srcIndex];
             _velocityStreamY[dstIndex] = _velocityStreamY[srcIndex];
             _velocityStreamZ[dstIndex] = _velocityStreamZ[srcIndex];
-            
+
             _massStream[dstIndex] = _massStream[srcIndex];
          }
 
@@ -187,30 +187,30 @@ namespace GameClay
             _positionStreamX = new float[MaxNumParticles];
             _positionStreamY = new float[MaxNumParticles];
             _positionStreamZ = new float[MaxNumParticles];
-            
+
             _lifespanStream = new float[MaxNumParticles];
-            
+
             _velocityStreamX = new float[MaxNumParticles];
             _velocityStreamY = new float[MaxNumParticles];
             _velocityStreamZ = new float[MaxNumParticles];
-            
+
             _massStream = new float[MaxNumParticles];
          }
 
          #region Data
          public int _numParticles;
          public int _maxNumParticles;
-         
+
          public float[] _positionStreamX;
          public float[] _positionStreamY;
          public float[] _positionStreamZ;
-         
+
          public float[] _lifespanStream;
-         
+
          public float[] _velocityStreamX;
          public float[] _velocityStreamY;
          public float[] _velocityStreamZ;
-         
+
          public float[] _massStream;
          #endregion
       }

@@ -23,7 +23,7 @@ namespace GameClay.Dust
       public int advanceTime(float dt, float pt)
       {
          int numParticlesEmitted = 0;
-         
+
          if (Active)
          {
 #if DEBUG
@@ -31,9 +31,9 @@ namespace GameClay.Dust
             if (Simulation == null)
                throw new NullReferenceException("No Simulation assigned.");
 #endif
-            
+
             _timeSinceEmission += dt;
-            
+
             // Figure out the number of particles to emit
             int numParticlesToEmit = 0;
 
@@ -44,83 +44,81 @@ namespace GameClay.Dust
                numParticlesToEmit = (int)Configuration.ParticlesPerSecond;
                Active = false;
             }
-            
+
             // Emit particles
             if (numParticlesToEmit > 0)
-            {               
+            {
                // Call _EmitParticles and add any resultant particles 
                ISystemData particlesToEmit = null;
                _EmitParticles(numParticlesToEmit, out particlesToEmit);
-               
+
                if (particlesToEmit != null)
                {
                   // Clear the time since the last emission, leaving any time for partially emitted particles intact
                   _timeSinceEmission -= (1.0f / Configuration.ParticlesPerSecond) * particlesToEmit.NumParticles;
-                  
+
                   // Add particles to simulation
                   Simulation.AddParticles(ref particlesToEmit);
                }
             }
          }
-         
+
          return numParticlesEmitted;
       }
-      
-      #region Stub implementations
+
       public ISimulation Simulation
       {
          get
          {
-            throw new System.NotImplementedException();
-         }
-         set 
-         {
-            throw new System.NotImplementedException();
-         }
-      }
-      
-      
-      public object Transform 
-      {
-         get 
-         {
-            throw new System.NotImplementedException();
-         }
-         set 
-         {
-            throw new System.NotImplementedException();
-         }
-      }
-      
-      
-      public int Seed 
-      {
-         get 
-         {
-            throw new System.NotImplementedException();
-         }
-         set 
-         {
-            throw new System.NotImplementedException();
-         }
-      }
-      
-      
-      public bool Active 
-      {
-         get
-         {
-            throw new System.NotImplementedException();
+            return _simulation;
          }
          set
          {
-            throw new System.NotImplementedException();
+            _simulation = value;
          }
       }
+
+
+      public object Transform
+      {
+         get
+         {
+            return _transform;
+         }
+         set
+         {
+            _transform = value;
+         }
+      }
+
+
+      public int Seed
+      {
+         get
+         {
+            return _seed;
+         }
+         set
+         {
+            _seed = value;
+         }
+      }
+
+
+      public bool Active
+      {
+         get
+         {
+            return _active;
+         }
+         set
+         {
+            _active = value;
+         }
+      }
+
       #endregion
-      
-      #endregion
-      
+
       #region Properties
       public EmitterConfiguration Configuration
       {
@@ -129,7 +127,7 @@ namespace GameClay.Dust
             return _configuration;
          }
       }
-      
+
       /// <summary>
       /// The random number generator for the implementation to use.
       /// </summary>
@@ -146,7 +144,7 @@ namespace GameClay.Dust
          }
       }
       #endregion
-      
+
       /// <summary>
       /// This method is a request to emit a number of particles. The implementor should assign, and populate 
       /// the <see cref="ISystemData"/> passed as a parameter with the particles it does emit.
@@ -160,19 +158,23 @@ namespace GameClay.Dust
       /// <param name="numParticlesToEmit"> The number of particles requested for emission </param>
       /// <param name="particlesToEmit"> A <see cref="ISystemData"/> full of particles to add to the <see cref="ISimulation"/>. </param>
       protected abstract void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit);
-      
-      
+
+
       public EmitterImpl()
       {
          _timeSinceEmission = 0;
          _configuration = null;
          _randomSource = new Random(Seed);
       }
-      
+
       #region Data
       protected float _timeSinceEmission;
       protected EmitterConfiguration _configuration;
       protected Random _randomSource;
+      protected bool _active;
+      protected int _seed;
+      protected ISimulation _simulation;
+      protected object _transform;
       #endregion
    }
 }

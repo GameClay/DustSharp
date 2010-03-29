@@ -4,9 +4,9 @@ using System;
 namespace GameClay.Dust
 {
 
-  /// <summary>
-  /// The base configuration class for an emitter.
-  /// </summary>
+   /// <summary>
+   /// The base configuration class for an emitter.
+   /// </summary>
    public abstract class EmitterConfiguration
    {
 
@@ -20,79 +20,79 @@ namespace GameClay.Dust
       /// to the value of <see cref="ParticlesPerSecond"/> during the first call to <see cref="IEmitter.advanceTime"/>,
       /// and then deactivates (<see cref="IEmitter.Active"/>).
       /// </remarks>
-      public bool Persistent 
+      public bool Persistent
       {
-         get 
+         get
          {
             return _persistent;
          }
-         set 
+         set
          {
             _persistent = value;
          }
       }
-      
+
       /// <summary>
       /// The number of particles to emit per second. 
       /// </summary>
       public float ParticlesPerSecond
       {
-         get 
+         get
          {
             return _particlesPerSecond;
          }
-         set 
+         set
          {
             _particlesPerSecond = value;
          }
       }
-      
+
       /// <summary>
       /// The initial speed of the particles emitted.
       /// </summary>
-      public float InitialSpeed 
+      public float InitialSpeed
       {
-         get 
+         get
          {
             return _initialSpeed;
          }
-         set 
+         set
          {
             _initialSpeed = value;
          }
       }
-      
+
       /// <summary>
       /// The initial mass of the particles emitted.
       /// </summary>
-      public float InitialMass 
+      public float InitialMass
       {
-         get 
+         get
          {
             return _initialMass;
          }
-         set 
+         set
          {
             _initialMass = value;
          }
       }
-      
+
       /// <summary>
       /// Initial lifespan of the particles emitted.
       /// </summary>
-      public float InitialLifespan 
+      public float InitialLifespan
       {
-         get 
+         get
          {
             return _initialLifespan;
          }
-         set 
+         set
          {
             _initialLifespan = value;
          }
       }
       #endregion
-      
+
       public EmitterConfiguration()
       {
          _particlesPerSecond = 1.0f;
@@ -101,7 +101,7 @@ namespace GameClay.Dust
          _initialMass = 1.0f;
          _persistent = true;
       }
-      
+
       #region Data
       protected float _particlesPerSecond;
       protected float _initialLifespan;
@@ -109,7 +109,7 @@ namespace GameClay.Dust
       protected float _initialMass;
       protected bool _persistent;
       #endregion
-      
-      
+
+
    }
 }
