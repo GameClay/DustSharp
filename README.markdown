@@ -55,5 +55,5 @@ These files will have the following located at the top of the file:
 	git clone Dust DustSharp
 	git filter-branch --subdirectory-filter DustSharp
 	git remote rm origin
-	git add origin git@github.com/GameClay/DustSharp.git
+	git remote add origin git@github.com:GameClay/DustSharp.git
 	git push origin master
