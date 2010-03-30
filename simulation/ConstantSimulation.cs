@@ -32,11 +32,11 @@ namespace GameClay.Dust
          // Process the particle system
          for (int i = 0; i < _systemData.NumParticles; i++)
          {
-            // Decrement the lifespan
-            _systemData._lifespanStream[i] -= dt;
+            // Decrement the time remaining
+            _systemData._timeRemainingStream[i] -= dt;
 
             // If the particle is out of time, destroy it
-            if (_systemData._lifespanStream[i] < 0.0)
+            if (_systemData._timeRemainingStream[i] < 0.0)
             {
                // Replace this element with the last element in the list
                int lastIdx = _systemData.NumParticles - 1;

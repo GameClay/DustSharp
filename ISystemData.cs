@@ -58,11 +58,6 @@ namespace GameClay.Dust
       float[] PositionZ { get; }
 
       /// <summary>
-      /// The remaining lifespan of the particle
-      /// </summary>
-      float[] Lifespan { get; }
-
-      /// <summary>
       /// The X co-ordinate of the particles velocity.
       /// </summary>
       float[] VelocityX { get; }
@@ -78,7 +73,7 @@ namespace GameClay.Dust
       float[] VelocityZ { get; }
 
       /// <summary>
-      /// A single component element which indicates the mass of the particle.
+      /// The mass of the particle.
       /// </summary>
       /// 
       /// <remarks>
@@ -86,6 +81,11 @@ namespace GameClay.Dust
       /// of a particle system.
       /// </remarks>
       float[] Mass { get; }
+
+      /// <summary>
+      /// The remaining lifespan, in seconds, of the particle.
+      /// </summary>
+      float[] TimeRemaining { get; }
 
       // TODO: Add an object[] for users to store arbitrary data
 
@@ -95,14 +95,6 @@ namespace GameClay.Dust
       /// 
       /// <remarks>
       /// This method will increment the value of NumParticles by the quantity returned.
-      /// 
-      /// If the following arrays in src are null, the corisponding default value 
-      /// will be initialized.
-      /// <list>
-      ///    <item>Lifespan - float.PositiveInfinity</item>
-      ///    <item>Velocity - ZERO VECTOR CONST</item>
-      ///    <item>Mass - 1.0</item>
-      /// </list>
       /// </remarks>
       ///
       /// <param name="offset">    The target start index in this structure for copying. </param>

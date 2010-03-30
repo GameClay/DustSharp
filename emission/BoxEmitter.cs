@@ -93,7 +93,7 @@ namespace GameClay.Dust
 
    }
 
-   public class BoxEmitter : EmitterImpl, IEmitter
+   public class BoxEmitter : BaseEmitter
    {
 
       public BoxEmitterConfiguration BoxConfiguration
@@ -366,7 +366,7 @@ namespace GameClay.Dust
 #endif
 
             // Assign lifespan and mass
-            Array.Copy(preSimLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
+            Array.Copy(preSimLifespan, 0, _particlesToEmit.TimeRemaining, iTimesFour, 4);
             Array.Copy(initialMass, 0, _particlesToEmit.Mass, iTimesFour, 4);
          }
 
@@ -437,7 +437,7 @@ namespace GameClay.Dust
             _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ[0];
 
             // Store out initial lifespan and mass
-            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = initialLifespan[i] - preSimTime;
+            _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = initialLifespan[i] - preSimTime;
             _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass[i];
          }
 #endif

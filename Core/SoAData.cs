@@ -64,11 +64,11 @@ namespace GameClay.Dust
          }
       }
 
-      public float[] Lifespan
+      public float[] TimeRemaining
       {
          get
          {
-            return _lifespanStream;
+            return _timeRemainingStream;
          }
       }
 
@@ -114,8 +114,8 @@ namespace GameClay.Dust
          Array.Copy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
          Array.Copy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
 
-         // Lifespan
-         Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
+         // TimeRemaining
+         Array.Copy(src.TimeRemaining, srcOffset, _timeRemainingStream, offset, numToCopy);
 
          // Velocity
          Array.Copy(src.VelocityX, srcOffset, _velocityStreamX, offset, numToCopy);
@@ -139,7 +139,7 @@ namespace GameClay.Dust
          _positionStreamY[dstIndex] = _positionStreamY[srcIndex];
          _positionStreamZ[dstIndex] = _positionStreamZ[srcIndex];
 
-         _lifespanStream[dstIndex] = _lifespanStream[srcIndex];
+         _timeRemainingStream[dstIndex] = _timeRemainingStream[srcIndex];
 
          _velocityStreamX[dstIndex] = _velocityStreamX[srcIndex];
          _velocityStreamY[dstIndex] = _velocityStreamY[srcIndex];
@@ -159,7 +159,7 @@ namespace GameClay.Dust
          _positionStreamY = new float[MaxNumParticles];
          _positionStreamZ = new float[MaxNumParticles];
 
-         _lifespanStream = new float[MaxNumParticles];
+         _timeRemainingStream = new float[MaxNumParticles];
 
          _velocityStreamX = new float[MaxNumParticles];
          _velocityStreamY = new float[MaxNumParticles];
@@ -176,7 +176,7 @@ namespace GameClay.Dust
       public float[] _positionStreamY;
       public float[] _positionStreamZ;
 
-      public float[] _lifespanStream;
+      public float[] _timeRemainingStream;
 
       public float[] _velocityStreamX;
       public float[] _velocityStreamY;
