@@ -118,10 +118,10 @@ namespace GameClay.Dust
 #endif
             
             // Get the random angles into Z           
-            posZ[0] = (float)RandomSource.NextDouble();
-            posZ[1] = (float)RandomSource.NextDouble();
-            posZ[2] = (float)RandomSource.NextDouble();
-            posZ[3] = (float)RandomSource.NextDouble();
+            posZ[0] = (float)(RandomSource.NextDouble() * Math.PI * 2);
+            posZ[1] = (float)(RandomSource.NextDouble() * Math.PI * 2);
+            posZ[2] = (float)(RandomSource.NextDouble() * Math.PI * 2);
+            posZ[3] = (float)(RandomSource.NextDouble() * Math.PI * 2);
             
             // Get X and Y
             posX[0] = (float)Math.Cos(posZ[0]);
@@ -286,7 +286,7 @@ namespace GameClay.Dust
          for (int i = 0; i < numRemainder; i++)
          {
             //
-            float angle = (float)RandomSource.NextDouble();
+            float angle = (float)(RandomSource.NextDouble() * Math.PI * 2);
             posX[0] = (float)Math.Cos(angle) * radius[0];
             posY[0] = (float)Math.Sin(angle) * radius[0];
             posZ[0] = 0.0f;
