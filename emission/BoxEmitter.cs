@@ -123,12 +123,28 @@ namespace GameClay.Dust
 
          float[] initialMass = new float[4];
          float[] initialLifespan = new float[4];
+         float[] initialSpeed = new float[4];
+
+         float[] preSimLifespan = new float[4];
+         float[] partialFrameTime = new float[4];
 
          // Initial mass doesn't change
          initialMass[0] = Configuration.InitialMass;
          initialMass[1] = Configuration.InitialMass;
          initialMass[2] = Configuration.InitialMass;
          initialMass[3] = Configuration.InitialMass;
+
+         // Initial lifespan varies, but it will be corrected without modifying this value
+         initialLifespan[0] = Configuration.InitialLifespan;
+         initialLifespan[1] = Configuration.InitialLifespan;
+         initialLifespan[2] = Configuration.InitialLifespan;
+         initialLifespan[3] = Configuration.InitialLifespan;
+
+         // Initial speed doesn't change
+         initialSpeed[0] = Configuration.InitialSpeed;
+         initialSpeed[1] = Configuration.InitialSpeed;
+         initialSpeed[2] = Configuration.InitialSpeed;
+         initialSpeed[3] = Configuration.InitialSpeed;
 
 #if DUST_BATCH_EMISSION_ONLY
          // Subtract the remainder from the # of particles to emit
@@ -153,14 +169,12 @@ namespace GameClay.Dust
          // Emit particles in chunks of 4
          for (int i = 0; i < numBatches; i++)
          {
-            // Some per-batch constants to make life easier and faster  
+            // Calculate partial frame time to presimulate.
 #if !DUST_SIMD
-            float partialFrameTime = i * oneOverPPS; // NOTE: This will evaluate to 0 if Configuration.Persistent is false
-            float ils = Configuration.InitialLifespan - partialFrameTime;
-            initialLifespan[0] = ils;
-            initialLifespan[1] = ils;
-            initialLifespan[2] = ils;
-            initialLifespan[3] = ils;
+            partialFrameTime[0] = (i + 1) * oneOverPPS;
+            partialFrameTime[1] = (i + 2) * oneOverPPS;
+            partialFrameTime[2] = (i + 3) * oneOverPPS;
+            partialFrameTime[3] = (i + 4) * oneOverPPS;
 #else
 #endif
 
@@ -259,13 +273,15 @@ namespace GameClay.Dust
             // Transform position
             // TODO: Matrix and transform stuff
 
-            // Copy and normalize to get velocity
+            // Calculate velocity
 #if !DUST_SIMD
+            // Get length
             len[0] = (float)Math.Sqrt((posX[0] * posX[0]) + (posY[0] * posY[0]) + (posZ[0] * posZ[0]));
             len[1] = (float)Math.Sqrt((posX[1] * posX[1]) + (posY[1] * posY[1]) + (posZ[1] * posZ[1]));
             len[2] = (float)Math.Sqrt((posX[2] * posX[2]) + (posY[2] * posY[2]) + (posZ[2] * posZ[2]));
             len[3] = (float)Math.Sqrt((posX[3] * posX[3]) + (posY[3] * posY[3]) + (posZ[3] * posZ[3]));
 
+            // Normalize
             velX[0] = posX[0] / len[0];
             velY[0] = posY[0] / len[0];
             velZ[0] = posZ[0] / len[0];
@@ -281,16 +297,54 @@ namespace GameClay.Dust
             velX[3] = posX[3] / len[3];
             velY[3] = posY[3] / len[3];
             velZ[3] = posZ[3] / len[3];
+
+            // Scale by speed
+            velX[0] *= initialSpeed[0];
+            velY[0] *= initialSpeed[0];
+            velZ[0] *= initialSpeed[0];
+
+            velX[0] *= initialSpeed[1];
+            velY[0] *= initialSpeed[1];
+            velZ[0] *= initialSpeed[1];
+
+            velX[0] *= initialSpeed[2];
+            velY[0] *= initialSpeed[2];
+            velZ[0] *= initialSpeed[2];
+
+            velX[0] *= initialSpeed[3];
+            velY[0] *= initialSpeed[3];
+            velZ[0] *= initialSpeed[3];
 #else
 #endif
 
             // Avoid clumping by doing some pre-simulation
-            if (i > 0 && Configuration.Persistent)
+            if (oneOverPPS > 0)
             {
-               posX[0] += velX[0] * partialFrameTime;
-               posY[0] += velY[0] * partialFrameTime;
-               posZ[0] += velZ[0] * partialFrameTime;
+               posX[0] += velX[0] * partialFrameTime[0];
+               posY[0] += velY[0] * partialFrameTime[0];
+               posZ[0] += velZ[0] * partialFrameTime[0];
+
+               posX[1] += velX[1] * partialFrameTime[1];
+               posY[1] += velY[1] * partialFrameTime[1];
+               posZ[1] += velZ[1] * partialFrameTime[1];
+
+               posX[2] += velX[2] * partialFrameTime[2];
+               posY[2] += velY[2] * partialFrameTime[2];
+               posZ[2] += velZ[2] * partialFrameTime[2];
+
+               posX[2] += velX[2] * partialFrameTime[3];
+               posY[2] += velY[2] * partialFrameTime[3];
+               posZ[2] += velZ[2] * partialFrameTime[3];
             }
+
+            // Adjust lifespan after presim
+#if !DUST_SIMD
+            preSimLifespan[0] = initialLifespan[0] - partialFrameTime[0];
+            preSimLifespan[1] = initialLifespan[1] - partialFrameTime[1];
+            preSimLifespan[2] = initialLifespan[2] - partialFrameTime[2];
+            preSimLifespan[3] = initialLifespan[3] - partialFrameTime[3];
+#else
+#endif
 
             // Write output result to _particlesToEmit
             int iTimesFour = i * 4;
@@ -312,7 +366,7 @@ namespace GameClay.Dust
 #endif
 
             // Assign lifespan and mass
-            Array.Copy(initialLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
+            Array.Copy(preSimLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
             Array.Copy(initialMass, 0, _particlesToEmit.Mass, iTimesFour, 4);
          }
 
@@ -350,19 +404,26 @@ namespace GameClay.Dust
             // Transform position
             // TODO: Matrix and transform stuff
 
-            // Copy and normalize to get velocity
+            // Length
             len[0] = (float)Math.Sqrt((posX[0] * posX[0]) + (posY[0] * posY[0]) + (posZ[0] * posZ[0]));
 
+            // Normalize
             velX[0] = posX[0] / len[0];
             velY[0] = posY[0] / len[0];
             velZ[0] = posZ[0] / len[0];
 
+            // Scale by speed
+            velX[0] *= initialSpeed[i];
+            velY[0] *= initialSpeed[i];
+            velZ[0] *= initialSpeed[i];
+
             // Avoid clumping by doing some pre-simulation
-            if (i > 0 && Configuration.Persistent)
+            float preSimTime = (i + 1) * oneOverPPS;
+            if (preSimTime > 0)
             {
-               posX[0] += velX[0] * i * oneOverPPS;
-               posY[0] += velY[0] * i * oneOverPPS;
-               posZ[0] += velZ[0] * i * oneOverPPS;
+               posX[0] += velX[0] * preSimTime;
+               posY[0] += velY[0] * preSimTime;
+               posZ[0] += velZ[0] * preSimTime;
             }
 
             // Store out position
@@ -376,8 +437,8 @@ namespace GameClay.Dust
             _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ[0];
 
             // Store out initial lifespan and mass
-            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = Configuration.InitialLifespan;
-            _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
+            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = initialLifespan[i] - preSimTime;
+            _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass[i];
          }
 #endif
 
