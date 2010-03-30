@@ -303,17 +303,17 @@ namespace GameClay.Dust
             velY[0] *= initialSpeed[0];
             velZ[0] *= initialSpeed[0];
 
-            velX[0] *= initialSpeed[1];
-            velY[0] *= initialSpeed[1];
-            velZ[0] *= initialSpeed[1];
+            velX[1] *= initialSpeed[1];
+            velY[1] *= initialSpeed[1];
+            velZ[1] *= initialSpeed[1];
 
-            velX[0] *= initialSpeed[2];
-            velY[0] *= initialSpeed[2];
-            velZ[0] *= initialSpeed[2];
+            velX[2] *= initialSpeed[2];
+            velY[2] *= initialSpeed[2];
+            velZ[2] *= initialSpeed[2];
 
-            velX[0] *= initialSpeed[3];
-            velY[0] *= initialSpeed[3];
-            velZ[0] *= initialSpeed[3];
+            velX[3] *= initialSpeed[3];
+            velY[3] *= initialSpeed[3];
+            velZ[3] *= initialSpeed[3];
 #else
 #endif
 
@@ -332,9 +332,9 @@ namespace GameClay.Dust
                posY[2] += velY[2] * partialFrameTime[2];
                posZ[2] += velZ[2] * partialFrameTime[2];
 
-               posX[2] += velX[2] * partialFrameTime[3];
-               posY[2] += velY[2] * partialFrameTime[3];
-               posZ[2] += velZ[2] * partialFrameTime[3];
+               posX[3] += velX[3] * partialFrameTime[3];
+               posY[3] += velY[3] * partialFrameTime[3];
+               posZ[3] += velZ[3] * partialFrameTime[3];
             }
 
             // Adjust lifespan after presim
@@ -454,7 +454,7 @@ namespace GameClay.Dust
       {
          _particlesToEmit = new SoAData(200);
 
-         // Replace the base configuration with our specalized one
+         // Replace the base configuration with our specialized one
          _boxConfiguration = new BoxEmitterConfiguration();
          _configuration = (EmitterConfiguration)_boxConfiguration;
       }
