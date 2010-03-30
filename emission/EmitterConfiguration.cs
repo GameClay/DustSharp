@@ -106,6 +106,21 @@ namespace GameClay.Dust
             _initialLifespan = value;
          }
       }
+      
+      /// <summary>
+      /// Emit only on the surface of the emission patern.
+      /// </summary>
+      public bool EmitOnSurfaceOnly
+      {
+         get
+         {
+            return _emitOnSurfaceOnly;
+         }
+         set
+         {
+            _emitOnSurfaceOnly = value;
+         }
+      }
       #endregion
 
       public EmitterConfiguration()
@@ -115,6 +130,7 @@ namespace GameClay.Dust
          _initialSpeed = 1.0f;
          _initialMass = 1.0f;
          _persistent = true;
+         _emitOnSurfaceOnly = false;
       }
 
       #region Data
@@ -123,6 +139,7 @@ namespace GameClay.Dust
       protected float _initialSpeed;
       protected float _initialMass;
       protected bool _persistent;
+      protected bool _emitOnSurfaceOnly;
       #endregion
 
 

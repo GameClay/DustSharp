@@ -35,7 +35,6 @@ namespace GameClay.Dust
          }
       }
 
-
       public float Height
       {
          get
@@ -47,20 +46,6 @@ namespace GameClay.Dust
             _height = value;
          }
       }
-
-
-      public bool EmitOnSurfaceOnly
-      {
-         get
-         {
-            return _emitOnSurfaceOnly;
-         }
-         set
-         {
-            _emitOnSurfaceOnly = value;
-         }
-      }
-
 
       public float Depth
       {
@@ -81,14 +66,12 @@ namespace GameClay.Dust
          _width = 1.0f;
          _height = 1.0f;
          _depth = 1.0f;
-         _emitOnSurfaceOnly = false;
       }
 
       #region Data
       protected float _width;
       protected float _height;
       protected float _depth;
-      protected bool _emitOnSurfaceOnly;
       #endregion
 
    }
@@ -237,7 +220,7 @@ namespace GameClay.Dust
 
             // If this emitter is supposed to emit only on the surface
             // do the needed clipping
-            if (BoxConfiguration.EmitOnSurfaceOnly)
+            if (Configuration.EmitOnSurfaceOnly)
             {
                switch (RandomSource.Next() % planeMod)
                {

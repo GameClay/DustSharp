@@ -44,6 +44,7 @@
     <Compile Include="Emission\EmitterConfiguration.cs" />
     <Compile Include="emission\BaseEmitter.cs" />
     <Compile Include="Simulation\StandardSimulation.cs" />
+    <Compile Include="Emission\RingEmitter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
