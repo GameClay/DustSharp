@@ -52,8 +52,8 @@ These files will have the following located at the top of the file:
 > OTHER DEALINGS IN THE SOFTWARE.
 
 ## Updating from Dust
-> git clone Dust DustSharp
-> git filter-branch --subdirectory-filter DustSharp
-> git remote rm origin
-> git add origin git@github.com/GameClay/DustSharp.git
-> git push origin master
+	git clone Dust DustSharp
+	git filter-branch --subdirectory-filter DustSharp
+	git remote rm origin
+	git add origin git@github.com/GameClay/DustSharp.git
+	git push origin master
