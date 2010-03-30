@@ -12,12 +12,17 @@
 #
 *.pidb
 *.userprefs
-bin/*
-DustBuster/bin/*
 
 #
-# VisualStudio 2008 files
+# VisualStudio files
 #
 *.suo
-obj/*
-DustBuster/obj/*
+
+UpgradeLog.XML
+_UpgradeReport_Files
+
+#
+# Compiled results
+#
+obj
+bin
