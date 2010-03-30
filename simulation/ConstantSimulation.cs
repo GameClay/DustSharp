@@ -32,31 +32,27 @@ namespace GameClay.Dust
          // Process the particle system
          for (int i = 0; i < _systemData.NumParticles; i++)
          {
-            // Don't mess with infinite-lifespan particles
-            if (_systemData._lifespanStream[i] < float.PositiveInfinity)
+            // Decrement the lifespan
+            _systemData._lifespanStream[i] -= dt;
+
+            // If the particle is out of time, destroy it
+            if (_systemData._lifespanStream[i] < 0.0)
             {
-               // Decrement the lifespan
-               _systemData._lifespanStream[i] -= dt;
-
-               // If the particle is out of time, destroy it
-               if (_systemData._lifespanStream[i] < 0.0)
+               // Replace this element with the last element in the list
+               int lastIdx = _systemData.NumParticles - 1;
+               if (i < lastIdx)
                {
-                  // Replace this element with the last element in the list
-                  int lastIdx = _systemData.NumParticles - 1;
-                  if (i < lastIdx)
-                  {
-                     _systemData.CopyElement(lastIdx, i);
+                  _systemData.CopyElement(lastIdx, i);
 
-                     // Decrement i so that this particle will still get processed
-                     i--;
-                  }
-
-                  // Decrement the number of particles
-                  _systemData._numParticles--;
-
-                  // Process the next item
-                  continue;
+                  // Decrement i so that this particle will still get processed
+                  i--;
                }
+
+               // Decrement the number of particles
+               _systemData._numParticles--;
+
+               // Process the next item
+               continue;
             }
 
             // Adjust the min/max values of the bounds
