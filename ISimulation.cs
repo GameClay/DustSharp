@@ -38,7 +38,7 @@ namespace GameClay.Dust
       /// <summary>
       /// The SystemData structure this Simulation uses to store output data.
       /// </summary>
-      ISystemData SystemData { get; }
+      ISystemData SystemData { get; set; }
 
       /// <summary>
       /// Advance the simulation by a number of seconds.

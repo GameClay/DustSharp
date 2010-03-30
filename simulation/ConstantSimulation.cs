@@ -108,6 +108,14 @@ namespace GameClay.Dust
          {
             return _systemData;
          }
+         set
+         {
+#if DEBUG
+            if (value.GetType() != typeof(SoAData))
+               throw new ArgumentException("Supplied ISystemData was not of type SoAData.");
+#endif
+            _systemData = (SoAData)value;
+         }
       }
       #endregion
 
