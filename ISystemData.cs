@@ -83,6 +83,16 @@ namespace GameClay.Dust
       float[] Mass { get; }
 
       /// <summary>
+      /// The total lifespan, in seconds, of the particle.
+      /// </summary>
+      /// 
+      /// <remarks>
+      /// This value is ignored by simulations, which only decrement the values located in <see cref="TimeRemaining"/>,
+      /// but is provided for other uses.
+      /// </remarks>
+      float[] Lifespan { get; }
+
+      /// <summary>
       /// The remaining lifespan, in seconds, of the particle.
       /// </summary>
       float[] TimeRemaining { get; }

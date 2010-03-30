@@ -64,14 +64,6 @@ namespace GameClay.Dust
          }
       }
 
-      public float[] TimeRemaining
-      {
-         get
-         {
-            return _timeRemainingStream;
-         }
-      }
-
       public float[] VelocityX
       {
          get
@@ -104,6 +96,22 @@ namespace GameClay.Dust
          }
       }
 
+      public float[] Lifespan
+      {
+         get
+         {
+            return _lifespanStream;
+         }
+      }
+
+      public float[] TimeRemaining
+      {
+         get
+         {
+            return _timeRemainingStream;
+         }
+      }
+
       public int CopyFrom(int offset, ref ISystemData src, int srcOffset, int count)
       {
          int capacityLeft = MaxNumParticles - NumParticles;
@@ -114,7 +122,8 @@ namespace GameClay.Dust
          Array.Copy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
          Array.Copy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
 
-         // TimeRemaining
+         // Time
+         Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
          Array.Copy(src.TimeRemaining, srcOffset, _timeRemainingStream, offset, numToCopy);
 
          // Velocity
@@ -139,6 +148,7 @@ namespace GameClay.Dust
          _positionStreamY[dstIndex] = _positionStreamY[srcIndex];
          _positionStreamZ[dstIndex] = _positionStreamZ[srcIndex];
 
+         _lifespanStream[dstIndex] = _lifespanStream[srcIndex];
          _timeRemainingStream[dstIndex] = _timeRemainingStream[srcIndex];
 
          _velocityStreamX[dstIndex] = _velocityStreamX[srcIndex];
@@ -159,6 +169,7 @@ namespace GameClay.Dust
          _positionStreamY = new float[MaxNumParticles];
          _positionStreamZ = new float[MaxNumParticles];
 
+         _lifespanStream = new float[MaxNumParticles];
          _timeRemainingStream = new float[MaxNumParticles];
 
          _velocityStreamX = new float[MaxNumParticles];
@@ -176,6 +187,7 @@ namespace GameClay.Dust
       public float[] _positionStreamY;
       public float[] _positionStreamZ;
 
+      public float[] _lifespanStream;
       public float[] _timeRemainingStream;
 
       public float[] _velocityStreamX;

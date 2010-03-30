@@ -366,6 +366,7 @@ namespace GameClay.Dust
 #endif
 
             // Assign lifespan and mass
+            Array.Copy(preSimLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
             Array.Copy(preSimLifespan, 0, _particlesToEmit.TimeRemaining, iTimesFour, 4);
             Array.Copy(initialMass, 0, _particlesToEmit.Mass, iTimesFour, 4);
          }
@@ -419,7 +420,7 @@ namespace GameClay.Dust
 
             // Avoid clumping by doing some pre-simulation
             float preSimTime = (i + 1) * oneOverPPS;
-            if (preSimTime > 0)
+            if (oneOverPPS > 0)
             {
                posX[0] += velX[0] * preSimTime;
                posY[0] += velY[0] * preSimTime;
@@ -436,8 +437,10 @@ namespace GameClay.Dust
             _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY[0];
             _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ[0];
 
-            // Store out initial lifespan and mass
-            _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = initialLifespan[i] - preSimTime;
+            // Store out lifespan and mass
+            float lifespan = initialLifespan[i] - preSimTime;
+            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
+            _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
             _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass[i];
          }
 #endif
