@@ -166,6 +166,9 @@ namespace GameClay.Dust
          throw new NotImplementedException();
 #endif
 
+         // Surface-only mode modulo division value
+         int planeMod = Simulation.Is2D ? 2 : 3;
+
          // Emit particles in chunks of 4
          for (int i = 0; i < numBatches; i++)
          {
@@ -220,15 +223,15 @@ namespace GameClay.Dust
             posX[2] *= twoWidth;
             posX[3] *= twoWidth;
 
-            posY[0] *= twoDepth;
-            posY[1] *= twoDepth;
-            posY[2] *= twoDepth;
-            posY[3] *= twoDepth;
+            posY[0] *= twoHeight;
+            posY[1] *= twoHeight;
+            posY[2] *= twoHeight;
+            posY[3] *= twoHeight;
 
-            posZ[0] *= twoHeight;
-            posZ[1] *= twoHeight;
-            posZ[2] *= twoHeight;
-            posZ[3] *= twoHeight;
+            posZ[0] *= twoDepth;
+            posZ[1] *= twoDepth;
+            posZ[2] *= twoDepth;
+            posZ[3] *= twoDepth;
 #else
 #endif
 
@@ -236,7 +239,7 @@ namespace GameClay.Dust
             // do the needed clipping
             if (BoxConfiguration.EmitOnSurfaceOnly)
             {
-               switch (RandomSource.Next() % 3)
+               switch (RandomSource.Next() % planeMod)
                {
                   case 0:
 #if !DUST_SIMD
@@ -250,20 +253,20 @@ namespace GameClay.Dust
 
                   case 1:
 #if !DUST_SIMD
-                     posY[0] = posY[0] < 0.0f ? negDepth : _boxConfiguration.Depth;
-                     posY[1] = posY[1] < 0.0f ? negDepth : _boxConfiguration.Depth;
-                     posY[2] = posY[2] < 0.0f ? negDepth : _boxConfiguration.Depth;
-                     posY[3] = posY[3] < 0.0f ? negDepth : _boxConfiguration.Depth;
+                     posY[0] = posY[0] < 0.0f ? negHeight : _boxConfiguration.Height;
+                     posY[1] = posY[1] < 0.0f ? negHeight : _boxConfiguration.Height;
+                     posY[2] = posY[2] < 0.0f ? negHeight : _boxConfiguration.Height;
+                     posY[3] = posY[3] < 0.0f ? negHeight : _boxConfiguration.Height;
 #else
 #endif
                      break;
 
                   case 2:
 #if !DUST_SIMD
-                     posZ[0] = posZ[0] < 0.0f ? negHeight : _boxConfiguration.Height;
-                     posZ[1] = posZ[1] < 0.0f ? negHeight : _boxConfiguration.Height;
-                     posZ[2] = posZ[2] < 0.0f ? negHeight : _boxConfiguration.Height;
-                     posZ[3] = posZ[3] < 0.0f ? negHeight : _boxConfiguration.Height;
+                     posZ[0] = posZ[0] < 0.0f ? negDepth : _boxConfiguration.Depth;
+                     posZ[1] = posZ[1] < 0.0f ? negDepth : _boxConfiguration.Depth;
+                     posZ[2] = posZ[2] < 0.0f ? negDepth : _boxConfiguration.Depth;
+                     posZ[3] = posZ[3] < 0.0f ? negDepth : _boxConfiguration.Depth;
 #else
 #endif
                      break;
@@ -386,18 +389,18 @@ namespace GameClay.Dust
             // do the needed clipping
             if (BoxConfiguration.EmitOnSurfaceOnly)
             {
-               switch (RandomSource.Next() % 3)
+               switch (RandomSource.Next() % planeMod)
                {
                   case 0:
                      posX[0] = posX[0] < 0.0f ? negWidth : _boxConfiguration.Width;
                      break;
 
                   case 1:
-                     posY[0] = posY[0] < 0.0f ? negDepth : _boxConfiguration.Height;
+                     posY[0] = posY[0] < 0.0f ? negHeight : _boxConfiguration.Height;
                      break;
 
                   case 2:
-                     posZ[0] = posZ[0] < 0.0f ? negHeight : _boxConfiguration.Depth;
+                     posZ[0] = posZ[0] < 0.0f ? negDepth : _boxConfiguration.Depth;
                      break;
                }
             }

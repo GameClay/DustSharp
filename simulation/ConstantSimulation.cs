@@ -89,6 +89,18 @@ namespace GameClay.Dust
          }
       }
 
+      public bool Is2D
+      {
+         get
+         {
+            return _is2D;
+         }
+         set
+         {
+            _is2D = value;
+         }
+      }
+
 
       public ISystemData SystemData
       {
@@ -103,11 +115,13 @@ namespace GameClay.Dust
       {
          _systemData = new SoAData(maxNumParticles);
          _worldBounds = new object();
+         _is2D = false;
       }
 
       #region Data
       SoAData _systemData;
       object _worldBounds;
+      bool _is2D;
       #endregion
    }
 }
