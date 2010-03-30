@@ -45,15 +45,8 @@ namespace GameClay.Dust
             _timeSinceEmission += dt;
 
             // Figure out the number of particles to emit
-            int numParticlesToEmit = 0;
-
-            if (Configuration.Persistent)
-               numParticlesToEmit = (int)(Configuration.ParticlesPerSecond * _timeSinceEmission);
-            else
-            {
-               numParticlesToEmit = (int)Configuration.ParticlesPerSecond;
-               Active = false;
-            }
+            int numParticlesToEmit = (int)(Configuration.ParticlesPerSecond * (Configuration.Persistent ? _timeSinceEmission : 1.0f));
+            Active = Configuration.Persistent ? Active : false;
 
             // Emit particles
             if (numParticlesToEmit > 0)
