@@ -1,0 +1,23 @@
+# 
+# SCONS files
+#
+*.os
+*.dylib
+.sconsign.dblite
+*.dll
+*.pyc
+
+#
+# MonoDevelop files
+#
+*.pidb
+*.userprefs
+bin/*
+DustBuster/bin/*
+
+#
+# VisualStudio 2008 files
+#
+*.suo
+obj/*
+DustBuster/obj/*
