@@ -97,7 +97,14 @@ namespace GameClay.Dust
       /// </summary>
       float[] TimeRemaining { get; }
 
-      // TODO: Add an object[] for users to store arbitrary data
+      /// <summary>
+      /// An array of arbitrary data for use in user code.
+      /// </summary>
+      /// 
+      /// <remarks>
+      /// No elements of Dust depend on, or modify the elements contained in <see cref="UserData"/>.
+      /// </remarks>
+      object[] UserData { get; }
 
       /// <summary>
       /// Copies data from a source ISystemData in to this instance.

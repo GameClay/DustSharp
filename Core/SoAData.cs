@@ -112,6 +112,14 @@ namespace GameClay.Dust
          }
       }
 
+      public object[] UserData
+      {
+          get
+          {
+              return _userDataStream;
+          }
+      }
+
       public int CopyFrom(int offset, ref ISystemData src, int srcOffset, int count)
       {
          int capacityLeft = MaxNumParticles - NumParticles;
@@ -133,6 +141,9 @@ namespace GameClay.Dust
 
          // Mass
          Array.Copy(src.Mass, srcOffset, _massStream, offset, numToCopy);
+
+         // UserData
+         Array.Copy(src.UserData, srcOffset, _userDataStream, offset, numToCopy);
 
          // Update number of particles
          _numParticles += numToCopy;
@@ -156,6 +167,8 @@ namespace GameClay.Dust
          _velocityStreamZ[dstIndex] = _velocityStreamZ[srcIndex];
 
          _massStream[dstIndex] = _massStream[srcIndex];
+
+         _userDataStream[dstIndex] = _userDataStream[srcIndex];
       }
 
       #endregion
@@ -177,6 +190,8 @@ namespace GameClay.Dust
          _velocityStreamZ = new float[MaxNumParticles];
 
          _massStream = new float[MaxNumParticles];
+
+         _userDataStream = new object[MaxNumParticles];
       }
 
       #region Data
@@ -195,6 +210,8 @@ namespace GameClay.Dust
       public float[] _velocityStreamZ;
 
       public float[] _massStream;
+
+      public object[] _userDataStream;
       #endregion
    }
 }
