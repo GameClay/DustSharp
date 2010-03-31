@@ -55,7 +55,7 @@ namespace XNAExample
 
             emitter.BoxConfiguration.Width = 200;
             emitter.BoxConfiguration.Height = 200;
-            
+
             emitter2.Simulation = simulation;
             emitter2.Active = true;
             emitter2.Configuration.ParticlesPerSecond = 200;
