@@ -89,7 +89,34 @@ namespace GameClay.Dust
 
       protected override void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit)
       {
-         // Temp data
+
+#if DUST_SIMD
+         // Batch in chunks of 4 for nice maths
+         int numBatches = numParticlesToEmit / 4;
+         int numRemainder = numParticlesToEmit % 4;
+#else
+         int numRemainder = numParticlesToEmit;
+         const int numBatches = 0;
+#endif
+
+         // Some constants to make life easier and faster
+         float twoWidth = BoxConfiguration.Width * 2.0f;
+         float twoHeight = BoxConfiguration.Height * 2.0f;
+         float twoDepth = BoxConfiguration.Depth * 2.0f;
+
+         float negWidth = -BoxConfiguration.Width;
+         float negHeight = -BoxConfiguration.Height;
+         float negDepth = -BoxConfiguration.Depth;
+
+         float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0;
+
+         // Surface-only mode modulo division value
+         int planeMod = Simulation.Is2D ? 2 : 3;
+
+#if DUST_SIMD
+         // TODO: Revisit SIMD after XNA work is done
+         throw new NotImplementedException();
+
          float[] posX = new float[4];
          float[] posY = new float[4];
          float[] posZ = new float[4];
@@ -99,10 +126,6 @@ namespace GameClay.Dust
          float[] velZ = new float[4];
 
          float[] len = new float[4];
-
-         // Batch in chunks of 4 for nice maths
-         int numBatches = numParticlesToEmit / 4;
-         int numRemainder = numParticlesToEmit % 4;
 
          float[] initialMass = new float[4];
          float[] initialLifespan = new float[4];
@@ -129,40 +152,14 @@ namespace GameClay.Dust
          initialSpeed[2] = Configuration.InitialSpeed;
          initialSpeed[3] = Configuration.InitialSpeed;
 
-#if DUST_BATCH_EMISSION_ONLY
-         // Subtract the remainder from the # of particles to emit
-         numParticlesToEmit -= numRemainder;
-#endif
-
-         // Some constants to make life easier and faster
-#if !DUST_SIMD
-         float twoWidth = BoxConfiguration.Width * 2.0f;
-         float twoHeight = BoxConfiguration.Height * 2.0f;
-         float twoDepth = BoxConfiguration.Depth * 2.0f;
-
-         float negWidth = -BoxConfiguration.Width;
-         float negHeight = -BoxConfiguration.Height;
-         float negDepth = -BoxConfiguration.Depth;
-
-         float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0;
-#else
-         throw new NotImplementedException();
-#endif
-
-         // Surface-only mode modulo division value
-         int planeMod = Simulation.Is2D ? 2 : 3;
-
          // Emit particles in chunks of 4
          for (int i = 0; i < numBatches; i++)
          {
             // Calculate partial frame time to presimulate.
-#if !DUST_SIMD
             partialFrameTime[0] = (i + 1) * oneOverPPS;
             partialFrameTime[1] = (i + 2) * oneOverPPS;
             partialFrameTime[2] = (i + 3) * oneOverPPS;
             partialFrameTime[3] = (i + 4) * oneOverPPS;
-#else
-#endif
 
             // Get the randoms
             posX[0] = (float)RandomSource.NextDouble();
@@ -181,7 +178,6 @@ namespace GameClay.Dust
             posZ[3] = (float)RandomSource.NextDouble();
 
             // Get the positions in the range -0.5 .. 0.5
-#if !DUST_SIMD
             posX[0] -= 0.5f;
             posX[1] -= 0.5f;
             posX[2] -= 0.5f;
@@ -196,11 +192,8 @@ namespace GameClay.Dust
             posZ[1] -= 0.5f;
             posZ[2] -= 0.5f;
             posZ[3] -= 0.5f;
-#else
-#endif
 
             // Multiply by 2.0 * Width/Height/Depth of box
-#if !DUST_SIMD
             posX[0] *= twoWidth;
             posX[1] *= twoWidth;
             posX[2] *= twoWidth;
@@ -215,8 +208,6 @@ namespace GameClay.Dust
             posZ[1] *= twoDepth;
             posZ[2] *= twoDepth;
             posZ[3] *= twoDepth;
-#else
-#endif
 
             // If this emitter is supposed to emit only on the surface
             // do the needed clipping
@@ -225,33 +216,24 @@ namespace GameClay.Dust
                switch (RandomSource.Next() % planeMod)
                {
                   case 0:
-#if !DUST_SIMD
                      posX[0] = posX[0] < 0.0f ? negWidth : _boxConfiguration.Width;
                      posX[1] = posX[1] < 0.0f ? negWidth : _boxConfiguration.Width;
                      posX[2] = posX[2] < 0.0f ? negWidth : _boxConfiguration.Width;
                      posX[3] = posX[3] < 0.0f ? negWidth : _boxConfiguration.Width;
-#else
-#endif
                      break;
 
                   case 1:
-#if !DUST_SIMD
                      posY[0] = posY[0] < 0.0f ? negHeight : _boxConfiguration.Height;
                      posY[1] = posY[1] < 0.0f ? negHeight : _boxConfiguration.Height;
                      posY[2] = posY[2] < 0.0f ? negHeight : _boxConfiguration.Height;
                      posY[3] = posY[3] < 0.0f ? negHeight : _boxConfiguration.Height;
-#else
-#endif
                      break;
 
                   case 2:
-#if !DUST_SIMD
                      posZ[0] = posZ[0] < 0.0f ? negDepth : _boxConfiguration.Depth;
                      posZ[1] = posZ[1] < 0.0f ? negDepth : _boxConfiguration.Depth;
                      posZ[2] = posZ[2] < 0.0f ? negDepth : _boxConfiguration.Depth;
                      posZ[3] = posZ[3] < 0.0f ? negDepth : _boxConfiguration.Depth;
-#else
-#endif
                      break;
                }
             }
@@ -260,7 +242,6 @@ namespace GameClay.Dust
             // TODO: Matrix and transform stuff
 
             // Calculate velocity
-#if !DUST_SIMD
             // Get length
             len[0] = (float)Math.Sqrt((posX[0] * posX[0]) + (posY[0] * posY[0]) + (posZ[0] * posZ[0]));
             len[1] = (float)Math.Sqrt((posX[1] * posX[1]) + (posY[1] * posY[1]) + (posZ[1] * posZ[1]));
@@ -300,8 +281,6 @@ namespace GameClay.Dust
             velX[3] *= initialSpeed[3];
             velY[3] *= initialSpeed[3];
             velZ[3] *= initialSpeed[3];
-#else
-#endif
 
             // Avoid clumping by doing some pre-simulation
             if (oneOverPPS > 0)
@@ -324,49 +303,39 @@ namespace GameClay.Dust
             }
 
             // Adjust lifespan after presim
-#if !DUST_SIMD
             preSimLifespan[0] = initialLifespan[0] - partialFrameTime[0];
             preSimLifespan[1] = initialLifespan[1] - partialFrameTime[1];
             preSimLifespan[2] = initialLifespan[2] - partialFrameTime[2];
             preSimLifespan[3] = initialLifespan[3] - partialFrameTime[3];
-#else
-#endif
 
             // Write output result to _particlesToEmit
             int iTimesFour = i * 4;
 
             // Assign position
-#if !DUST_SIMD
             Array.Copy(posX, 0, _particlesToEmit._positionStreamX, iTimesFour, 4);
             Array.Copy(posY, 0, _particlesToEmit._positionStreamY, iTimesFour, 4);
             Array.Copy(posZ, 0, _particlesToEmit._positionStreamZ, iTimesFour, 4);
-#else
-#endif
 
             // Assign velocity
-#if !DUST_SIMD
             Array.Copy(velX, 0, _particlesToEmit._velocityStreamX, iTimesFour, 4);
             Array.Copy(velY, 0, _particlesToEmit._velocityStreamY, iTimesFour, 4);
             Array.Copy(velZ, 0, _particlesToEmit._velocityStreamZ, iTimesFour, 4);
-#else
-#endif
 
             // Assign lifespan and mass
             Array.Copy(preSimLifespan, 0, _particlesToEmit.Lifespan, iTimesFour, 4);
             Array.Copy(preSimLifespan, 0, _particlesToEmit.TimeRemaining, iTimesFour, 4);
             Array.Copy(initialMass, 0, _particlesToEmit.Mass, iTimesFour, 4);
          }
+#endif
 
-
-#if !DUST_BATCH_EMISSION_ONLY
          // Emit remaining particles individually
          int numBatchesTimesFour = numBatches * 4;
          for (int i = 0; i < numRemainder; i++)
          {
             // Get random position
-            posX[0] = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
-            posY[0] = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
-            posZ[0] = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
+            float posX = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
+            float posY = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
+            float posZ = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
 
             // If this emitter is supposed to emit only on the surface
             // do the needed clipping
@@ -375,15 +344,15 @@ namespace GameClay.Dust
                switch (RandomSource.Next() % planeMod)
                {
                   case 0:
-                     posX[0] = posX[0] < 0.0f ? negWidth : _boxConfiguration.Width;
+                     posX = posX < 0.0f ? negWidth : _boxConfiguration.Width;
                      break;
 
                   case 1:
-                     posY[0] = posY[0] < 0.0f ? negHeight : _boxConfiguration.Height;
+                     posY = posY < 0.0f ? negHeight : _boxConfiguration.Height;
                      break;
 
                   case 2:
-                     posZ[0] = posZ[0] < 0.0f ? negDepth : _boxConfiguration.Depth;
+                     posZ = posZ < 0.0f ? negDepth : _boxConfiguration.Depth;
                      break;
                }
             }
@@ -392,44 +361,43 @@ namespace GameClay.Dust
             // TODO: Matrix and transform stuff
 
             // Length
-            len[0] = (float)Math.Sqrt((posX[0] * posX[0]) + (posY[0] * posY[0]) + (posZ[0] * posZ[0]));
+            float len = (float)Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
 
             // Normalize
-            velX[0] = posX[0] / len[0];
-            velY[0] = posY[0] / len[0];
-            velZ[0] = posZ[0] / len[0];
+            float velX = posX / len;
+            float velY = posY / len;
+            float velZ = posZ / len;
 
             // Scale by speed
-            velX[0] *= initialSpeed[i];
-            velY[0] *= initialSpeed[i];
-            velZ[0] *= initialSpeed[i];
+            velX *= Configuration.InitialSpeed;
+            velY *= Configuration.InitialSpeed;
+            velZ *= Configuration.InitialSpeed;
 
             // Avoid clumping by doing some pre-simulation
             float preSimTime = (i + 1) * oneOverPPS;
             if (oneOverPPS > 0)
             {
-               posX[0] += velX[0] * preSimTime;
-               posY[0] += velY[0] * preSimTime;
-               posZ[0] += velZ[0] * preSimTime;
+               posX += velX * preSimTime;
+               posY += velY * preSimTime;
+               posZ += velZ * preSimTime;
             }
 
             // Store out position
-            _particlesToEmit._positionStreamX[numBatchesTimesFour + i] = posX[0];
-            _particlesToEmit._positionStreamY[numBatchesTimesFour + i] = posY[0];
-            _particlesToEmit._positionStreamZ[numBatchesTimesFour + i] = posZ[0];
+            _particlesToEmit._positionStreamX[numBatchesTimesFour + i] = posX;
+            _particlesToEmit._positionStreamY[numBatchesTimesFour + i] = posY;
+            _particlesToEmit._positionStreamZ[numBatchesTimesFour + i] = posZ;
 
             // Store out velocity
-            _particlesToEmit._velocityStreamX[numBatchesTimesFour + i] = velX[0];
-            _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY[0];
-            _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ[0];
+            _particlesToEmit._velocityStreamX[numBatchesTimesFour + i] = velX;
+            _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY;
+            _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ;
 
             // Store out lifespan and mass
-            float lifespan = initialLifespan[i] - preSimTime;
+            float lifespan = Configuration.InitialLifespan - preSimTime;
             _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
             _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
-            _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass[i];
+            _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
          }
-#endif
 
          // Assign number of particles
          _particlesToEmit._numParticles = numParticlesToEmit;
