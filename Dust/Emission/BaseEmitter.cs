@@ -14,7 +14,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-using System;
 
 namespace GameClay.Dust
 {
@@ -39,7 +38,7 @@ namespace GameClay.Dust
 #if DEBUG
                 // Test for null Simulation
                 if (Simulation == null)
-                    throw new NullReferenceException("No Simulation assigned.");
+                    throw new System.NullReferenceException("No Simulation assigned.");
 #endif
 
                 _timeSinceEmission += dt;
@@ -138,7 +137,7 @@ namespace GameClay.Dust
         /// <remarks>
         /// This <see cref="Random"/> is initialized using the value obtained from <see cref="IEmitter.Random"/>.
         /// </remarks>
-        protected Random RandomSource
+        protected System.Random RandomSource
         {
             // TODO: Investigate performance of System.Random, and all the casts from double-to-float which is done
             get
@@ -167,13 +166,13 @@ namespace GameClay.Dust
         {
             _timeSinceEmission = 0;
             _configuration = null;
-            _randomSource = new Random(Seed);
+            _randomSource = new System.Random(Seed);
         }
 
         #region Data
         protected float _timeSinceEmission;
         protected EmitterConfiguration _configuration;
-        protected Random _randomSource;
+        protected System.Random _randomSource;
         protected bool _active;
         protected int _seed;
         protected ISimulation _simulation;

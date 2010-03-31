@@ -14,7 +14,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-using System;
 
 namespace GameClay.Dust
 {
@@ -126,24 +125,24 @@ namespace GameClay.Dust
             int numToCopy = count < capacityLeft ? count : capacityLeft;
 
             // Position
-            Array.Copy(src.PositionX, srcOffset, _positionStreamX, offset, numToCopy);
-            Array.Copy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
-            Array.Copy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
+            System.Array.Copy(src.PositionX, srcOffset, _positionStreamX, offset, numToCopy);
+            System.Array.Copy(src.PositionY, srcOffset, _positionStreamY, offset, numToCopy);
+            System.Array.Copy(src.PositionZ, srcOffset, _positionStreamZ, offset, numToCopy);
 
             // Time
-            Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
-            Array.Copy(src.TimeRemaining, srcOffset, _timeRemainingStream, offset, numToCopy);
+            System.Array.Copy(src.Lifespan, srcOffset, _lifespanStream, offset, numToCopy);
+            System.Array.Copy(src.TimeRemaining, srcOffset, _timeRemainingStream, offset, numToCopy);
 
             // Velocity
-            Array.Copy(src.VelocityX, srcOffset, _velocityStreamX, offset, numToCopy);
-            Array.Copy(src.VelocityY, srcOffset, _velocityStreamY, offset, numToCopy);
-            Array.Copy(src.VelocityZ, srcOffset, _velocityStreamZ, offset, numToCopy);
+            System.Array.Copy(src.VelocityX, srcOffset, _velocityStreamX, offset, numToCopy);
+            System.Array.Copy(src.VelocityY, srcOffset, _velocityStreamY, offset, numToCopy);
+            System.Array.Copy(src.VelocityZ, srcOffset, _velocityStreamZ, offset, numToCopy);
 
             // Mass
-            Array.Copy(src.Mass, srcOffset, _massStream, offset, numToCopy);
+            System.Array.Copy(src.Mass, srcOffset, _massStream, offset, numToCopy);
 
             // UserData
-            Array.Copy(src.UserData, srcOffset, _userDataStream, offset, numToCopy);
+            System.Array.Copy(src.UserData, srcOffset, _userDataStream, offset, numToCopy);
 
             // Update number of particles
             _numParticles += numToCopy;

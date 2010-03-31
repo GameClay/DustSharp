@@ -14,7 +14,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-using System;
 
 namespace GameClay.Dust
 {
@@ -111,8 +110,8 @@ namespace GameClay.Dust
             set
             {
 #if DEBUG
-            if (value.GetType() != typeof(SoAData))
-               throw new ArgumentException("Supplied ISystemData was not of type SoAData.");
+                if (value.GetType() != typeof(SoAData))
+                    throw new System.ArgumentException("Supplied ISystemData was not of type SoAData.");
 #endif
                 _systemData = (SoAData)value;
             }

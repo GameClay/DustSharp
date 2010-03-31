@@ -14,7 +14,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-using System;
 
 namespace GameClay.Dust
 {
@@ -264,7 +263,7 @@ namespace GameClay.Dust
             for (int i = 0; i < numRemainder; i++)
             {
                 // Calculate pos on circle with a random angle
-                float angle = (float)(RandomSource.NextDouble() * Math.PI * 2);
+                float angle = (float)(RandomSource.NextDouble() * Math.TwoPI);
                 float posX = (float)Math.Cos(angle) * radius;
                 float posY = (float)Math.Sin(angle) * radius;
                 float posZ = 0.0f;
