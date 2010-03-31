@@ -19,99 +19,99 @@ using System;
 namespace GameClay.Dust
 {
 
-   public class BoxEmitterConfiguration : EmitterConfiguration
-   {
+    public class BoxEmitterConfiguration : EmitterConfiguration
+    {
 
-      #region Properties
-      public float Width
-      {
-         get
-         {
-            return _width;
-         }
-         set
-         {
-            _width = value;
-         }
-      }
+        #region Properties
+        public float Width
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                _width = value;
+            }
+        }
 
-      public float Height
-      {
-         get
-         {
-            return _height;
-         }
-         set
-         {
-            _height = value;
-         }
-      }
+        public float Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                _height = value;
+            }
+        }
 
-      public float Depth
-      {
-         get
-         {
-            return _depth;
-         }
-         set
-         {
-            _depth = value;
-         }
-      }
-      #endregion
+        public float Depth
+        {
+            get
+            {
+                return _depth;
+            }
+            set
+            {
+                _depth = value;
+            }
+        }
+        #endregion
 
-      public BoxEmitterConfiguration()
-         : base()
-      {
-         _width = 1.0f;
-         _height = 1.0f;
-         _depth = 1.0f;
-      }
+        public BoxEmitterConfiguration()
+            : base()
+        {
+            _width = 1.0f;
+            _height = 1.0f;
+            _depth = 1.0f;
+        }
 
-      #region Data
-      protected float _width;
-      protected float _height;
-      protected float _depth;
-      #endregion
+        #region Data
+        protected float _width;
+        protected float _height;
+        protected float _depth;
+        #endregion
 
-   }
+    }
 
-   public class BoxEmitter : BaseEmitter
-   {
+    public class BoxEmitter : BaseEmitter
+    {
 
-      public BoxEmitterConfiguration BoxConfiguration
-      {
-         get
-         {
-            return _boxConfiguration;
-         }
-      }
+        public BoxEmitterConfiguration BoxConfiguration
+        {
+            get
+            {
+                return _boxConfiguration;
+            }
+        }
 
-      protected override void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit)
-      {
+        protected override void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit)
+        {
 
 #if DUST_SIMD
          // Batch in chunks of 4 for nice maths
          int numBatches = numParticlesToEmit / 4;
          int numRemainder = numParticlesToEmit % 4;
 #else
-         int numRemainder = numParticlesToEmit;
-         const int numBatches = 0;
+            int numRemainder = numParticlesToEmit;
+            const int numBatches = 0;
 #endif
 
-         // Some constants to make life easier and faster
-         float twoWidth = BoxConfiguration.Width * 2.0f;
-         float twoHeight = BoxConfiguration.Height * 2.0f;
-         float twoDepth = BoxConfiguration.Depth * 2.0f;
+            // Some constants to make life easier and faster
+            float twoWidth = BoxConfiguration.Width * 2.0f;
+            float twoHeight = BoxConfiguration.Height * 2.0f;
+            float twoDepth = BoxConfiguration.Depth * 2.0f;
 
-         float negWidth = -BoxConfiguration.Width;
-         float negHeight = -BoxConfiguration.Height;
-         float negDepth = -BoxConfiguration.Depth;
+            float negWidth = -BoxConfiguration.Width;
+            float negHeight = -BoxConfiguration.Height;
+            float negDepth = -BoxConfiguration.Depth;
 
-         float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0;
+            float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0;
 
-         // Surface-only mode modulo division value
-         int planeMod = Simulation.Is2D ? 2 : 3;
+            // Surface-only mode modulo division value
+            int planeMod = Simulation.Is2D ? 2 : 3;
 
 #if DUST_SIMD
          // TODO: Revisit SIMD after XNA work is done
@@ -328,97 +328,97 @@ namespace GameClay.Dust
          }
 #endif
 
-         // Emit remaining particles individually
-         int numBatchesTimesFour = numBatches * 4;
-         for (int i = 0; i < numRemainder; i++)
-         {
-            // Get random position
-            float posX = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
-            float posY = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
-            float posZ = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
-
-            // If this emitter is supposed to emit only on the surface
-            // do the needed clipping
-            if (BoxConfiguration.EmitOnSurfaceOnly)
+            // Emit remaining particles individually
+            int numBatchesTimesFour = numBatches * 4;
+            for (int i = 0; i < numRemainder; i++)
             {
-               switch (RandomSource.Next() % planeMod)
-               {
-                  case 0:
-                     posX = posX < 0.0f ? negWidth : _boxConfiguration.Width;
-                     break;
+                // Get random position
+                float posX = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
+                float posY = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
+                float posZ = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
 
-                  case 1:
-                     posY = posY < 0.0f ? negHeight : _boxConfiguration.Height;
-                     break;
+                // If this emitter is supposed to emit only on the surface
+                // do the needed clipping
+                if (BoxConfiguration.EmitOnSurfaceOnly)
+                {
+                    switch (RandomSource.Next() % planeMod)
+                    {
+                        case 0:
+                            posX = posX < 0.0f ? negWidth : _boxConfiguration.Width;
+                            break;
 
-                  case 2:
-                     posZ = posZ < 0.0f ? negDepth : _boxConfiguration.Depth;
-                     break;
-               }
+                        case 1:
+                            posY = posY < 0.0f ? negHeight : _boxConfiguration.Height;
+                            break;
+
+                        case 2:
+                            posZ = posZ < 0.0f ? negDepth : _boxConfiguration.Depth;
+                            break;
+                    }
+                }
+
+                // Transform position
+                // TODO: Matrix and transform stuff
+
+                // Length
+                float len = (float)Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
+
+                // Normalize
+                float velX = posX / len;
+                float velY = posY / len;
+                float velZ = posZ / len;
+
+                // Scale by speed
+                velX *= Configuration.InitialSpeed;
+                velY *= Configuration.InitialSpeed;
+                velZ *= Configuration.InitialSpeed;
+
+                // Avoid clumping by doing some pre-simulation
+                float preSimTime = (i + 1) * oneOverPPS;
+                if (oneOverPPS > 0)
+                {
+                    posX += velX * preSimTime;
+                    posY += velY * preSimTime;
+                    posZ += velZ * preSimTime;
+                }
+
+                // Store out position
+                _particlesToEmit._positionStreamX[numBatchesTimesFour + i] = posX;
+                _particlesToEmit._positionStreamY[numBatchesTimesFour + i] = posY;
+                _particlesToEmit._positionStreamZ[numBatchesTimesFour + i] = posZ;
+
+                // Store out velocity
+                _particlesToEmit._velocityStreamX[numBatchesTimesFour + i] = velX;
+                _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY;
+                _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ;
+
+                // Store out lifespan and mass
+                float lifespan = Configuration.InitialLifespan - preSimTime;
+                _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
+                _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
+                _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
             }
 
-            // Transform position
-            // TODO: Matrix and transform stuff
+            // Assign number of particles
+            _particlesToEmit._numParticles = numParticlesToEmit;
 
-            // Length
-            float len = (float)Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
+            // Assign the output variable
+            particlesToEmit = _particlesToEmit;
+        }
 
-            // Normalize
-            float velX = posX / len;
-            float velY = posY / len;
-            float velZ = posZ / len;
+        public BoxEmitter()
+            : base()
+        {
+            _particlesToEmit = new SoAData(200);
 
-            // Scale by speed
-            velX *= Configuration.InitialSpeed;
-            velY *= Configuration.InitialSpeed;
-            velZ *= Configuration.InitialSpeed;
+            // Replace the base configuration with our specialized one
+            _boxConfiguration = new BoxEmitterConfiguration();
+            _configuration = (EmitterConfiguration)_boxConfiguration;
+        }
 
-            // Avoid clumping by doing some pre-simulation
-            float preSimTime = (i + 1) * oneOverPPS;
-            if (oneOverPPS > 0)
-            {
-               posX += velX * preSimTime;
-               posY += velY * preSimTime;
-               posZ += velZ * preSimTime;
-            }
-
-            // Store out position
-            _particlesToEmit._positionStreamX[numBatchesTimesFour + i] = posX;
-            _particlesToEmit._positionStreamY[numBatchesTimesFour + i] = posY;
-            _particlesToEmit._positionStreamZ[numBatchesTimesFour + i] = posZ;
-
-            // Store out velocity
-            _particlesToEmit._velocityStreamX[numBatchesTimesFour + i] = velX;
-            _particlesToEmit._velocityStreamY[numBatchesTimesFour + i] = velY;
-            _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ;
-
-            // Store out lifespan and mass
-            float lifespan = Configuration.InitialLifespan - preSimTime;
-            _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
-            _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
-            _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
-         }
-
-         // Assign number of particles
-         _particlesToEmit._numParticles = numParticlesToEmit;
-
-         // Assign the output variable
-         particlesToEmit = _particlesToEmit;
-      }
-
-      public BoxEmitter()
-         : base()
-      {
-         _particlesToEmit = new SoAData(200);
-
-         // Replace the base configuration with our specialized one
-         _boxConfiguration = new BoxEmitterConfiguration();
-         _configuration = (EmitterConfiguration)_boxConfiguration;
-      }
-
-      #region Data
-      protected SoAData _particlesToEmit;
-      protected BoxEmitterConfiguration _boxConfiguration;
-      #endregion
-   }
+        #region Data
+        protected SoAData _particlesToEmit;
+        protected BoxEmitterConfiguration _boxConfiguration;
+        #endregion
+    }
 }
