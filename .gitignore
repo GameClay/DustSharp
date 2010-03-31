@@ -17,12 +17,14 @@
 # VisualStudio files
 #
 *.suo
+*.user
+*.cachefile
 
 UpgradeLog.XML
 _UpgradeReport_Files
 
 #
-# Compiled results
+# Compiled C# results
 #
 obj
 bin
