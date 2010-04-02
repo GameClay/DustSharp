@@ -1,4 +1,4 @@
-﻿/* Dust -- Copyright (C) 2009-2010 GameClay LLC
+/* Dust -- Copyright (C) 2009-2010 GameClay LLC
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -54,18 +54,11 @@ namespace GameClay.Dust
                 }
 
                 // Update position due to velocity
-#if !DUST_SIMD
                 _systemData._positionStreamX[i] += _systemData._velocityStreamX[i] * dt;
                 _systemData._positionStreamY[i] += _systemData._velocityStreamY[i] * dt;
                 _systemData._positionStreamZ[i] += _systemData._velocityStreamZ[i] * dt;
-#else
-#endif
 
                 // Update velocity due to air resistance/gravity
-#if !DUST_SIMD
-
-#else
-#endif
 
                 // Adjust the min/max values of the bounds
 

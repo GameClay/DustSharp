@@ -26,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -35,11 +36,11 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <DefineConstants>DUST_MONO</DefineConstants>
-    <GenerateDocumentation>true</GenerateDocumentation>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="Mono.Simd" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Math\Types.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Simulation\StandardSimulation.cs" />
     <Compile Include="Emission\RingEmitter.cs" />
     <Compile Include="Emission\BaseEmitter.cs" />
+    <Compile Include="Simulation\MonoSimdSimulation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

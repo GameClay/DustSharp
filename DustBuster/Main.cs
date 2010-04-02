@@ -14,6 +14,7 @@ namespace GameClay
 
             // Add some tests
             testList.Add(new SoADataTest());
+            testList.Add(new SystemPerformanceTester());
 
             // Run all the tests
             Console.WriteLine("DustBuster running " + testList.Count + " automated tests.");

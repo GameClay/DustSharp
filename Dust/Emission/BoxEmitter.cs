@@ -88,6 +88,9 @@ namespace GameClay.Dust
 
         protected override void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit)
         {
+            // TODO: Pool this stuff
+            if (_particlesToEmit.MaxNumParticles < numParticlesToEmit)
+                _particlesToEmit = new SoAData(numParticlesToEmit);
 
 #if DUST_SIMD
          // Batch in chunks of 4 for nice maths
