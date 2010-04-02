@@ -31,6 +31,7 @@ namespace GameClay.Dust.Mono
             // Reset the bounds of the system
 
             Vector4f dt_v = new Vector4f (dt);
+            List<int> freeList = new List<int>();
             
             fixed (float* xPosStream = _systemData._positionStreamX)
             {
@@ -55,28 +56,48 @@ namespace GameClay.Dust.Mono
                                             int streamIdx = i * 4;
                                             Vector4f ts_reg = Vector4f.LoadAligned ((Vector4f*)(timeStream + streamIdx));
 
-                                            Vector4f pX_reg = Vector4f.LoadAligned ((Vector4f*)(xPosStream + streamIdx));
-                                            Vector4f pY_reg = Vector4f.LoadAligned ((Vector4f*)(yPosStream + streamIdx));
-                                            Vector4f pZ_reg = Vector4f.LoadAligned ((Vector4f*)(zPosStream + streamIdx));
-
                                             Vector4f vX_reg = Vector4f.LoadAligned ((Vector4f*)(xVelStream + streamIdx));
                                             Vector4f vY_reg = Vector4f.LoadAligned ((Vector4f*)(yVelStream + streamIdx));
                                             Vector4f vZ_reg = Vector4f.LoadAligned ((Vector4f*)(zVelStream + streamIdx));
 
+                                            Vector4f pX_reg = Vector4f.LoadAligned ((Vector4f*)(xPosStream + streamIdx));
+                                            Vector4f pY_reg = Vector4f.LoadAligned ((Vector4f*)(yPosStream + streamIdx));
+                                            Vector4f pZ_reg = Vector4f.LoadAligned ((Vector4f*)(zPosStream + streamIdx));
+
                                             // Decrement time remaining
-                                            Vector4f.StoreAligned ((Vector4f*)timeStream, ts_reg - dt_v);
+                                             ts_reg -= dt_v;
                                             
                                             // Update position
                                             Vector4f tx = vX_reg * dt_v;
                                             Vector4f ty = vY_reg * dt_v;
                                             Vector4f tz = vZ_reg * dt_v;
+
+                                            // Decrement time remaining
+                                            Vector4f.StoreAligned ((Vector4f*)timeStream, ts_reg);
                                             
                                             // Store
                                             Vector4f.StoreAligned ((Vector4f*)xPosStream, pX_reg + tx);
                                             Vector4f.StoreAligned ((Vector4f*)yPosStream, pY_reg + ty);
                                             Vector4f.StoreAligned ((Vector4f*)zPosStream, pZ_reg + tz);
-                                            
+
+                                            // Add to free list if needed (this is poor)
+                                            if (ts_reg.X < 0.0f)
+                                                freeList.Add (streamIdx + 0);
+                                            if (ts_reg.Y < 0.0f)
+                                                freeList.Add (streamIdx + 1);
+                                            if (ts_reg.Z < 0.0f)
+                                                freeList.Add (streamIdx + 2);
+                                            if (ts_reg.W < 0.0f)
+                                                freeList.Add (streamIdx + 3);
+
                                             // Adjust the min/max values of the bounds
+                                        }
+
+                                        // Iterate the free-list and copy (very poor)
+                                        foreach (int idx in freeList)
+                                        {
+                                            _systemData.CopyElement(_systemData.NumParticles, idx);
+                                            _systemData._numParticles--;
                                         }
                                     }
                                 }
