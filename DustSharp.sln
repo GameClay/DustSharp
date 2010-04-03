@@ -1,24 +1,55 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust_Mono", "Dust\Dust_Mono.csproj", "{0E44AB3B-39B3-4E9C-8611-D75922AFF759}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust", "Dust\Dust.csproj", "{0E44AB3B-39B3-4E9C-8611-D75922AFF759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustBuster_Mono", "DustBuster\DustBuster_Mono.csproj", "{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustBuster", "DustBuster\DustBuster.csproj", "{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnmanagedSimulation", "UnmanagedSimulation\UnmanagedSimulation.vcxproj", "{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
 		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Win32.ActiveCfg = Debug|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Win32.ActiveCfg = Release|Any CPU
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Debug|Win32.Build.0 = Debug|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Release|Win32.ActiveCfg = Release|Win32
+		{BA2C2CE2-E4A6-4EAE-BD00-BFE146A7CCCC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = DustBuster\DustBuster_Mono.csproj

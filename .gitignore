@@ -19,8 +19,11 @@
 *.suo
 *.user
 *.cachefile
+*.filters
+*.sdf
+*.opensdf
 
-UpgradeLog.XML
+UpgradeLog*
 _UpgradeReport_Files
 
 #
