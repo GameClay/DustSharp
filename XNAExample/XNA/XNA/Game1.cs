@@ -25,6 +25,11 @@ namespace XNAExample
         BoxEmitter emitter;
         Texture2D texture;
         RingEmitter emitter2;
+        int frameRate = 0;
+        int frameCounter = 0;
+        TimeSpan elapsedTime = TimeSpan.Zero;
+        SpriteBatch fpsBatch;
+        SpriteFont spriteFont;
 
         public Game1()
         {
@@ -77,6 +82,10 @@ namespace XNAExample
 
             // TODO: use this.Content to load your game content here
             texture = Content.Load<Texture2D>("white"); ;
+
+            // Add framerate counter
+            fpsBatch = new SpriteBatch(GraphicsDevice);
+            spriteFont = Content.Load<SpriteFont>("Arial");
         }
 
         /// <summary>
@@ -104,6 +113,15 @@ namespace XNAExample
             simulation.AdvanceTime(dt);
             emitter.AdvanceTime(dt, dt);
             emitter2.AdvanceTime(dt, dt);
+            // FPS
+            elapsedTime += gameTime.ElapsedGameTime;
+
+            if (elapsedTime > TimeSpan.FromSeconds(1))
+            {
+                elapsedTime -= TimeSpan.FromSeconds(1);
+                frameRate = frameCounter;
+                frameCounter = 0;
+            }
 
             base.Update(gameTime);
         }
@@ -132,6 +150,23 @@ namespace XNAExample
                 col.R = (byte)(255.0f * (systemData.TimeRemaining[i] / systemData.Lifespan[i]));
                 spriteBatch.Draw(texture, pos, col);
             }
+
+            spriteBatch.End();
+
+            // FPS
+
+            frameCounter++;
+
+            string fps = string.Format("fps: {0}", frameRate);
+            string particles = string.Format("particles: {0}", simulation.SystemData.NumParticles);
+
+            spriteBatch.Begin();
+
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(33, 33), Color.Black);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(32, 32), Color.White);
+
+            spriteBatch.DrawString(spriteFont, particles, new Vector2(33, 1), Color.Black);
+            spriteBatch.DrawString(spriteFont, particles, new Vector2(32, 0), Color.White);
 
             spriteBatch.End();
 
