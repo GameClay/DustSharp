@@ -26,7 +26,6 @@ namespace GameClay.Dust
             _numParticles = 0;
         }
 
-        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         public struct HorribleParticle
         {
             public float px;
@@ -41,6 +40,25 @@ namespace GameClay.Dust
             public float timeRemaining;
             public float mass;
             public object userdata;
+
+
+            // Members needed only for the simulation...
+            public Microsoft.Xna.Framework.Vector2 Momentum;
+            public Microsoft.Xna.Framework.Vector2 Velocity;
+            public float Inception;
+
+            public void Update(float dt)
+            {
+                // Decrement the time remaining
+                timeRemaining -= dt;
+
+                // Update position due to velocity
+                px += vx * dt;
+                py += vy * dt;
+                pz += vz * dt;
+
+                // Update velocity due to air resistance/gravity
+            }
         }
 
         public HorribleParticle[] _systemData;
@@ -162,41 +180,10 @@ namespace GameClay.Dust
             // Reset the bounds of the system
 
             // Process the particle system
-            for (int i = 0; i < _systemData.NumParticles; i++)
-            {
-                // Decrement the time remaining
-                _systemData._systemData[i].timeRemaining -= dt;
+            foreach (HorribleSystemData.HorribleParticle p in _systemData._systemData)
+                p.Update(dt);
 
-                // If the particle is out of time, destroy it
-                if (_systemData._systemData[i].timeRemaining < 0.0)
-                {
-                    // Replace this element with the last element in the list
-                    int lastIdx = _systemData.NumParticles - 1;
-                    if (i < lastIdx)
-                    {
-                        _systemData.CopyElement(lastIdx, i);
-
-                        // Decrement i so that this particle will still get processed
-                        i--;
-                    }
-
-                    // Decrement the number of particles
-                    _systemData._numParticles--;
-
-                    // Process the next item
-                    continue;
-                }
-
-                // Update position due to velocity
-                _systemData._systemData[i].px += _systemData._systemData[i].vx * dt;
-                _systemData._systemData[i].py += _systemData._systemData[i].vy * dt;
-                _systemData._systemData[i].pz += _systemData._systemData[i].vz * dt;
-
-                // Update velocity due to air resistance/gravity
-
-                // Adjust the min/max values of the bounds
-
-            }
+            // Check for particles we need to delete
         }
 
 
