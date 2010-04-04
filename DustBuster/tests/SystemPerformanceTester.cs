@@ -14,9 +14,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#define DUST_MONO
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace GameClay.DustBuster
 {
@@ -30,24 +30,21 @@ namespace GameClay.DustBuster
         #region ITest implementation
         public Result RunTest()
         {
-#if DUST_MONO
-            const int NumSimulations = 4;
-#else
-            const int NumSimulations = 3;
-#endif
-            Dust.ISimulation[] simulation = new Dust.ISimulation[NumSimulations];
+            List<Dust.ISimulation> simulation = new List<Dust.ISimulation>();
 
-            simulation[0] = new Dust.StandardSimulation(NumTestParticles);
-            simulation[1] = new Dust.UnmanagedSimulation(NumTestParticles);
-            simulation[2] = new Dust.HorribleSimulation(NumTestParticles);
+            //simulation.Add(new Dust.StandardSimulation(NumTestParticles));
+            //simulation.Add(new Dust.UnsafeSimulation(NumTestParticles));
+            simulation.Add(new Dust.UnsafeThreadedSimulation(NumTestParticles));
+            //simulation.Add(new Dust.HorribleSimulation(NumTestParticles));
 #if DUST_MONO
-            simulation[3] = new Dust.Mono.SimdSimulation(NumTestParticles);
+            simulation.Add(new Dust.Mono.SimdSimulation(NumTestParticles));
 #endif
+
             // Blast out some particles into the simulations
             Dust.BoxEmitter emitter = new Dust.BoxEmitter();
             emitter.Configuration.ParticlesPerSecond = NumTestParticles;
             emitter.Configuration.Persistent = false;
-            for (int i = 0; i < simulation.Length; i++)
+            for (int i = 0; i < simulation.Count; i++)
             {
                 emitter.Active = true;
                 emitter.Simulation = simulation[i];
@@ -55,12 +52,15 @@ namespace GameClay.DustBuster
                 emitter.AdvanceTime(TimeStep, TimeStep);
             }
 
-            Stopwatch testTimer = new Stopwatch(); 
+            Stopwatch testTimer = new Stopwatch();
 
-            float[,] simulationResults = new float[simulation.Length, NumTimesToRunTest];
+            float[,] simulationResults = new float[simulation.Count, NumTimesToRunTest];
 
-            for (int j = 0; j < simulation.Length; j++)
+            for (int j = 0; j < simulation.Count; j++)
             {
+                // Run once without profiling just to engage the JIT, then run the tests for real
+                simulation[j].AdvanceTime(TimeStep);
+
                 for (int i = 0; i < NumTimesToRunTest; i++)
                 {
                     testTimer.Reset();
@@ -71,17 +71,17 @@ namespace GameClay.DustBuster
                 }
             }
 
-            float[] simulationAvg = new float[simulation.Length];
-            float[] simulationMin = new float[simulation.Length];
-            float[] simulationMax = new float[simulation.Length];
-            for (int i = 0; i < simulation.Length; i++)
+            float[] simulationAvg = new float[simulation.Count];
+            float[] simulationMin = new float[simulation.Count];
+            float[] simulationMax = new float[simulation.Count];
+            for (int i = 0; i < simulation.Count; i++)
             {
                 simulationAvg[i] = 0;
                 simulationMax[i] = 0;
                 simulationMin[i] = float.PositiveInfinity;
             }
 
-            for (int j = 0; j < simulation.Length; j++)
+            for (int j = 0; j < simulation.Count; j++)
             {
                 for (int i = 0; i < NumTimesToRunTest; i++)
                 {
@@ -94,10 +94,11 @@ namespace GameClay.DustBuster
             Console.WriteLine("   Ran tests with {0} partcicles {1} times:", NumTestParticles, NumTimesToRunTest);
             Console.WriteLine("   [timer        avg        min        max]");
 
-            for (int i = 0; i < simulation.Length; i++)
+            for (int i = 0; i < simulation.Count; i++)
             {
                 simulationAvg[i] /= NumTimesToRunTest;
-                Console.WriteLine("   " + simulation[i] + " " + simulationAvg[i] + "   " + simulationMin[i] + "   " + simulationMax[i]);
+                string outptStr = "   " + simulation[i] + " " + simulationAvg[i] + "   " + simulationMin[i] + "   " + simulationMax[i];
+                Console.WriteLine(outptStr);
             }
 
             return Result.Passed;
