@@ -28,30 +28,31 @@ namespace GameClay.Dust
             // Reset the bounds of the system
 
             // Process the particle system
-            for (int i = 0; i < _systemData.NumParticles; i++)
+            int numParticles = _systemData.NumParticles;
+            for (int i = 0; i < numParticles; i++)
             {
                 // Decrement the time remaining
                 _systemData._timeRemainingStream[i] -= dt;
 
                 // If the particle is out of time, destroy it
-                if (_systemData._timeRemainingStream[i] < 0.0)
-                {
-                    // Replace this element with the last element in the list
-                    int lastIdx = _systemData.NumParticles - 1;
-                    if (i < lastIdx)
-                    {
-                        _systemData.CopyElement(lastIdx, i);
+                //if (_systemData._timeRemainingStream[i] < 0.0)
+                //{
+                //    // Replace this element with the last element in the list
+                //    int lastIdx = _systemData.NumParticles - 1;
+                //    if (i < lastIdx)
+                //    {
+                //        _systemData.CopyElement(lastIdx, i);
 
-                        // Decrement i so that this particle will still get processed
-                        i--;
-                    }
+                //        // Decrement i so that this particle will still get processed
+                //        i--;
+                //    }
 
-                    // Decrement the number of particles
-                    _systemData._numParticles--;
+                //    // Decrement the number of particles
+                //    _systemData._numParticles--;
 
-                    // Process the next item
-                    continue;
-                }
+                //    // Process the next item
+                //    continue;
+                //}
 
                 // Update position due to velocity
                 _systemData._positionStreamX[i] += _systemData._velocityStreamX[i] * dt;
