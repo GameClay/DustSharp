@@ -27,85 +27,46 @@ namespace GameClay.Dust.Mono
     public class SimdSimulation : ISimulation
     {
         #region ISimulation implementation
-        unsafe public void AdvanceTime (float dt)
+        public void AdvanceTime (float dt)
         {
             // Reset the bounds of the system
-
-            Vector4f dt_v = new Vector4f (dt);
-            List<int> freeList = new List<int>();
             
-            fixed (float* xPosStream = _systemData._positionStreamX)
-            {
-                fixed (float* yPosStream = _systemData._positionStreamY)
-                {
-                    fixed (float* zPosStream = _systemData._positionStreamZ)
-                    {
-                        fixed (float* xVelStream = _systemData._velocityStreamX)
-                        {
-                            fixed (float* yVelStream = _systemData._velocityStreamY)
-                            {
-                                fixed (float* zVelStream = _systemData._velocityStreamZ)
-                                {
-                                    fixed (float* timeStream = _systemData._timeRemainingStream)
-                                    {
-                                        
-                                        // Process the particle system
-                                        int numBatches = _systemData.NumParticles / 4;
-                                        for (int i = 0; i < numBatches; i++)
-                                        {
-                                            // Load streams
-                                            int streamIdx = i * 4;
-                                            Vector4f ts_reg = Vector4f.LoadAligned ((Vector4f*)(timeStream + streamIdx));
+            Vector4f dt_v = new Vector4f (dt);
+            
+            // Temporary registers
+            Vector4f ts_reg, vX_reg, vY_reg, vZ_reg, pX_reg, pY_reg, pZ_reg;
+            
+            // Process the particle system
+            int numBatches = _systemData.NumParticles / 4;
+            for (int i = 0; i < numBatches; i++) {
+                // Load streams
+                int streamIdx = i * 4;
+                
+                ts_reg = ArrayExtensions.GetVectorAligned (_systemData._timeRemainingStream, streamIdx);
+                
+                vX_reg = ArrayExtensions.GetVectorAligned (_systemData._velocityStreamX, streamIdx);
+                vY_reg = ArrayExtensions.GetVectorAligned (_systemData._velocityStreamY, streamIdx);
+                vZ_reg = ArrayExtensions.GetVectorAligned (_systemData._velocityStreamZ, streamIdx);
 
-                                            Vector4f vX_reg = Vector4f.LoadAligned ((Vector4f*)(xVelStream + streamIdx));
-                                            Vector4f vY_reg = Vector4f.LoadAligned ((Vector4f*)(yVelStream + streamIdx));
-                                            Vector4f vZ_reg = Vector4f.LoadAligned ((Vector4f*)(zVelStream + streamIdx));
-
-                                            Vector4f pX_reg = Vector4f.LoadAligned ((Vector4f*)(xPosStream + streamIdx));
-                                            Vector4f pY_reg = Vector4f.LoadAligned ((Vector4f*)(yPosStream + streamIdx));
-                                            Vector4f pZ_reg = Vector4f.LoadAligned ((Vector4f*)(zPosStream + streamIdx));
-
-                                            // Decrement time remaining
-                                             ts_reg -= dt_v;
-                                            
-                                            // Update position
-                                            Vector4f tx = vX_reg * dt_v;
-                                            Vector4f ty = vY_reg * dt_v;
-                                            Vector4f tz = vZ_reg * dt_v;
-
-                                            // Decrement time remaining
-                                            Vector4f.StoreAligned ((Vector4f*)timeStream, ts_reg);
-                                            
-                                            // Store
-                                            Vector4f.StoreAligned ((Vector4f*)xPosStream, pX_reg + tx);
-                                            Vector4f.StoreAligned ((Vector4f*)yPosStream, pY_reg + ty);
-                                            Vector4f.StoreAligned ((Vector4f*)zPosStream, pZ_reg + tz);
-
-                                            // Add to free list if needed (this is poor)
-                                            if (ts_reg.X < 0.0f)
-                                                freeList.Add (streamIdx + 0);
-                                            if (ts_reg.Y < 0.0f)
-                                                freeList.Add (streamIdx + 1);
-                                            if (ts_reg.Z < 0.0f)
-                                                freeList.Add (streamIdx + 2);
-                                            if (ts_reg.W < 0.0f)
-                                                freeList.Add (streamIdx + 3);
-
-                                            // Adjust the min/max values of the bounds
-                                        }
-
-                                        // Iterate the free-list and copy (very poor)
-                                        foreach (int idx in freeList)
-                                        {
-                                            _systemData.CopyElement(_systemData.NumParticles, idx);
-                                            _systemData._numParticles--;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                pX_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamX, streamIdx);
+                pY_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamY, streamIdx);
+                pZ_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamZ, streamIdx);
+                
+                // Decrement time remaining
+                ts_reg -= dt_v;
+                
+                // Update position
+                Vector4f tx = vX_reg * dt_v;
+                Vector4f ty = vY_reg * dt_v;
+                Vector4f tz = vZ_reg * dt_v;
+                
+                ArrayExtensions.SetVectorAligned (_systemData._timeRemainingStream, ts_reg, streamIdx);
+                
+                ArrayExtensions.SetVectorAligned (_systemData._positionStreamX, pX_reg + tx, streamIdx);
+                ArrayExtensions.SetVectorAligned (_systemData._positionStreamY, pY_reg + ty, streamIdx);
+                ArrayExtensions.SetVectorAligned (_systemData._positionStreamZ, pZ_reg + tz, streamIdx);
+                
+                // Adjust the min/max values of the bounds
             }
         }
 

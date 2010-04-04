@@ -32,12 +32,13 @@ namespace GameClay.DustBuster
         {
             List<Dust.ISimulation> simulation = new List<Dust.ISimulation>();
 
-            //simulation.Add(new Dust.StandardSimulation(NumTestParticles));
+            simulation.Add(new Dust.StandardSimulation(NumTestParticles));
             //simulation.Add(new Dust.UnsafeSimulation(NumTestParticles));
-            simulation.Add(new Dust.UnsafeThreadedSimulation(NumTestParticles));
+            //simulation.Add(new Dust.UnsafeThreadedSimulation(NumTestParticles));
             //simulation.Add(new Dust.HorribleSimulation(NumTestParticles));
 #if DUST_MONO
             simulation.Add(new Dust.Mono.SimdSimulation(NumTestParticles));
+            simulation.Add(new Dust.Mono.UnsafeSimdSimulation(NumTestParticles));
 #endif
 
             // Blast out some particles into the simulations

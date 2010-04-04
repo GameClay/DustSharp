@@ -57,6 +57,7 @@
     <Compile Include="Emission\RingEmitter.cs" />
     <Compile Include="Emission\BaseEmitter.cs" />
     <Compile Include="Simulation\MonoSimdSimulation.cs" />
+    <Compile Include="Simulation\UnsafeMonoSimdSimulation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
