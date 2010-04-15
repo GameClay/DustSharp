@@ -32,27 +32,7 @@ namespace GameClay.Dust
             for (int i = 0; i < numParticles; i++)
             {
                 // Decrement the time remaining
-                _systemData._timeRemainingStream[i] -= dt;
-
-                // If the particle is out of time, destroy it
-                //if (_systemData._timeRemainingStream[i] < 0.0)
-                //{
-                //    // Replace this element with the last element in the list
-                //    int lastIdx = _systemData.NumParticles - 1;
-                //    if (i < lastIdx)
-                //    {
-                //        _systemData.CopyElement(lastIdx, i);
-
-                //        // Decrement i so that this particle will still get processed
-                //        i--;
-                //    }
-
-                //    // Decrement the number of particles
-                //    _systemData._numParticles--;
-
-                //    // Process the next item
-                //    continue;
-                //}
+                _systemData._timeRemainingStream[i] = System.Math.Max(_systemData._timeRemainingStream[i] - dt, 0.0f);
 
                 // Update position due to velocity
                 _systemData._positionStreamX[i] += _systemData._velocityStreamX[i] * dt;

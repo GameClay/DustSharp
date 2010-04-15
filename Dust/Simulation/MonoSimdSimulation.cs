@@ -51,9 +51,9 @@ namespace GameClay.Dust.Mono
                 pX_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamX, streamIdx);
                 pY_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamY, streamIdx);
                 pZ_reg = ArrayExtensions.GetVectorAligned (_systemData._positionStreamZ, streamIdx);
-                
+
                 // Decrement time remaining
-                ts_reg -= dt_v;
+                ts_reg = VectorOperations.Max(ts_reg - dt_v, Vector4f.Zero);
                 
                 // Update position
                 Vector4f tx = vX_reg * dt_v;

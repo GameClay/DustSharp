@@ -67,7 +67,7 @@ namespace GameClay.Dust.Mono
                                             pZ_reg = Vector4f.LoadAligned ((Vector4f*)(zPosStream + streamIdx));
 
                                             // Decrement time remaining
-                                             ts_reg -= dt_v;
+                                            ts_reg = VectorOperations.Max(ts_reg - dt_v, Vector4f.Zero);
                                             
                                             // Update position
                                             Vector4f tx = vX_reg * dt_v;

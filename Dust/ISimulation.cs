@@ -44,6 +44,11 @@ namespace GameClay.Dust
         /// </summary>
         ///
         /// <remarks>
+        /// This method will decrement the <see cref="ISystemData.TimeRemaining"/> element of
+        /// each particle in the Simulation. A call to this method will never result in a
+        /// <see cref="ISystemData.TimeRemaining"/> element which is less than zero. It will
+        /// allow each particle to exist, with a remaining-time of zero for at least one call
+        /// to AdvanceTime.
         /// </remarks>
         /// 
         /// <param name="dt"> The time, in seconds, to advance the simulation. </param>
