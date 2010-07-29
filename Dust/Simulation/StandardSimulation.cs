@@ -28,11 +28,30 @@ namespace GameClay.Dust
             // Reset the bounds of the system
 
             // Process the particle system
-            int numParticles = _systemData.NumParticles;
-            for (int i = 0; i < numParticles; i++)
+            int lastIdx = _systemData.NumParticles - 1;
+            for (int i = 0; i <= lastIdx; i++)
             {
                 // Decrement the time remaining
-                _systemData._timeRemainingStream[i] = System.Math.Max(_systemData._timeRemainingStream[i] - dt, 0.0f);
+                _systemData._timeRemainingStream[i] = _systemData._timeRemainingStream[i] - dt;
+
+                // If the particle is out of time, destroy it
+                if (_systemData._timeRemainingStream[i] < 0.0)
+                {
+                    // Replace this element with the last element in the list
+                    if (i < lastIdx)
+                    {
+                        _systemData.CopyElement(lastIdx, i);
+
+                        // Decrement i so that this particle will still get processed
+                        i--;
+                    }
+
+                    // Decrement the number of particles to process
+                    lastIdx--;
+
+                    // Process the next item
+                    continue;
+                }
 
                 // Update position due to velocity
                 _systemData._positionStreamX[i] += _systemData._velocityStreamX[i] * dt;
@@ -44,6 +63,9 @@ namespace GameClay.Dust
                 // Adjust the min/max values of the bounds
 
             }
+
+            // Update the number of particles in the system
+            _systemData._numParticles = lastIdx + 1;
         }
 
 
