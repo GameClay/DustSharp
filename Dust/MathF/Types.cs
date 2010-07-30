@@ -15,7 +15,7 @@
 
 namespace GameClay.Dust
 {
-    internal class Math
+    internal class MathF
     {
         public const float PI = 3.14159265358979323846f;
         public const float TwoPI = (2.0f * PI);

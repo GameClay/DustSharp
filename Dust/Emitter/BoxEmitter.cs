@@ -79,7 +79,7 @@ namespace GameClay.Dust.Emitter
                 // TODO: Matrix and transform stuff
 
                 // Length
-                float len = Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
+                float len = MathF.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
 
                 // Normalize
                 float velX = posX / len;

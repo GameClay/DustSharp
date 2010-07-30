@@ -40,9 +40,9 @@ namespace GameClay.Dust.Emitter
             int numBatchesTimesFour = numBatches * 4;
             for (int i = 0; i < numRemainder; i++) {
                 // Calculate pos on circle with a random angle
-                float angle = (float)(RandomSource.NextDouble()) * Math.TwoPI;
-                float posX = Math.Cos(angle) * radius;
-                float posY = Math.Sin(angle) * radius;
+                float angle = (float)(RandomSource.NextDouble()) * MathF.TwoPI;
+                float posX = MathF.Cos(angle) * radius;
+                float posY = MathF.Sin(angle) * radius;
                 float posZ = 0f;
                 
                 // If this emitter is supposed to emit only on the surface
@@ -57,7 +57,7 @@ namespace GameClay.Dust.Emitter
                 // TODO: Matrix and transform stuff
                 
                 // Length
-                float len = (float)Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
+                float len = (float)MathF.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
                 
                 // Normalize
                 float velX = posX / len;
