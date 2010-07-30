@@ -58,6 +58,10 @@ namespace GameClay
                 Console.WriteLine("   " + testsPassed + " tests passed.");
                 Console.WriteLine("   " + testsFailed + " tests failed.");
 
+                // Wait for user
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
+
                 // Return 0 if no tests failed
                 return testsFailed;
             }

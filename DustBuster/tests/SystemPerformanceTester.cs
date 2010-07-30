@@ -44,6 +44,9 @@ namespace GameClay.DustBuster
             Dust.Parameters config = new Dust.Parameters();
             config.SetParameter("ParticlesPerSecond", NumTestParticles);
             config.SetParameter("Persistent", false);
+            config.SetParameter("InitialLifespan", 5.0f);
+            config.SetParameter("InitialSpeed", 1.0f);
+
             Dust.Emitter.BoxEmitter emitter = new Dust.Emitter.BoxEmitter(config);
 
             for (int i = 0; i < simulation.Count; i++)
@@ -107,10 +110,5 @@ namespace GameClay.DustBuster
         }
 
         #endregion
-
-        public SystemPerformanceTester()
-        {
-
-        }
     }
 }
