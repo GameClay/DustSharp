@@ -42,20 +42,22 @@ namespace GameClay.Dust
                 _timeSinceEmission += dt;
 
                 // Figure out the number of particles to emit
-                int numParticlesToEmit = (int)(Configuration.ParticlesPerSecond * (Configuration.Persistent ? _timeSinceEmission : 1.0f));
-                Active = Configuration.Persistent ? Active : false;
+                float pps = _ParticlesPerSecond(pt);
+                int numParticlesToEmit = (int)(pps * (_IsPersistent() ? _timeSinceEmission : 1.0f));
+                Active = _IsPersistent() ? Active : false;
 
                 // Emit particles
                 if (numParticlesToEmit > 0)
                 {
                     // Call _EmitParticles and add any resultant particles 
+                    float oneOverPPS = _IsPersistent() ? 0.0f : (1.0f / pps);
                     ISystemData particlesToEmit = null;
-                    _EmitParticles(numParticlesToEmit, out particlesToEmit);
+                    _EmitParticles(numParticlesToEmit, oneOverPPS, dt, pt, out particlesToEmit);
 
                     if (particlesToEmit != null)
                     {
                         // Clear the time since the last emission, leaving any time for partially emitted particles intact
-                        _timeSinceEmission -= (1.0f / Configuration.ParticlesPerSecond) * particlesToEmit.NumParticles;
+                        _timeSinceEmission -= oneOverPPS * particlesToEmit.NumParticles;
 
                         // Add particles to simulation
                         Simulation.AddParticles(ref particlesToEmit);
@@ -101,6 +103,7 @@ namespace GameClay.Dust
             set
             {
                 _seed = value;
+                // RandomSource needs new seed
             }
         }
 
@@ -120,11 +123,11 @@ namespace GameClay.Dust
         #endregion
 
         #region Properties
-        public EmitterConfiguration Configuration
+        public IParameters Parameters
         {
             get
             {
-                return _configuration;
+                return _parameters;
             }
         }
 
@@ -156,25 +159,46 @@ namespace GameClay.Dust
         /// </remarks>
         /// 
         /// <param name="numParticlesToEmit"> The number of particles requested for emission </param>
+        /// <param name="oneOverPPS"> A value which does not need to be recomputed, and is needed in most emitters (1.0 / ParticlesPerSecond) </param>
+        /// <param name="dt"> The time, in seconds, since the last call to AdvanceTime(). </param>
+        /// <param name="pt"> A normalized value which is to used by the Emitter as an interpolation parameter. </param>
         /// <param name="particlesToEmit"> A <see cref="ISystemData"/> full of particles to add to the <see cref="ISimulation"/>. </param>
-        protected abstract void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit);
+        protected abstract void _EmitParticles(int numParticlesToEmit, float oneOverPPS, float dt, float pt, out ISystemData particlesToEmit);
 
 
-        public BaseEmitter()
+        public BaseEmitter(IParameters parameters)
         {
             _timeSinceEmission = 0;
-            _configuration = null;
+            _seed = 0;
+            _parameters = parameters;
             _randomSource = new System.Random(Seed);
+            	
+            // Get the delegates we need from the parameters
+            _ParticlesPerSecond = Parameters.GetParameterDelegate<float>("ParticlesPerSecond");
+            _IsPersistent = Parameters.GetParameterDelegate<bool>("Persistent");
+            _EmitOnSurfaceOnly = Parameters.GetParameterDelegate<bool>("EmitOnSurfaceOnly");
+            
+            _InitialMass = Parameters.GetParameterDelegate<float>("InitialMass");
+            _InitialLifespan = Parameters.GetParameterDelegate<float>("InitialLifespan");
+            _InitialSpeed = Parameters.GetParameterDelegate<float>("InitialSpeed");
         }
 
         #region Data
         protected float _timeSinceEmission;
-        protected EmitterConfiguration _configuration;
+        protected IParameters _parameters;
         protected System.Random _randomSource;
         protected bool _active;
         protected int _seed;
         protected ISimulation _simulation;
         protected object _transform;
+        	
+        protected ParameterDelegate<float> _ParticlesPerSecond;
+        protected ParameterDelegate<bool> _IsPersistent;
+        protected ParameterDelegate<bool> _EmitOnSurfaceOnly;
+    
+        protected ParameterDelegate<float> _InitialMass;
+        protected ParameterDelegate<float> _InitialLifespan;
+        protected ParameterDelegate<float> _InitialSpeed;
         #endregion
     }
 }
