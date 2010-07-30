@@ -16,75 +16,10 @@
 namespace GameClay.Dust
 {
 
-    public class BoxEmitterConfiguration : EmitterConfiguration
-    {
-
-        #region Properties
-        public float Width
-        {
-            get
-            {
-                return _width;
-            }
-            set
-            {
-                _width = value;
-            }
-        }
-
-        public float Height
-        {
-            get
-            {
-                return _height;
-            }
-            set
-            {
-                _height = value;
-            }
-        }
-
-        public float Depth
-        {
-            get
-            {
-                return _depth;
-            }
-            set
-            {
-                _depth = value;
-            }
-        }
-        #endregion
-
-        public BoxEmitterConfiguration()
-            : base()
-        {
-            _width = 1.0f;
-            _height = 1.0f;
-            _depth = 1.0f;
-        }
-
-        #region Data
-        protected float _width;
-        protected float _height;
-        protected float _depth;
-        #endregion
-
-    }
-
     public class BoxEmitter : BaseEmitter
     {
 
-        public BoxEmitterConfiguration BoxConfiguration
-        {
-            get
-            {
-                return _boxConfiguration;
-            }
-        }
-
-        protected override void _EmitParticles(int numParticlesToEmit, out ISystemData particlesToEmit)
+        protected override void _EmitParticles(int numParticlesToEmit, float oneOverPPS, float dt, float pt, out ISystemData particlesToEmit)
         {
             // TODO: Pool this stuff
             if (_particlesToEmit.MaxNumParticles < numParticlesToEmit)
@@ -93,16 +28,20 @@ namespace GameClay.Dust
             int numRemainder = numParticlesToEmit;
             const int numBatches = 0;
 
+            float initialMass = _InitialMass(pt);
+            float initialSpeed = _InitialSpeed(pt);
+            float initialLifespan = _InitialLifespan(pt);
+            
+            bool emitOnSurfaceOnly = _EmitOnSurfaceOnly(pt);
+
             // Some constants to make life easier and faster
-            float twoWidth = BoxConfiguration.Width * 2.0f;
-            float twoHeight = BoxConfiguration.Height * 2.0f;
-            float twoDepth = BoxConfiguration.Depth * 2.0f;
-
-            float negWidth = -BoxConfiguration.Width;
-            float negHeight = -BoxConfiguration.Height;
-            float negDepth = -BoxConfiguration.Depth;
-
-            float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0;
+            float width = _Width(pt);
+            float height = _Height(pt);
+            float depth = _Depth(pt);
+            
+            float twoWidth = width * 2.0f;
+            float twoHeight = height * 2.0f;
+            float twoDepth = depth * 2.0f;
 
             // Surface-only mode modulo division value
             int planeMod = Simulation.Is2D ? 2 : 3;
@@ -112,26 +51,26 @@ namespace GameClay.Dust
             for (int i = 0; i < numRemainder; i++)
             {
                 // Get random position
-                float posX = (float)(RandomSource.NextDouble() - 0.5) * twoWidth;
-                float posY = (float)(RandomSource.NextDouble() - 0.5) * twoHeight;
-                float posZ = (float)(RandomSource.NextDouble() - 0.5) * twoDepth;
+                float posX = ((float)(RandomSource.NextDouble()) - 0.5f) * twoWidth;
+                float posY = ((float)(RandomSource.NextDouble()) - 0.5f) * twoHeight;
+                float posZ = ((float)(RandomSource.NextDouble()) - 0.5f) * twoDepth;
 
                 // If this emitter is supposed to emit only on the surface
                 // do the needed clipping
-                if (BoxConfiguration.EmitOnSurfaceOnly)
+                if (emitOnSurfaceOnly)
                 {
                     switch (RandomSource.Next() % planeMod)
                     {
                         case 0:
-                            posX = posX < 0.0f ? negWidth : _boxConfiguration.Width;
+                            posX = posX < 0.0f ? -width : width;
                             break;
 
                         case 1:
-                            posY = posY < 0.0f ? negHeight : _boxConfiguration.Height;
+                            posY = posY < 0.0f ? -height : height;
                             break;
 
                         case 2:
-                            posZ = posZ < 0.0f ? negDepth : _boxConfiguration.Depth;
+                            posZ = posZ < 0.0f ? -depth : depth;
                             break;
                     }
                 }
@@ -148,9 +87,9 @@ namespace GameClay.Dust
                 float velZ = posZ / len;
 
                 // Scale by speed
-                velX *= Configuration.InitialSpeed;
-                velY *= Configuration.InitialSpeed;
-                velZ *= Configuration.InitialSpeed;
+                velX *= initialSpeed;
+                velY *= initialSpeed;
+                velZ *= initialSpeed;
 
                 // Avoid clumping by doing some pre-simulation
                 float preSimTime = (i + 1) * oneOverPPS;
@@ -172,10 +111,10 @@ namespace GameClay.Dust
                 _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ;
 
                 // Store out lifespan and mass
-                float lifespan = Configuration.InitialLifespan - preSimTime;
+                float lifespan = initialLifespan - preSimTime;
                 _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
                 _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
-                _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
+                _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass;
             }
 
             // Assign number of particles
@@ -185,19 +124,22 @@ namespace GameClay.Dust
             particlesToEmit = _particlesToEmit;
         }
 
-        public BoxEmitter()
-            : base()
+        public BoxEmitter(IParameters parameters)
+            : base(parameters)
         {
             _particlesToEmit = new SoAData(200);
-
-            // Replace the base configuration with our specialized one
-            _boxConfiguration = new BoxEmitterConfiguration();
-            _configuration = (EmitterConfiguration)_boxConfiguration;
+            
+            _Width = Parameters.GetParameterDelegate<float>("Width");
+            _Height = Parameters.GetParameterDelegate<float>("Height");
+            _Depth = Parameters.GetParameterDelegate<float>("Depth");
         }
 
         #region Data
         protected SoAData _particlesToEmit;
-        protected BoxEmitterConfiguration _boxConfiguration;
+        
+        protected ParameterDelegate<float> _Width;
+        protected ParameterDelegate<float> _Height;
+        protected ParameterDelegate<float> _Depth;
         #endregion
     }
 }
