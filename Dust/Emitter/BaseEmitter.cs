@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-namespace GameClay.Dust
+namespace GameClay.Dust.Emitter
 {
     /// <summary>
     /// A base class for an <see cref="IEmitter"/> implementation.
