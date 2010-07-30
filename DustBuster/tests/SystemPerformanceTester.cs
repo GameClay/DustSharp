@@ -22,7 +22,7 @@ namespace GameClay.DustBuster
 
     public class SystemPerformanceTester : ITest
     {
-        const int NumTestParticles = 3200000;
+        const int NumTestParticles = 10000;
         const float TimeStep = 0.01f;
         const int NumTimesToRunTest = 50;
 
@@ -31,19 +31,21 @@ namespace GameClay.DustBuster
         {
             List<Dust.ISimulation> simulation = new List<Dust.ISimulation>();
 
-            simulation.Add(new Dust.StandardSimulation(NumTestParticles));
-            //simulation.Add(new Dust.UnsafeSimulation(NumTestParticles));
-            //simulation.Add(new Dust.UnsafeThreadedSimulation(NumTestParticles));
-            //simulation.Add(new Dust.HorribleSimulation(NumTestParticles));
+            simulation.Add(new Dust.Simulation.StandardSimulation(NumTestParticles));
+            //simulation.Add(new Dust.Simulation.UnsafeSimulation(NumTestParticles));
+            //simulation.Add(new Dust.Simulation.UnsafeThreadedSimulation(NumTestParticles));
+            //simulation.Add(new Dust.Simulation.HorribleSimulation(NumTestParticles));
 #if DUST_MONO
             simulation.Add(new Dust.Mono.SimdSimulation(NumTestParticles));
             simulation.Add(new Dust.Mono.UnsafeSimdSimulation(NumTestParticles));
 #endif
 
             // Blast out some particles into the simulations
-            Dust.BoxEmitter emitter = new Dust.BoxEmitter();
-            emitter.Configuration.ParticlesPerSecond = NumTestParticles;
-            emitter.Configuration.Persistent = false;
+            Dust.Parameters config = new Dust.Parameters();
+            config.SetParameter("ParticlesPerSecond", NumTestParticles);
+            config.SetParameter("Persistent", false);
+            Dust.Emitter.BoxEmitter emitter = new Dust.Emitter.BoxEmitter(config);
+
             for (int i = 0; i < simulation.Count; i++)
             {
                 emitter.Active = true;
@@ -67,7 +69,7 @@ namespace GameClay.DustBuster
                     testTimer.Start();
                     simulation[j].AdvanceTime(TimeStep);
                     testTimer.Stop();
-                    simulationResults[j, i] = (float)testTimer.ElapsedTicks * 1000 / (float)Stopwatch.Frequency;
+                    simulationResults[j, i] = testTimer.ElapsedTicks * 1000 / (float)Stopwatch.Frequency;
                 }
             }
 
