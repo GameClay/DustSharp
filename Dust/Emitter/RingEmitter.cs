@@ -16,7 +16,7 @@
 namespace GameClay.Dust.Emitter
 {
 
-    public class RingEmitter : BaseEmitter
+    public class SphereEmitter : BaseEmitter
     {
 
         protected override void _EmitParticles(int numParticlesToEmit, float oneOverPPS, float dt, float pt, out ISystemData particlesToEmit)
@@ -33,6 +33,7 @@ namespace GameClay.Dust.Emitter
             float initialLifespan = _InitialLifespan(pt);
             
             bool emitOnSurfaceOnly = _EmitOnSurfaceOnly(pt);
+            bool emitRingOnly = _EmitRingOnly(pt);
 
             float radius = _Radius(pt);
             
@@ -43,7 +44,7 @@ namespace GameClay.Dust.Emitter
                 float angle = (float)(RandomSource.NextDouble()) * MathF.TwoPI;
                 float posX = MathF.Cos(angle) * radius;
                 float posY = MathF.Sin(angle) * radius;
-                float posZ = 0f;
+                float posZ = emitRingOnly ? 0.0f : MathF.Sin((float)(RandomSource.NextDouble()) * MathF.TwoPI) * radius;
                 
                 // If this emitter is supposed to emit only on the surface
                 // don't need to get a random distance
@@ -51,6 +52,7 @@ namespace GameClay.Dust.Emitter
                     float distance = (float)RandomSource.NextDouble();
                     posX *= distance;
                     posY *= distance;
+                    posZ *= distance;
                 }
                 
                 // Transform position
@@ -101,17 +103,19 @@ namespace GameClay.Dust.Emitter
             particlesToEmit = _particlesToEmit;
         }
 
-        public RingEmitter(IParameters parameters) 
+        public SphereEmitter(IParameters parameters) 
             : base(parameters)
         {
             _particlesToEmit = new SoAData(200);
             
             _Radius = Parameters.GetParameterDelegate<float>("Radius");
+            _EmitRingOnly = Parameters.GetParameterDelegate<bool>("EmitRingOnly");
         }
 
         #region Data
         protected SoAData _particlesToEmit;
         protected ParameterDelegate<float> _Radius;
+        protected ParameterDelegate<bool> _EmitRingOnly;
         #endregion
     }
 }
