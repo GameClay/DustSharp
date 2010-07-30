@@ -65,7 +65,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Math\Types.cs" />
+    <Compile Include="Emitter\BaseEmitter.cs" />
+    <Compile Include="Emitter\BoxEmitter.cs" />
+    <Compile Include="Emitter\SphereEmitter.cs" />
+    <Compile Include="IParameters.cs" />
+    <Compile Include="MathF\Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulation\ConstantSimulation.cs" />
     <Compile Include="IEffecter.cs" />
@@ -73,14 +77,10 @@
     <Compile Include="ISimulation.cs" />
     <Compile Include="ISystemData.cs" />
     <Compile Include="Core\SoAData.cs" />
-    <Compile Include="Emission\BoxEmitter.cs" />
-    <Compile Include="Emission\EmitterConfiguration.cs" />
     <Compile Include="Simulation\HorribleSimulation.cs" />
     <Compile Include="Simulation\MonoSimdSimulation.cs" />
     <Compile Include="Simulation\UnmanagedSimulation.cs" />
     <Compile Include="Simulation\StandardSimulation.cs" />
-    <Compile Include="Emission\RingEmitter.cs" />
-    <Compile Include="Emission\BaseEmitter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
