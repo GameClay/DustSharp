@@ -173,12 +173,12 @@ namespace GameClay.Dust.Emitter
             _seed = 0;
             _parameters = parameters;
             _randomSource = new System.Random(Seed);
-            	
+
             // Get the delegates we need from the parameters
             _ParticlesPerSecond = Parameters.GetParameterDelegate<int>("ParticlesPerSecond");
             _IsPersistent = Parameters.GetParameterDelegate<bool>("Persistent");
             _EmitOnSurfaceOnly = Parameters.GetParameterDelegate<bool>("EmitOnSurfaceOnly");
-            
+
             _InitialMass = Parameters.GetParameterDelegate<float>("InitialMass");
             _InitialLifespan = Parameters.GetParameterDelegate<float>("InitialLifespan");
             _InitialSpeed = Parameters.GetParameterDelegate<float>("InitialSpeed");
