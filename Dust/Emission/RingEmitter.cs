@@ -16,26 +16,10 @@
 namespace GameClay.Dust
 {
 
-    public class RingEmitterConfiguration : EmitterConfiguration
-    {
-
-        public RingEmitterConfiguration () : base()
-        {
-        }
-        
-        #region Data
-        
-        #endregion
-        
-    }
-
     public class RingEmitter : BaseEmitter
     {
-        public RingEmitterConfiguration RingConfiguration {
-            get { return _ringConfiguration; }
-        }
 
-        protected override void _EmitParticles (int numParticlesToEmit, out ISystemData particlesToEmit)
+        protected override void _EmitParticles(int numParticlesToEmit, float oneOverPPS, float dt, float pt, out ISystemData particlesToEmit)
         {
             // TODO: Pool this stuff
             if (_particlesToEmit.MaxNumParticles < numParticlesToEmit)
@@ -43,23 +27,28 @@ namespace GameClay.Dust
 
             const int numBatches = 0;
             int numRemainder = numParticlesToEmit;
+            
+            float initialMass = _InitialMass(pt);
+            float initialSpeed = _InitialSpeed(pt);
+            float initialLifespan = _InitialLifespan(pt);
+            
+            bool emitOnSurfaceOnly = _EmitOnSurfaceOnly(pt);
 
-            float oneOverPPS = Configuration.Persistent ? 1.0f / Configuration.ParticlesPerSecond : 0.0f;
-            float radius = 1f;
+            float radius = _Radius(pt);
             
             // Emit remaining particles individually
             int numBatchesTimesFour = numBatches * 4;
             for (int i = 0; i < numRemainder; i++) {
                 // Calculate pos on circle with a random angle
-                float angle = (float)(RandomSource.NextDouble () * Math.TwoPI);
-                float posX = (float)Math.Cos (angle) * radius;
-                float posY = (float)Math.Sin (angle) * radius;
+                float angle = (float)(RandomSource.NextDouble()) * Math.TwoPI;
+                float posX = Math.Cos(angle) * radius;
+                float posY = Math.Sin(angle) * radius;
                 float posZ = 0f;
                 
                 // If this emitter is supposed to emit only on the surface
                 // don't need to get a random distance
-                if (!Configuration.EmitOnSurfaceOnly) {
-                    float distance = (float)RandomSource.NextDouble ();
+                if (!emitOnSurfaceOnly) {
+                    float distance = (float)RandomSource.NextDouble();
                     posX *= distance;
                     posY *= distance;
                 }
@@ -68,7 +57,7 @@ namespace GameClay.Dust
                 // TODO: Matrix and transform stuff
                 
                 // Length
-                float len = (float)Math.Sqrt ((posX * posX) + (posY * posY) + (posZ * posZ));
+                float len = (float)Math.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
                 
                 // Normalize
                 float velX = posX / len;
@@ -76,9 +65,9 @@ namespace GameClay.Dust
                 float velZ = posZ / len;
                 
                 // Scale by speed
-                velX *= Configuration.InitialSpeed;
-                velY *= Configuration.InitialSpeed;
-                velZ *= Configuration.InitialSpeed;
+                velX *= initialSpeed;
+                velY *= initialSpeed;
+                velZ *= initialSpeed;
                 
                 // Avoid clumping by doing some pre-simulation
                 float preSimTime = (i + 1) * oneOverPPS;
@@ -99,10 +88,10 @@ namespace GameClay.Dust
                 _particlesToEmit._velocityStreamZ[numBatchesTimesFour + i] = velZ;
                 
                 // Store out lifespan and mass
-                float lifespan = Configuration.InitialLifespan - preSimTime;
+                float lifespan = initialLifespan - preSimTime;
                 _particlesToEmit._lifespanStream[numBatchesTimesFour + i] = lifespan;
                 _particlesToEmit._timeRemainingStream[numBatchesTimesFour + i] = lifespan;
-                _particlesToEmit._massStream[numBatchesTimesFour + i] = Configuration.InitialMass;
+                _particlesToEmit._massStream[numBatchesTimesFour + i] = initialMass;
             }
             
             // Assign number of particles
@@ -112,18 +101,17 @@ namespace GameClay.Dust
             particlesToEmit = _particlesToEmit;
         }
 
-        public RingEmitter () : base()
+        public RingEmitter(IParameters parameters) 
+            : base(parameters)
         {
-            _particlesToEmit = new SoAData (200);
+            _particlesToEmit = new SoAData(200);
             
-            // Replace the base configuration with our specalized one
-            _ringConfiguration = new RingEmitterConfiguration ();
-            _configuration = (EmitterConfiguration)_ringConfiguration;
+            _Radius = Parameters.GetParameterDelegate<float>("Radius");
         }
 
         #region Data
         protected SoAData _particlesToEmit;
-        protected RingEmitterConfiguration _ringConfiguration;
+        protected ParameterDelegate<float> _Radius;
         #endregion
     }
 }

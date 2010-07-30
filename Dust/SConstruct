@@ -13,7 +13,7 @@ properties = Glob('Properties/*.cs', strings=True)
 simulations = Glob('Simulation/*.cs', strings=True)
 
 # Code which is for test purposes only
-test_code = ['Simulation/HorribleSimulation.cs'] + ['Emission/RingEmitter.cs']
+test_code = ['Simulation/HorribleSimulation.cs']
 
 # Todo: Optional XNA support?
 xna_code = ['']
