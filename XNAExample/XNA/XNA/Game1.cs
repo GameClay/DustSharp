@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 
 using GameClay.Dust;
+using GameClay.Dust.Emitter;
+using GameClay.Dust.Simulation;
 
 namespace XNAExample
 {
@@ -24,7 +26,7 @@ namespace XNAExample
         StandardSimulation simulation;
         BoxEmitter emitter;
         Texture2D texture;
-        RingEmitter emitter2;
+        SphereEmitter emitter2;
         int frameRate = 0;
         int frameCounter = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
@@ -35,9 +37,6 @@ namespace XNAExample
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            simulation = new StandardSimulation(20000);
-            emitter = new BoxEmitter();
-            emitter2 = new RingEmitter();
         }
 
         /// <summary>
@@ -49,24 +48,34 @@ namespace XNAExample
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            simulation = new StandardSimulation(20000);
             simulation.Is2D = true;
 
+            Parameters emitterConfig = new Parameters();
+            emitterConfig.SetParameter("ParticlesPerSecond", 20);
+            emitterConfig.SetParameter("InitialSpeed", 30.0f);
+            emitterConfig.SetParameter("InitialLifespan", 4.0f);
+            emitterConfig.SetParameter("EmitOnSurfaceOnly", true);
+            emitterConfig.SetParameter("Width", 200.0f);
+            emitterConfig.SetParameter("Height", 200.0f);
+            emitterConfig.SetParameter("Persistent", true);
+
+            Parameters emitterConfig2 = new Parameters();
+            emitterConfig2.SetParameter("ParticlesPerSecond", 20);
+            emitterConfig2.SetParameter("InitialSpeed", 30.0f);
+            emitterConfig2.SetParameter("InitialLifespan", 4.0f);
+            emitterConfig2.SetParameter("Radius", 1.0f);
+            emitterConfig2.SetParameter("EmitOnSurfaceOnly", true);
+            emitterConfig2.SetParameter("EmitRingOnly", true);
+            emitterConfig2.SetParameter("Persistent", true);
+
+            emitter = new BoxEmitter(emitterConfig);
             emitter.Simulation = simulation;
             emitter.Active = true;
-            emitter.Configuration.ParticlesPerSecond = 200;
-            emitter.Configuration.InitialSpeed = 30;
-            emitter.Configuration.InitialLifespan = 9;
-            emitter.Configuration.EmitOnSurfaceOnly = true;
 
-            emitter.BoxConfiguration.Width = 200;
-            emitter.BoxConfiguration.Height = 200;
-
+            emitter2 = new SphereEmitter(emitterConfig2);
             emitter2.Simulation = simulation;
             emitter2.Active = true;
-            emitter2.Configuration.ParticlesPerSecond = 200;
-            emitter2.Configuration.InitialSpeed = 30;
-            emitter2.Configuration.InitialLifespan = 9;
-            emitter2.Configuration.EmitOnSurfaceOnly = true;
 
             base.Initialize();
         }
