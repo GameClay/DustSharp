@@ -26,6 +26,10 @@ namespace GameClay.Dust
     /// <returns> The value of the parameter with respect to t. </returns>
     public delegate T ParameterDelegate<T>(float t = 0.0f);
 
+    /// <summary>
+    /// Provides a thin wrapper around a collection of parameters which can
+    /// change over time.
+    /// </summary>
     public interface IParameters
     {
         /// <summary>
