@@ -42,15 +42,16 @@ namespace GameClay.Dust.Emitter
                 _timeSinceEmission += dt;
 
                 // Figure out the number of particles to emit
-                float pps = _ParticlesPerSecond(pt);
-                int numParticlesToEmit = (int)(pps * (_IsPersistent() ? _timeSinceEmission : 1.0f));
-                Active = _IsPersistent() ? Active : false;
+                int pps = _ParticlesPerSecond(pt);
+                bool persistent = _IsPersistent(pt);
+                int numParticlesToEmit = (int)(pps * (persistent ? _timeSinceEmission : 1));
+                Active = persistent ? Active : false;
 
                 // Emit particles
                 if (numParticlesToEmit > 0)
                 {
                     // Call _EmitParticles and add any resultant particles 
-                    float oneOverPPS = _IsPersistent() ? 0.0f : (1.0f / pps);
+                    float oneOverPPS = persistent ? 0.0f : (1.0f / pps);
                     ISystemData particlesToEmit = null;
                     _EmitParticles(numParticlesToEmit, oneOverPPS, dt, pt, out particlesToEmit);
 
@@ -174,7 +175,7 @@ namespace GameClay.Dust.Emitter
             _randomSource = new System.Random(Seed);
             	
             // Get the delegates we need from the parameters
-            _ParticlesPerSecond = Parameters.GetParameterDelegate<float>("ParticlesPerSecond");
+            _ParticlesPerSecond = Parameters.GetParameterDelegate<int>("ParticlesPerSecond");
             _IsPersistent = Parameters.GetParameterDelegate<bool>("Persistent");
             _EmitOnSurfaceOnly = Parameters.GetParameterDelegate<bool>("EmitOnSurfaceOnly");
             
@@ -191,14 +192,14 @@ namespace GameClay.Dust.Emitter
         protected int _seed;
         protected ISimulation _simulation;
         protected object _transform;
-        	
-        protected ParameterDelegate<float> _ParticlesPerSecond;
-        protected ParameterDelegate<bool> _IsPersistent;
-        protected ParameterDelegate<bool> _EmitOnSurfaceOnly;
-    
-        protected ParameterDelegate<float> _InitialMass;
-        protected ParameterDelegate<float> _InitialLifespan;
-        protected ParameterDelegate<float> _InitialSpeed;
+
+        protected System.Func<float, int> _ParticlesPerSecond;
+        protected System.Func<float, bool> _IsPersistent;
+        protected System.Func<float, bool> _EmitOnSurfaceOnly;
+
+        protected System.Func<float, float> _InitialMass;
+        protected System.Func<float, float> _InitialLifespan;
+        protected System.Func<float, float> _InitialSpeed;
         #endregion
     }
 }

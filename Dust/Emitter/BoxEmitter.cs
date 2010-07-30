@@ -136,10 +136,10 @@ namespace GameClay.Dust.Emitter
 
         #region Data
         protected SoAData _particlesToEmit;
-        
-        protected ParameterDelegate<float> _Width;
-        protected ParameterDelegate<float> _Height;
-        protected ParameterDelegate<float> _Depth;
+
+        protected System.Func<float, float> _Width;
+        protected System.Func<float, float> _Height;
+        protected System.Func<float, float> _Depth;
         #endregion
     }
 }

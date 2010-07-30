@@ -18,15 +18,6 @@ using System.Collections.Generic;
 namespace GameClay.Dust
 {
     /// <summary>
-    /// Bound to code which provides the value of a parameter which
-    /// can change over time.
-    /// </summary>
-    ///
-    /// <param name="t"> A normalized interpolation value at which to evaluate the parameter. </param>
-    /// <returns> The value of the parameter with respect to t. </returns>
-    public delegate T ParameterDelegate<T>(float t = 0.0f);
-
-    /// <summary>
     /// Provides a thin wrapper around a collection of parameters which can
     /// change over time.
     /// </summary>
@@ -40,9 +31,13 @@ namespace GameClay.Dust
         /// This method should not be used each time a parameter is required.
         /// Instead, get the delegate for the parameter(s) required and then
         /// invoke as needed.
+        /// 
+        /// This method must never return null. If a delegate is not found, or is
+        /// not valid, for some reason, the delegate should return 'new T()'.
         /// </remarks>
         ///
         /// <param name="parameterName"> The name of the parameter being requested. </param>
-        ParameterDelegate<T> GetParameterDelegate<T>(string parameterName);
+        /// <returns> A delegate which will return a valid instance of T. </returns>
+        System.Func<float, T> GetParameterDelegate<T>(string parameterName) where T : new();
     }
 }

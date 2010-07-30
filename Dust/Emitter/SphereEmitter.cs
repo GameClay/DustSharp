@@ -59,7 +59,7 @@ namespace GameClay.Dust.Emitter
                 // TODO: Matrix and transform stuff
                 
                 // Length
-                float len = (float)MathF.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
+                float len = MathF.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
                 
                 // Normalize
                 float velX = posX / len;
@@ -114,8 +114,8 @@ namespace GameClay.Dust.Emitter
 
         #region Data
         protected SoAData _particlesToEmit;
-        protected ParameterDelegate<float> _Radius;
-        protected ParameterDelegate<bool> _EmitRingOnly;
+        protected System.Func<float, float> _Radius;
+        protected System.Func<float, bool> _EmitRingOnly;
         #endregion
     }
 }
