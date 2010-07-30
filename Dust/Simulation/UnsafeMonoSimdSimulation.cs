@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 using Mono.Simd;
 
-namespace GameClay.Dust.Mono
+namespace GameClay.Dust.Simulation.Mono
 {
     /// <summary>
     /// The standard simulation

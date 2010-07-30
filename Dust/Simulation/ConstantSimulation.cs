@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-namespace GameClay.Dust
+namespace GameClay.Dust.Simulation
 {
     /// <summary>
     /// This is a simple, single-buffered simulation which simply advances and

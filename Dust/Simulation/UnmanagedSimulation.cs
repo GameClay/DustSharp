@@ -15,7 +15,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace GameClay.Dust
+namespace GameClay.Dust.Simulation
 {
 
     public class UnmanagedSimulation : ISimulation
