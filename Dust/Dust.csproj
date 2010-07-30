@@ -65,6 +65,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Parameters.cs" />
     <Compile Include="Emitter\BaseEmitter.cs" />
     <Compile Include="Emitter\BoxEmitter.cs" />
     <Compile Include="Emitter\SphereEmitter.cs" />
