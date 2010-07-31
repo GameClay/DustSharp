@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>GameClay.DustBuster</RootNamespace>
-    <AssemblyName>DustBuster</AssemblyName>
+    <ProjectGuid>{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Dust_Mono_Mono</RootNamespace>
+    <AssemblyName>GameClay.Dust.Mono</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -16,41 +16,35 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;DUST_MONO</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DUST_MONO</DefineConstants>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Mono.Simd" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="ITest.cs" />
-    <Compile Include="tests\SoADataTest.cs" />
+    <Compile Include="Simulation\MonoSimdSimulation.cs" />
+    <Compile Include="Simulation\UnsafeMonoSimdSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="tests\SystemPerformanceTester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dust\Dust_Mono.csproj">
+    <ProjectReference Include="..\Dust_Mono.csproj">
       <Project>{0E44AB3B-39B3-4E9C-8611-D75922AFF759}</Project>
       <Name>Dust_Mono</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dust\Mono\Dust_Mono_Mono.csproj">
-      <Project>{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}</Project>
-      <Name>Dust_Mono_Mono</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 </Project>

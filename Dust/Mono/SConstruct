@@ -1,0 +1,24 @@
+from SCons.Util import flatten
+import os
+
+Import('env')
+if not env: env = Environment(tools=['default', 'mono'])
+
+# GameClay.Dust.Mono.dll files
+simulations = Glob('Simulation/*.cs', strings=True)
+
+# Excluded files
+excluded_files = []
+
+# Assemble all the source files for this configuration
+dust_mono_files = simulations
+dust_mono_files = [f for f in dust_mono_files if f not in excluded_files]
+
+# Build the output library
+dust_mono_cli = env.CLILibrary('GameClay.Dust.Mono.dll',
+	dust_mono_files,
+	CSCLIBFLAGS=['-unsafe+'],
+	CILLIBPATH=['Dust/'],                   # Relative to the CWD where scons was executed
+	CILLIBS=['Mono.Simd', 'GameClay.Dust']
+)
+Return(['dust_mono_cli'])

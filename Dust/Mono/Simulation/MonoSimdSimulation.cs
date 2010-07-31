@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-#define DUST_MONO
-#if DUST_MONO
 using System.Collections.Generic;
 using Mono.Simd;
 
@@ -123,4 +121,3 @@ namespace GameClay.Dust.Mono.Simulation
         #endregion
     }
 }
-#endif

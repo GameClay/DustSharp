@@ -1,7 +1,8 @@
 from SCons.Util import flatten
 import os
 
-env = Environment(tools=['default', 'mono'])
+Import('env')
+if not env: env = Environment(tools=['default', 'mono'])
 
 # GameClay.Dust.dll files
 core = Glob('*.cs', strings=True) + Glob('Core/*.cs', strings=True)
@@ -28,3 +29,7 @@ dust_cli = env.CLILibrary('GameClay.Dust.dll',
 	CSCLIBFLAGS=['-unsafe+']
 )
 env.Install('lib/', dust_cli)
+
+# Build GameClay.Dust.Mono.dll
+dust_mono_cli = SConscript(['Mono/SConstruct'], ['env'])
+env.Install('lib/', dust_mono_cli)

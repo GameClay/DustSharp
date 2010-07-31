@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust_Mono", "Dust\Dust_Mono
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustBuster_Mono", "DustBuster\DustBuster_Mono.csproj", "{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust_Mono_Mono", "Dust\Mono\Dust_Mono_Mono.csproj", "{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = DustBuster\DustBuster_Mono.csproj

@@ -22,7 +22,7 @@ namespace GameClay.DustBuster
 
     public class SystemPerformanceTester : ITest
     {
-        const int NumTestParticles = 10000;
+        const int NumTestParticles = 50000;
         const float TimeStep = 0.01f;
         const int NumTimesToRunTest = 50;
 
@@ -33,12 +33,9 @@ namespace GameClay.DustBuster
 
             simulation.Add(new Dust.Simulation.StandardSimulation(NumTestParticles));
             //simulation.Add(new Dust.Simulation.UnsafeSimulation(NumTestParticles));
-            //simulation.Add(new Dust.Simulation.UnsafeThreadedSimulation(NumTestParticles));
             //simulation.Add(new Dust.Simulation.HorribleSimulation(NumTestParticles));
-#if DUST_MONO
-            //simulation.Add(new Dust.Mono.SimdSimulation(NumTestParticles));
-            //simulation.Add(new Dust.Mono.UnsafeSimdSimulation(NumTestParticles));
-#endif
+            simulation.Add(new Dust.Mono.Simulation.SimdSimulation(NumTestParticles));
+            simulation.Add(new Dust.Mono.Simulation.UnsafeSimdSimulation(NumTestParticles));
 
             // Blast out some particles into the simulations
             Dust.Parameters config = new Dust.Parameters();

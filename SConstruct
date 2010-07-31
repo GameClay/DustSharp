@@ -1,1 +1,2 @@
-o = SConscript(['Dust/SConstruct'])
+env = Environment(tools=['default', 'mono'])
+o = SConscript(['Dust/SConstruct'], 'env')
