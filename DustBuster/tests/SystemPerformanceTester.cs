@@ -33,7 +33,6 @@ namespace GameClay.DustBuster
 
             simulation.Add(new Dust.Simulation.StandardSimulation(NumTestParticles));
             //simulation.Add(new Dust.Simulation.UnsafeSimulation(NumTestParticles));
-            //simulation.Add(new Dust.Simulation.HorribleSimulation(NumTestParticles));
             simulation.Add(new Dust.Mono.Simulation.SimdSimulation(NumTestParticles));
             simulation.Add(new Dust.Mono.Simulation.UnsafeSimdSimulation(NumTestParticles));
 
