@@ -3,7 +3,7 @@ import os
 
 env = Environment(tools=['default', 'mono'])
 
-# 
+# GameClay.Dust.dll files
 core = Glob('*.cs', strings=True) + Glob('Core/*.cs', strings=True)
 effecters = Glob('Effecter/*.cs', strings=True)
 emitters = Glob('Emitter/*.cs', strings=True)
@@ -15,27 +15,16 @@ simulations = Glob('Simulation/*.cs', strings=True)
 # Code which is for test purposes only
 test_code = ['Simulation/HorribleSimulation.cs']
 
-# Todo: Optional XNA support?
-xna_code = ['']
-
-# Todo: Optional unsafe code compile flag
-# Code which requires the unsafe compile option
-unsafe_code = Glob('Simulation/Unsafe*.cs', strings=True) + Glob('Simulation/Unmanaged*.cs', strings=True)
-
-# Todo: Optional Mono.Simd support
-# Code which requires the Mono.Simd library
-simd_code = ['Simulation/MonoSimdSimulation.cs']
-
 # Excluded files
-excluded_files = effecters + parameters + test_code + unsafe_code + simd_code + xna_code
+excluded_files = test_code
 
 # Assemble all the source files for this configuration
-dust_files = core + emitters + math + simulations
+dust_files = core + effecters + emitters + math + parameters + properties + simulations
 dust_files = [f for f in dust_files if f not in excluded_files]
 
 # Build the output library
 dust_cli = env.CLILibrary('GameClay.Dust.dll',
 	dust_files,
-	CSCLIBFLAGS=[]
+	CSCLIBFLAGS=['-unsafe+']
 )
-Return('dust_cli')
+env.Install('lib/', dust_cli)
