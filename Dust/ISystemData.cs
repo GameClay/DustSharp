@@ -25,13 +25,35 @@ namespace GameClay.Dust
     /// </remarks>
     public enum SystemDataFlags : int
     {
-        ManagedData     = 0,  // Mutually exclusive with UnmanageData,
+        ManagedData     = 0,  // Mutually exclusive with UnmanagedData
         UnmanagedData   = 1,
         Vector3Position = 2,  // Vectorized position, with bit 4 clear
         Vector3Velocity = 4,  // Vectorized velocity, with bit 5 clear
         Vector4Position = 10, // 8 + 2, indicating both vectorized position and 4-component vector type
         Vector4Velocity = 20, // 16 + 4, indicating both vectorized velocity and 4-component vector type
-        FullAoSData     = 32, // This flag really only exists to yell at the user
+        AlignedMemory   = 32, // The stream memory is aligned (only useful in unmanaged case)
+    }
+
+    /// <summary>
+    /// Internal extension methods for working with enum flags
+    /// </summary>
+    internal static class EnumerationExtensions
+    {
+        /// <summary>
+        /// Checks for the presence of a value.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// <see cref="T"/> must be castable to an int or an exception will be thrown.
+        /// </remarks>
+        ///
+        /// <param name="type"> Any instance of <see cref="System.Enum"/> </param>
+        /// <param name="value"> The value to be tested. </param>
+        /// <returns> True if the enumeration instance contains a particular flag. </returns>
+        public static bool Has<T>(this System.Enum type, T value)
+        {
+            return (((int)(object)type & (int)(object)value) == (int)(object)value);
+        }
     }
 
     /// <summary>
