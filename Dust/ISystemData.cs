@@ -16,6 +16,25 @@
 namespace GameClay.Dust
 {
     /// <summary>
+    /// Flags used to indicate the memory layout of the underlying data.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// These are intended for use as optimization hints, and not
+    /// as functionality requirements.
+    /// </remarks>
+    public enum SystemDataFlags : int
+    {
+        ManagedData     = 0,  // Mutually exclusive with UnmanageData,
+        UnmanagedData   = 1,
+        Vector3Position = 2,  // Vectorized position, with bit 4 clear
+        Vector3Velocity = 4,  // Vectorized velocity, with bit 5 clear
+        Vector4Position = 10, // 8 + 2, indicating both vectorized position and 4-component vector type
+        Vector4Velocity = 20, // 16 + 4, indicating both vectorized velocity and 4-component vector type
+        FullAoSData     = 32, // This flag really only exists to yell at the user
+    }
+
+    /// <summary>
     /// Structure containing the streams of data which describe the state of the
     /// particle system.
     /// </summary>
@@ -102,6 +121,11 @@ namespace GameClay.Dust
         /// No elements of Dust depend on, or modify the elements contained in <see cref="UserData"/>.
         /// </remarks>
         object[] UserData { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        SystemDataFlags Flags { get; }
 
         /// <summary>
         /// Copies data from a source ISystemData in to this instance.

@@ -117,6 +117,14 @@ namespace GameClay.Dust
             }
         }
 
+        public SystemDataFlags Flags
+        {
+            get
+            {
+                return SystemDataFlags.ManagedData;
+            }
+        }
+
         public int CopyFrom(int offset, ref ISystemData src, int srcOffset, int count)
         {
             int capacityLeft = MaxNumParticles - NumParticles;
