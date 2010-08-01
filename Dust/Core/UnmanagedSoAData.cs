@@ -37,7 +37,6 @@ namespace GameClay.Dust
                 if (disposing)
                 {
                     // Release managed resources
-                    _userDataStreamHdl.Free();
                 }
 
                 // Release unmanaged resources
@@ -185,11 +184,17 @@ namespace GameClay.Dust
             }
         }
 
-        public object[] UserData
+        public int[] UserData
         {
             get
             {
-                return _userDataStream;
+                if (_userDataStream_M == null || MaxNumParticles > _userDataStream_M.Length)
+                    _userDataStream_M = new int[MaxNumParticles];
+
+                if (_userDataStream != null)
+                    Marshal.Copy((System.IntPtr)_userDataStream, _userDataStream_M, 0, MaxNumParticles);
+
+                return _userDataStream_M;
             }
         }
 
@@ -230,7 +235,8 @@ namespace GameClay.Dust
                 Marshal.Copy(src.Mass, srcOffset, (System.IntPtr)(_massStream + offset), numToCopy);
 
             // UserData
-            System.Array.Copy(src.UserData, srcOffset, _userDataStream, offset, numToCopy);
+            if (_userDataStream != null)
+                Marshal.Copy(src.UserData, srcOffset, (System.IntPtr)(_userDataStream + offset), numToCopy);
 
             // Update number of particles
             (*_numParticles) += numToCopy;
@@ -268,7 +274,8 @@ namespace GameClay.Dust
         public UnmanagedSoAData(int* numParticles, int* maxNumParticles,
             float* positionStreamX, float* positionStreamY, float* positionStreamZ,
             float* lifespanStream, float* timeRemainingStream, float* massStream,
-            float* velocityStreamX, float* velocityStreamY, float* velocityStreamZ)
+            float* velocityStreamX, float* velocityStreamY, float* velocityStreamZ,
+            int* userDataStream)
         {
             _numParticles = numParticles;
             _maxNumParticles = maxNumParticles;
@@ -285,10 +292,7 @@ namespace GameClay.Dust
             _velocityStreamY = velocityStreamY;
             _velocityStreamZ = velocityStreamZ;
 
-            // Allocate and pin an array of objects. The
-            // unmanaged code should swap around the pointers.
-            _userDataStream = new object[MaxNumParticles];
-            _userDataStreamHdl = GCHandle.Alloc(_userDataStream, GCHandleType.Pinned);
+            _userDataStream = userDataStream;
 
             // Assign null to these and lazy-allocate them
             _positionStreamX_M = null;
@@ -302,6 +306,8 @@ namespace GameClay.Dust
             _velocityStreamX_M = null;
             _velocityStreamY_M = null;
             _velocityStreamZ_M = null;
+
+            _userDataStream_M = null;
         }
 
         ~UnmanagedSoAData()
@@ -325,8 +331,7 @@ namespace GameClay.Dust
         public float* _velocityStreamY;
         public float* _velocityStreamZ;
 
-        public object[] _userDataStream;
-        protected GCHandle _userDataStreamHdl;
+        public int* _userDataStream;
 
         protected float[] _positionStreamX_M;
         protected float[] _positionStreamY_M;
@@ -339,6 +344,8 @@ namespace GameClay.Dust
         protected float[] _velocityStreamX_M;
         protected float[] _velocityStreamY_M;
         protected float[] _velocityStreamZ_M;
+
+        protected int[] _userDataStream_M;
         #endregion
     }
 }

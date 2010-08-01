@@ -136,13 +136,13 @@ namespace GameClay.Dust
         float[] TimeRemaining { get; }
 
         /// <summary>
-        /// An array of arbitrary data for use in user code.
+        /// An array of arbitrary integer data associated with a particle.
         /// </summary>
         /// 
         /// <remarks>
         /// No elements of Dust depend on, or modify the elements contained in <see cref="UserData"/>.
         /// </remarks>
-        object[] UserData { get; }
+        int[] UserData { get; }
 
         /// <summary>
         ///

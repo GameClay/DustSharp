@@ -109,7 +109,7 @@ namespace GameClay.Dust
             }
         }
 
-        public object[] UserData
+        public int[] UserData
         {
             get
             {
@@ -196,7 +196,7 @@ namespace GameClay.Dust
 
             _massStream = new float[MaxNumParticles];
 
-            _userDataStream = new object[MaxNumParticles];
+            _userDataStream = new int[MaxNumParticles];
         }
 
         #region Data
@@ -216,7 +216,7 @@ namespace GameClay.Dust
 
         public float[] _massStream;
 
-        public object[] _userDataStream;
+        public int[] _userDataStream;
         #endregion
     }
 }
