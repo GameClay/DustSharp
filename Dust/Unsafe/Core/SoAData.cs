@@ -15,12 +15,12 @@
 
 using System.Runtime.InteropServices;
 
-namespace GameClay.Dust
+namespace GameClay.Dust.Unsafe
 {
     /// <summary>
     /// An ISystemData implemented as a structure of arrays.
     /// </summary>
-    public unsafe class UnmanagedSoAData : ISystemData, System.IDisposable
+    public unsafe class SoAData : ISystemData, System.IDisposable
     {
 
         #region IDisposable implementation
@@ -271,7 +271,7 @@ namespace GameClay.Dust
         }
         #endregion
 
-        public UnmanagedSoAData(int* numParticles, int* maxNumParticles,
+        public SoAData(int* numParticles, int* maxNumParticles,
             float* positionStreamX, float* positionStreamY, float* positionStreamZ,
             float* lifespanStream, float* timeRemainingStream, float* massStream,
             float* velocityStreamX, float* velocityStreamY, float* velocityStreamZ,
@@ -310,7 +310,7 @@ namespace GameClay.Dust
             _userDataStream_M = null;
         }
 
-        ~UnmanagedSoAData()
+        ~SoAData()
         {
             Dispose(false);
         }

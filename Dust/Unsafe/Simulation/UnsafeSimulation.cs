@@ -15,7 +15,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace GameClay.Dust.Simulation
+namespace GameClay.Dust.Unsafe.Simulation
 {
 
     public class UnmanagedSimulation : ISimulation
@@ -103,23 +103,23 @@ namespace GameClay.Dust.Simulation
             set
             {
 #if DEBUG
-                if (value.GetType() != typeof(SoAData))
-                    throw new System.ArgumentException("Supplied ISystemData was not of type SoAData.");
+                if (value.GetType() != typeof(GameClay.Dust.SoAData))
+                    throw new System.ArgumentException("Supplied ISystemData was not of type GameClay.Dust.SoAData.");
 #endif
-                _systemData = (SoAData)value;
+                _systemData = (GameClay.Dust.SoAData)value;
             }
         }
         #endregion
 
         public UnmanagedSimulation(int maxNumParticles)
         {
-            _systemData = new SoAData(maxNumParticles);
+            _systemData = new GameClay.Dust.SoAData(maxNumParticles);
             _worldBounds = new object();
             _is2D = false;
         }
 
         #region Data
-        SoAData _systemData;
+        GameClay.Dust.SoAData _systemData;
         object _worldBounds;
         bool _is2D;
         #endregion

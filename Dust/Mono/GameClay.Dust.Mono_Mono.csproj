@@ -41,9 +41,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dust_Mono.csproj">
+    <ProjectReference Include="..\GameClay.Dust_Mono.csproj">
       <Project>{0E44AB3B-39B3-4E9C-8611-D75922AFF759}</Project>
-      <Name>Dust_Mono</Name>
+      <Name>GameClay.Dust_Mono</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
