@@ -22,12 +22,11 @@ __declspec(dllexport) void __cdecl AdvanceTime(
    float* vY_stream,
    float* vZ_stream,
    float* time_stream,
-   int* num_particles
+   int num_particles
    )
 {
-   const int num = *num_particles;
    int i;
-   for(i = 0; i < num; i++)
+   for(i = 0; i < num_particles; i++)
    {
       *time_stream -= dt;
       *time_stream++;

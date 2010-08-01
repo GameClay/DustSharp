@@ -37,10 +37,7 @@ namespace GameClay.Dust.Unsafe.Simulation
                                 {
                                     fixed (float* tstream = SystemData.TimeRemaining)
                                     {
-                                        fixed (int* numparticles = &_systemData._numParticles)
-                                        {
-                                            AdvanceTime(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, numparticles);
-                                        }
+                                        AdvanceTime(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
                                     }
                                 }
                             }
@@ -52,7 +49,7 @@ namespace GameClay.Dust.Unsafe.Simulation
 
         [DllImport("UnmanagedSimulation.dll")]
         private unsafe extern static void AdvanceTime(float dt, float* pX_stream, float* pY_stream, float* pZ_stream,
-            float* vX_stream, float* vY_stream, float* vZ_stream, float* time_stream, int* num_particles);
+            float* vX_stream, float* vY_stream, float* vZ_stream, float* time_stream, int num_particles);
 
 
         public int AddParticles(ref ISystemData particlesToAdd)
@@ -102,10 +99,9 @@ namespace GameClay.Dust.Unsafe.Simulation
             }
             set
             {
-#if DEBUG
                 if (value.GetType() != typeof(GameClay.Dust.SoAData))
                     throw new System.ArgumentException("Supplied ISystemData was not of type GameClay.Dust.SoAData.");
-#endif
+                    
                 _systemData = (GameClay.Dust.SoAData)value;
             }
         }
