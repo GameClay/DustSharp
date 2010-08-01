@@ -57,6 +57,7 @@
     <Compile Include="Emitter\SphereEmitter.cs" />
     <Compile Include="IParameters.cs" />
     <Compile Include="Core\Parameters.cs" />
+    <Compile Include="Core\UnmanagedSoAData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
