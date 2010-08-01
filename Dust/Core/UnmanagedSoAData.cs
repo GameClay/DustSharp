@@ -20,8 +20,34 @@ namespace GameClay.Dust
     /// <summary>
     /// An ISystemData implemented as a structure of arrays.
     /// </summary>
-    public unsafe class UnmanagedSoAData : ISystemData
+    public unsafe class UnmanagedSoAData : ISystemData, System.IDisposable
     {
+
+        #region IDisposable implementation
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!__disposed)
+            {
+                if (disposing)
+                {
+                    // Release managed resources
+                    _userDataStreamHdl.Free();
+                }
+
+                // Release unmanaged resources
+            }
+            __disposed = true;
+        }
+
+        private bool __disposed = false;
+        #endregion
+
         #region ISystemData implementation
         public int NumParticles
         {
@@ -237,7 +263,6 @@ namespace GameClay.Dust
 
             _userDataStream[dstIndex] = _userDataStream[srcIndex];
         }
-
         #endregion
 
         public UnmanagedSoAData(int* numParticles, int* maxNumParticles,
@@ -281,7 +306,7 @@ namespace GameClay.Dust
 
         ~UnmanagedSoAData()
         {
-            _userDataStreamHdl.Free();
+            Dispose(false);
         }
 
         #region Data
