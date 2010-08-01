@@ -122,7 +122,7 @@ namespace GameClay.Dust
                 if (_velocityStreamY_M == null || MaxNumParticles > _velocityStreamY_M.Length)
                     _velocityStreamY_M = new float[MaxNumParticles];
 
-                if (_velocityStreamZ != null)
+                if (_velocityStreamY != null)
                     Marshal.Copy((System.IntPtr)_velocityStreamY, _velocityStreamY_M, 0, MaxNumParticles);
 
                 return _velocityStreamY_M;
