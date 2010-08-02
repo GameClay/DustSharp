@@ -21,33 +21,22 @@ namespace GameClay.Dust.Unsafe.Simulation
     public unsafe class UnmanagedSimulation : ISimulation
     {
         #region ISimulation implementation
-        public unsafe void AdvanceTime(float dt)
+        public void AdvanceTime(float dt)
         {
-            fixed (float* pxstream = SystemData.PositionX)
+            // The JIT should essentially 'remove' this conditional block
+            if (System.IntPtr.Size == 4)
             {
-                fixed (float* pystream = SystemData.PositionY)
-                {
-                    fixed (float* pzstream = SystemData.PositionZ)
-                    {
-                        fixed (float* vxstream = SystemData.VelocityX)
-                        {
-                            fixed (float* vystream = SystemData.VelocityY)
-                            {
-                                fixed (float* vzstream = SystemData.VelocityZ)
-                                {
-                                    fixed (float* tstream = SystemData.TimeRemaining)
-                                    {
-                                        // The JIT should essentially 'remove' this conditional block
-                                        if (System.IntPtr.Size == 4)
-                                            AdvanceTime32(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
-                                        else
-                                            AdvanceTime64(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                AdvanceTime32(dt, _systemDataStreams.PositionXStream, _systemDataStreams.PositionYStream,
+                              _systemDataStreams.PositionZStream, _systemDataStreams.VelocityXStream,
+                              _systemDataStreams.VelocityYStream, _systemDataStreams.VelocityZStream,
+                              _systemDataStreams.TimeRemainingStream, _systemData.NumParticles);
+            }
+            else
+            {
+                AdvanceTime64(dt, _systemDataStreams.PositionXStream, _systemDataStreams.PositionYStream,
+                              _systemDataStreams.PositionZStream, _systemDataStreams.VelocityXStream,
+                              _systemDataStreams.VelocityYStream, _systemDataStreams.VelocityZStream,
+                              _systemDataStreams.TimeRemainingStream, _systemData.NumParticles);
             }
         }
 
@@ -74,7 +63,7 @@ namespace GameClay.Dust.Unsafe.Simulation
         public void RemoveAllParticles()
         {
             // Clear out the system
-            _systemData._numParticles = 0;
+            _systemData.Clear();
 
             // Zero-out the bounds
         }
@@ -107,23 +96,27 @@ namespace GameClay.Dust.Unsafe.Simulation
             }
             set
             {
-                if (value.GetType() != typeof(GameClay.Dust.SoAData))
-                    throw new System.ArgumentException("Supplied ISystemData was not of type GameClay.Dust.SoAData.");
+                if (!typeof(ISystemDataStreams).IsAssignableFrom(value.GetType()))
+                    throw new System.ArgumentException("Assigned SystemData must implement ISystemDataStreams.");
                     
-                _systemData = (GameClay.Dust.SoAData)value;
+                _systemData = value;
+                _systemDataStreams = (ISystemDataStreams)value;
             }
         }
         #endregion
 
         public UnmanagedSimulation(int maxNumParticles)
         {
-            _systemData = new GameClay.Dust.SoAData(maxNumParticles);
+            SoAData soaData =new SoAData(maxNumParticles);
+            _systemData = soaData;
+            _systemDataStreams = soaData;
             _worldBounds = new object();
             _is2D = false;
         }
 
         #region Data
-        GameClay.Dust.SoAData _systemData;
+        ISystemDataStreams _systemDataStreams;
+        ISystemData _systemData;
         object _worldBounds;
         bool _is2D;
         #endregion
