@@ -150,5 +150,19 @@ namespace GameClay.Dust
         /// <param name="srcIndex"> Source element index. </param>
         /// <param name="dstIndex"> Destination element index. </param>
         void CopyElement(int srcIndex, int dstIndex);
+
+        /// <summary>
+        /// Clears the data streams.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This does not zero memory, or ensure that anything has happened at all
+        /// except that the value of <see cref="NumParticles"/> will be '0' following
+        /// this call.
+        ///
+        /// This method serves as a hint to know that the underlying data can consider
+        /// itself invalidated.
+        /// </remarks>
+        void Clear();
     }
 }

@@ -176,6 +176,10 @@ namespace GameClay.Dust
             _userDataStream[dstIndex] = _userDataStream[srcIndex];
         }
 
+        public void Clear()
+        {
+            _numParticles = 0;
+        }
         #endregion
 
         public SoAData(int maxNumParticles)

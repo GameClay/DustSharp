@@ -52,7 +52,7 @@ namespace GameClay.Dust.Unsafe
         {
             get
             {
-                return *_numParticles;
+                return _numParticles;
             }
         }
 
@@ -60,7 +60,7 @@ namespace GameClay.Dust.Unsafe
         {
             get
             {
-                return *_maxNumParticles;
+                return _maxNumParticles;
             }
         }
 
@@ -239,7 +239,7 @@ namespace GameClay.Dust.Unsafe
                 Marshal.Copy(src.UserData, srcOffset, (System.IntPtr)(_userDataStream + offset), numToCopy);
 
             // Update number of particles
-            (*_numParticles) += numToCopy;
+            _numParticles += numToCopy;
 
             // Return number copied
             return numToCopy;
@@ -268,6 +268,11 @@ namespace GameClay.Dust.Unsafe
                 _massStream[dstIndex] = _massStream[srcIndex];
 
             _userDataStream[dstIndex] = _userDataStream[srcIndex];
+        }
+
+        public void Clear()
+        {
+            _numParticles = 0;
         }
         #endregion
 
@@ -371,7 +376,7 @@ namespace GameClay.Dust.Unsafe
         }
         #endregion
 
-        public SoAData(int* numParticles, int* maxNumParticles,
+        public SoAData(int numParticles, int maxNumParticles,
             float* positionStreamX, float* positionStreamY, float* positionStreamZ,
             float* lifespanStream, float* timeRemainingStream, float* massStream,
             float* velocityStreamX, float* velocityStreamY, float* velocityStreamZ,
@@ -416,8 +421,8 @@ namespace GameClay.Dust.Unsafe
         }
 
         #region Data
-        public int* _numParticles;
-        public int* _maxNumParticles;
+        public int _numParticles;
+        public int _maxNumParticles;
 
         public float* _positionStreamX;
         public float* _positionStreamY;
