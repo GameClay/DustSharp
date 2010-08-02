@@ -35,28 +35,6 @@ namespace GameClay.Dust
     }
 
     /// <summary>
-    /// Internal extension methods for working with enum flags
-    /// </summary>
-    internal static class EnumerationExtensions
-    {
-        /// <summary>
-        /// Checks for the presence of a value.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// <see cref="T"/> must be castable to an int or an exception will be thrown.
-        /// </remarks>
-        ///
-        /// <param name="type"> Any instance of <see cref="System.Enum"/> </param>
-        /// <param name="value"> The value to be tested. </param>
-        /// <returns> True if the enumeration instance contains a particular flag. </returns>
-        public static bool Has<T>(this System.Enum type, T value)
-        {
-            return (((int)(object)type & (int)(object)value) == (int)(object)value);
-        }
-    }
-
-    /// <summary>
     /// Structure containing the streams of data which describe the state of the
     /// particle system.
     /// </summary>
