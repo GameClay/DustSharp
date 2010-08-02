@@ -20,7 +20,7 @@ namespace GameClay.Dust.Unsafe
     /// <summary>
     /// An ISystemData implemented as a structure of arrays.
     /// </summary>
-    public unsafe class SoAData : ISystemData, System.IDisposable
+    public unsafe class SoAData : ISystemData, ISystemDataStreams, System.IDisposable
     {
 
         #region IDisposable implementation
@@ -268,6 +268,106 @@ namespace GameClay.Dust.Unsafe
                 _massStream[dstIndex] = _massStream[srcIndex];
 
             _userDataStream[dstIndex] = _userDataStream[srcIndex];
+        }
+        #endregion
+
+        #region ISystemDataStreams
+        public float* PositionXStream
+        {
+            get
+            {
+                return _positionStreamX;
+            }
+        }
+
+        public float* PositionYStream
+        {
+            get
+            {
+                return _positionStreamY;
+            }
+        }
+
+        public float* PositionZStream
+        {
+            get
+            {
+                return _positionStreamZ;
+            }
+        }
+
+        public int PositionStreamStride
+        {
+            get
+            {
+                return (((int)Flags & (int)SystemDataFlags.Vector3Position) > 0 ?
+                    (((int)Flags & (int)SystemDataFlags.Vector4Position) > 0 ? 16 : 12) : 0);
+            }
+        }
+
+        public float* VelocityXStream
+        {
+            get
+            {
+                return _velocityStreamX;
+            }
+        }
+
+        public float* VelocityYStream
+        {
+            get
+            {
+                return _velocityStreamY;
+            }
+        }
+
+        public float* VelocityZStream
+        {
+            get
+            {
+                return _velocityStreamZ;
+            }
+        }
+
+        public int VelocityStreamStride
+        {
+            get
+            {
+                return (((int)Flags & (int)SystemDataFlags.Vector3Velocity) > 0 ?
+                    (((int)Flags & (int)SystemDataFlags.Vector4Velocity) > 0 ? 16 : 12) : 0);
+            }
+        }
+
+        public float* MassStream
+        {
+            get
+            {
+                return _massStream;
+            }
+        }
+
+        public float* LifespanStream
+        {
+            get
+            {
+                return _lifespanStream;
+            }
+        }
+
+        public float* TimeRemainingStream
+        {
+            get
+            {
+                return _timeRemainingStream;
+            }
+        }
+
+        public int* UserDataStream
+        {
+            get
+            {
+                return _userDataStream;
+            }
         }
         #endregion
 
