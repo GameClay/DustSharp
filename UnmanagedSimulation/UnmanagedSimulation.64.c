@@ -35,8 +35,8 @@ AdvanceTime(
       *time_stream++;
 
       *pX_stream += *vX_stream * dt;
-      *pX_stream += *vX_stream * dt;
-      *pX_stream += *vX_stream * dt;
+      *pY_stream += *vY_stream * dt;
+      *pZ_stream += *vZ_stream * dt;
 
       pX_stream++;
       pY_stream++;
