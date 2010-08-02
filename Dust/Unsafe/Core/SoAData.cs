@@ -40,6 +40,29 @@ namespace GameClay.Dust.Unsafe
                 }
 
                 // Release unmanaged resources
+                Marshal.FreeHGlobal((System.IntPtr)_positionStreamX);
+                _positionStreamX = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_positionStreamY);
+                _positionStreamY = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_positionStreamZ);
+                _positionStreamZ = (float*)System.IntPtr.Zero;
+
+                Marshal.FreeHGlobal((System.IntPtr)_lifespanStream);
+                _lifespanStream = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_timeRemainingStream);
+                _timeRemainingStream = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_massStream);
+                _massStream = (float*)System.IntPtr.Zero;
+
+                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamX);
+                _velocityStreamX = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamY);
+                _velocityStreamY = (float*)System.IntPtr.Zero;
+                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamZ);
+                _velocityStreamZ = (float*)System.IntPtr.Zero;
+
+                Marshal.FreeHGlobal((System.IntPtr)_userDataStream);
+                _userDataStream = (int*)System.IntPtr.Zero;
             }
             __disposed = true;
         }
@@ -399,6 +422,47 @@ namespace GameClay.Dust.Unsafe
 
             _userDataStream = userDataStream;
 
+            // We didn't allocate the streams ourselves
+            _allocatedStreams = false;
+
+            // Assign null to these and lazy-allocate them
+            _positionStreamX_M = null;
+            _positionStreamY_M = null;
+            _positionStreamZ_M = null;
+
+            _lifespanStream_M = null;
+            _timeRemainingStream_M = null;
+            _massStream_M = null;
+
+            _velocityStreamX_M = null;
+            _velocityStreamY_M = null;
+            _velocityStreamZ_M = null;
+
+            _userDataStream_M = null;
+        }
+
+        public SoAData(int maxNumParticles)
+        {
+            _numParticles = 0;
+            _maxNumParticles = maxNumParticles;
+
+            _positionStreamX = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _positionStreamY = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _positionStreamZ = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+
+            _lifespanStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _timeRemainingStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _massStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+
+            _velocityStreamX = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _velocityStreamY = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _velocityStreamZ = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+
+            _userDataStream = (int*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MaxNumParticles);
+
+            // We allocated these streams and have to free them
+            _allocatedStreams = true;
+
             // Assign null to these and lazy-allocate them
             _positionStreamX_M = null;
             _positionStreamY_M = null;
@@ -437,6 +501,8 @@ namespace GameClay.Dust.Unsafe
         public float* _velocityStreamZ;
 
         public int* _userDataStream;
+
+        protected bool _allocatedStreams;
 
         protected float[] _positionStreamX_M;
         protected float[] _positionStreamY_M;
