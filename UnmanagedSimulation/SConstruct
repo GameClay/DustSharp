@@ -6,12 +6,12 @@ if not env: env = Environment(tools=['default', 'mono'])
 
 unmanaged_sim32 = env.SharedLibrary('UnmanagedSimulation32', 
 	Glob('*.32.c', strings=True),
-	CCFLAGS=['-m32'],
+	CCFLAGS=['-m32', '-ffast-math', '-o3', '-fno-exceptions'],
 	LINKFLAGS=['-m32']
 )
 unmanaged_sim64 = env.SharedLibrary('UnmanagedSimulation64', 
 	Glob('*.64.c', strings=True),
-	CCFLAGS=['-m64'],
+	CCFLAGS=['-m64', '-ffast-math', '-o3', '-fno-exceptions'],
 	LINKFLAGS=['-m64']
 )
 Return(['unmanaged_sim32','unmanaged_sim64'])
