@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-__declspec(dllexport) void __cdecl AdvanceTime(
+ 
+#ifdef __WIN32
+__declspec(dllexport) void __cdecl
+#endif
+AdvanceTime(
    float dt,
    float* pX_stream,
    float* pY_stream,

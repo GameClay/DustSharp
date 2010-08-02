@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 namespace GameClay.Dust.Unsafe.Simulation
 {
 
-    public class UnmanagedSimulation : ISimulation
+    public unsafe class UnmanagedSimulation : ISimulation
     {
         #region ISimulation implementation
         public unsafe void AdvanceTime(float dt)
@@ -37,7 +37,11 @@ namespace GameClay.Dust.Unsafe.Simulation
                                 {
                                     fixed (float* tstream = SystemData.TimeRemaining)
                                     {
-                                        AdvanceTime(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
+                                        // The JIT should essentially 'remove' this conditional block
+                                        if (System.IntPtr.Size == 4)
+                                            AdvanceTime32(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
+                                        else
+                                            AdvanceTime64(dt, pxstream, pystream, pzstream, vxstream, vystream, vzstream, tstream, _systemData._numParticles);
                                     }
                                 }
                             }
@@ -47,8 +51,12 @@ namespace GameClay.Dust.Unsafe.Simulation
             }
         }
 
-        [DllImport("UnmanagedSimulation.dll")]
-        private unsafe extern static void AdvanceTime(float dt, float* pX_stream, float* pY_stream, float* pZ_stream,
+        [DllImport("UnmanagedSimulation32", EntryPoint = "AdvanceTime")]
+        private extern static void AdvanceTime32(float dt, float* pX_stream, float* pY_stream, float* pZ_stream,
+            float* vX_stream, float* vY_stream, float* vZ_stream, float* time_stream, int num_particles);
+
+        [DllImport("UnmanagedSimulation64", EntryPoint = "AdvanceTime")]
+        private extern static void AdvanceTime64(float dt, float* pX_stream, float* pY_stream, float* pZ_stream,
             float* vX_stream, float* vY_stream, float* vZ_stream, float* time_stream, int num_particles);
 
 

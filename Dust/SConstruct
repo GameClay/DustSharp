@@ -28,14 +28,14 @@ dust_cli = env.CLILibrary('GameClay.Dust.dll',
 	dust_files,
 	CSCLIBFLAGS=['']
 )
-env.Install('lib/', dust_cli)
 
 # Build unsafe extensions
-dust_unsafe = SConscript(['Unsafe/SConstruct'], ['env'])
-env.Requires(dust_unsafe, dust_cli)
-env.Install('lib/', dust_unsafe)
+dust_unsafe_cli = SConscript(['Unsafe/SConstruct'], ['env'])
+env.Requires(dust_unsafe_cli, dust_cli)
 
 # Build Mono extensions
 dust_mono_cli = SConscript(['Mono/SConstruct'], ['env'])
 env.Requires(dust_mono_cli, dust_cli)
-env.Install('lib/', dust_mono_cli)
+
+# Return to higher level SConstruct
+Return(['dust_cli', 'dust_unsafe_cli', 'dust_mono_cli'])
