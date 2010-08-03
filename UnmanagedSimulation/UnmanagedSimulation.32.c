@@ -51,18 +51,18 @@ AdvanceTime(
    // Process batches
    for(i = 0; i < numBatches; i++)
    {
-      ts_reg = _mm_loadu_ps(time_stream);
+      ts_reg = _mm_load_ps(time_stream);
       
-      vX_reg = _mm_loadu_ps(vX_stream); vX_stream += 4;
-      vY_reg = _mm_loadu_ps(vY_stream); vY_stream += 4;
-      vZ_reg = _mm_loadu_ps(vZ_stream); vZ_stream += 4;
+      vX_reg = _mm_load_ps(vX_stream); vX_stream += 4;
+      vY_reg = _mm_load_ps(vY_stream); vY_stream += 4;
+      vZ_reg = _mm_load_ps(vZ_stream); vZ_stream += 4;
       
       // Decrement time remaining
       ts_reg = _mm_max_ps(_mm_sub_ps(ts_reg, dt_v), zero_v);
       
-      pX_reg = _mm_loadu_ps(pX_stream);
-      pY_reg = _mm_loadu_ps(pY_stream);
-      pZ_reg = _mm_loadu_ps(pZ_stream);
+      pX_reg = _mm_load_ps(pX_stream);
+      pY_reg = _mm_load_ps(pY_stream);
+      pZ_reg = _mm_load_ps(pZ_stream);
       
       // Update position from velocity
       tX_reg = _mm_mul_ps(vX_reg, dt_v);
@@ -75,10 +75,10 @@ AdvanceTime(
       vZ_reg = _mm_add_ps(tZ_reg, pZ_reg);
       
       // Store time and position
-      _mm_storeu_ps(pX_stream, vX_reg); pX_stream += 4;
-      _mm_storeu_ps(pY_stream, vY_reg); pY_stream += 4;
-      _mm_storeu_ps(pZ_stream, vZ_reg); pZ_stream += 4;
-      _mm_storeu_ps(time_stream, ts_reg); time_stream += 4;
+      _mm_store_ps(pX_stream, vX_reg); pX_stream += 4;
+      _mm_store_ps(pY_stream, vY_reg); pY_stream += 4;
+      _mm_store_ps(pZ_stream, vZ_reg); pZ_stream += 4;
+      _mm_store_ps(time_stream, ts_reg); time_stream += 4;
    }
 #else
    int numRemaining = num_particles;
