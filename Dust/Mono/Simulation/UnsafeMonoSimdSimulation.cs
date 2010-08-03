@@ -30,63 +30,42 @@ namespace GameClay.Dust.Mono.Simulation
 
             Vector4f dt_v = new Vector4f (dt);
             
-            fixed (float* xPosStream = _systemData._positionStreamX)
+            // Temporary registers
+            Vector4f ts_reg, vX_reg, vY_reg, vZ_reg, pX_reg, pY_reg, pZ_reg;
+            
+            // Process the particle system
+            int numBatches = _systemData.NumParticles / 4;
+            for (int i = 0; i < numBatches; i++)
             {
-                fixed (float* yPosStream = _systemData._positionStreamY)
-                {
-                    fixed (float* zPosStream = _systemData._positionStreamZ)
-                    {
-                        fixed (float* xVelStream = _systemData._velocityStreamX)
-                        {
-                            fixed (float* yVelStream = _systemData._velocityStreamY)
-                            {
-                                fixed (float* zVelStream = _systemData._velocityStreamZ)
-                                {
-                                    fixed (float* timeStream = _systemData._timeRemainingStream)
-                                    {
-                                        // Temporary registers
-                                        Vector4f ts_reg, vX_reg, vY_reg, vZ_reg, pX_reg, pY_reg, pZ_reg;
-                                        
-                                        // Process the particle system
-                                        int numBatches = _systemData.NumParticles / 4;
-                                        for (int i = 0; i < numBatches; i++)
-                                        {
-                                            // Load streams
-                                            int streamIdx = i * 4;
-                                            ts_reg = Vector4f.LoadAligned ((Vector4f*)(timeStream + streamIdx));
-
-                                            vX_reg = Vector4f.LoadAligned ((Vector4f*)(xVelStream + streamIdx));
-                                            vY_reg = Vector4f.LoadAligned ((Vector4f*)(yVelStream + streamIdx));
-                                            vZ_reg = Vector4f.LoadAligned ((Vector4f*)(zVelStream + streamIdx));
-
-                                            pX_reg = Vector4f.LoadAligned ((Vector4f*)(xPosStream + streamIdx));
-                                            pY_reg = Vector4f.LoadAligned ((Vector4f*)(yPosStream + streamIdx));
-                                            pZ_reg = Vector4f.LoadAligned ((Vector4f*)(zPosStream + streamIdx));
-
-                                            // Decrement time remaining
-                                            ts_reg = VectorOperations.Max(ts_reg - dt_v, Vector4f.Zero);
-                                            
-                                            // Update position
-                                            Vector4f tx = vX_reg * dt_v;
-                                            Vector4f ty = vY_reg * dt_v;
-                                            Vector4f tz = vZ_reg * dt_v;
-
-                                            // Decrement time remaining
-                                            Vector4f.StoreAligned ((Vector4f*)timeStream, ts_reg);
-                                            
-                                            // Store
-                                            Vector4f.StoreAligned ((Vector4f*)xPosStream, pX_reg + tx);
-                                            Vector4f.StoreAligned ((Vector4f*)yPosStream, pY_reg + ty);
-                                            Vector4f.StoreAligned ((Vector4f*)zPosStream, pZ_reg + tz);
-
-                                            // Adjust the min/max values of the bounds
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Load streams
+                int streamIdx = i * 4;
+                ts_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.TimeRemainingStream + streamIdx));
+                
+                vX_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.VelocityXStream + streamIdx));
+                vY_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.VelocityYStream + streamIdx));
+                vZ_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.VelocityZStream + streamIdx));
+                
+                pX_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.PositionXStream + streamIdx));
+                pY_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.PositionYStream + streamIdx));
+                pZ_reg = Vector4f.LoadAligned ((Vector4f*)(_systemData.PositionZStream + streamIdx));
+                
+                // Decrement time remaining
+                ts_reg = VectorOperations.Max(ts_reg - dt_v, Vector4f.Zero);
+                
+                // Update position
+                Vector4f tx = vX_reg * dt_v;
+                Vector4f ty = vY_reg * dt_v;
+                Vector4f tz = vZ_reg * dt_v;
+                
+                // Decrement time remaining
+                Vector4f.StoreAligned ((Vector4f*)_systemData.TimeRemainingStream, ts_reg);
+                
+                // Store
+                Vector4f.StoreAligned ((Vector4f*)_systemData.PositionXStream, pX_reg + tx);
+                Vector4f.StoreAligned ((Vector4f*)_systemData.PositionYStream, pY_reg + ty);
+                Vector4f.StoreAligned ((Vector4f*)_systemData.PositionZStream, pZ_reg + tz);
+                
+                // Adjust the min/max values of the bounds
             }
         }
 
@@ -125,20 +104,20 @@ namespace GameClay.Dust.Mono.Simulation
                 if (value.GetType () != typeof(SoAData))
                     throw new System.ArgumentException ("Supplied ISystemData was not of type SoAData.");
                 #endif
-                _systemData = (SoAData)value;
+                _systemData = (GameClay.Dust.Unsafe.SoAData)value;
             }
         }
         #endregion
 
         public UnsafeSimdSimulation (int maxNumParticles)
         {
-            _systemData = new SoAData (maxNumParticles);
-            _worldBounds = new object ();
+            _systemData = new GameClay.Dust.Unsafe.SoAData(maxNumParticles);
+            _worldBounds = new object();
             _is2D = false;
         }
 
         #region Data
-        SoAData _systemData;
+        GameClay.Dust.Unsafe.SoAData _systemData;
         object _worldBounds;
         bool _is2D;
         #endregion

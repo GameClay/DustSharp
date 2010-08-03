@@ -18,7 +18,7 @@ dust_mono_files = [f for f in dust_mono_files if f not in excluded_files]
 dust_mono_cli = env.CLILibrary('GameClay.Dust.Mono.dll',
 	dust_mono_files,
 	CSCLIBFLAGS=['-unsafe+'],
-	CILLIBPATH=['Dust/'],                   # Relative to the CWD where scons was executed
-	CILLIBS=['Mono.Simd', 'GameClay.Dust']
+	CILLIBPATH=['Dust/', 'Dust/Unsafe'], # Relative to the CWD where scons was executed
+	CILLIBS=['Mono.Simd', 'GameClay.Dust', 'GameClay.Dust.Unsafe']
 )
 Return(['dust_mono_cli'])

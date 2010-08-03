@@ -45,6 +45,10 @@
       <Project>{0E44AB3B-39B3-4E9C-8611-D75922AFF759}</Project>
       <Name>GameClay.Dust_Mono</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Unsafe\GameClay.Dust.Unsafe_Mono.csproj">
+      <Project>{50460E3E-9447-449A-BF7B-50CE08699654}</Project>
+      <Name>GameClay.Dust.Unsafe_Mono</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

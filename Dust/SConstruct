@@ -35,7 +35,7 @@ env.Requires(dust_unsafe_cli, dust_cli)
 
 # Build Mono extensions
 dust_mono_cli = SConscript(['Mono/SConstruct'], ['env'])
-env.Requires(dust_mono_cli, dust_cli)
+env.Requires(dust_mono_cli, dust_unsafe_cli)
 
 # Return to higher level SConstruct
 Return(['dust_cli', 'dust_unsafe_cli', 'dust_mono_cli'])
