@@ -48,7 +48,7 @@
       <Name>GameClay.Dust.Mono_Mono</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dust\Unsafe\GameClay.Dust.Unsafe_Mono.csproj">
-      <Project>{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}</Project>
+      <Project>{50460E3E-9447-449A-BF7B-50CE08699654}</Project>
       <Name>GameClay.Dust.Unsafe_Mono</Name>
     </ProjectReference>
   </ItemGroup>

@@ -40,28 +40,28 @@ namespace GameClay.Dust.Unsafe
                 }
 
                 // Release unmanaged resources
-                Marshal.FreeHGlobal((System.IntPtr)_positionStreamX);
+                Marshal.FreeHGlobal(_freePx);
                 _positionStreamX = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_positionStreamY);
+                Marshal.FreeHGlobal(_freePy);
                 _positionStreamY = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_positionStreamZ);
+                Marshal.FreeHGlobal(_freePz);
                 _positionStreamZ = (float*)System.IntPtr.Zero;
 
-                Marshal.FreeHGlobal((System.IntPtr)_lifespanStream);
+                Marshal.FreeHGlobal(_freeL);
                 _lifespanStream = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_timeRemainingStream);
+                Marshal.FreeHGlobal(_freeT);
                 _timeRemainingStream = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_massStream);
+                Marshal.FreeHGlobal(_freeM);
                 _massStream = (float*)System.IntPtr.Zero;
 
-                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamX);
+                Marshal.FreeHGlobal(_freeVx);
                 _velocityStreamX = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamY);
+                Marshal.FreeHGlobal(_freeVy);
                 _velocityStreamY = (float*)System.IntPtr.Zero;
-                Marshal.FreeHGlobal((System.IntPtr)_velocityStreamZ);
+                Marshal.FreeHGlobal(_freeVz);
                 _velocityStreamZ = (float*)System.IntPtr.Zero;
 
-                Marshal.FreeHGlobal((System.IntPtr)_userDataStream);
+                Marshal.FreeHGlobal(_freeUD);
                 _userDataStream = (int*)System.IntPtr.Zero;
             }
             __disposed = true;
@@ -225,7 +225,7 @@ namespace GameClay.Dust.Unsafe
         {
             get
             {
-                return SystemDataFlags.UnmanagedData;
+                return SystemDataFlags.UnmanagedData | (_allocatedStreams ? SystemDataFlags.AlignedMemory : 0);
             }
         }
 
@@ -441,24 +441,30 @@ namespace GameClay.Dust.Unsafe
             _userDataStream_M = null;
         }
 
+        protected static float* AllocHGlobalAlignedF(int numToAlloc, out System.IntPtr freePtr)
+        {
+            freePtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * numToAlloc + 15);
+            return (float*)(((int)freePtr + 15) & ~ 0x0F);
+        }
+
         public SoAData(int maxNumParticles)
         {
             _numParticles = 0;
             _maxNumParticles = maxNumParticles;
 
-            _positionStreamX = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _positionStreamY = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _positionStreamZ = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _positionStreamX = AllocHGlobalAlignedF(MaxNumParticles, out _freePx);
+            _positionStreamY = AllocHGlobalAlignedF(MaxNumParticles, out _freePy);
+            _positionStreamZ = AllocHGlobalAlignedF(MaxNumParticles, out _freePz);
 
-            _lifespanStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _timeRemainingStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _massStream = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _lifespanStream = AllocHGlobalAlignedF(MaxNumParticles, out _freeL);
+            _timeRemainingStream = AllocHGlobalAlignedF(MaxNumParticles, out _freeT);
+            _massStream = AllocHGlobalAlignedF(MaxNumParticles, out _freeM);
 
-            _velocityStreamX = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _velocityStreamY = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
-            _velocityStreamZ = (float*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * MaxNumParticles);
+            _velocityStreamX = AllocHGlobalAlignedF(MaxNumParticles, out _freeVx);
+            _velocityStreamY = AllocHGlobalAlignedF(MaxNumParticles, out _freeVy);
+            _velocityStreamZ = AllocHGlobalAlignedF(MaxNumParticles, out _freeVz);
 
-            _userDataStream = (int*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MaxNumParticles);
+            _userDataStream = (int*)AllocHGlobalAlignedF(MaxNumParticles, out _freeUD);
 
             // We allocated these streams and have to free them
             _allocatedStreams = true;
@@ -503,6 +509,8 @@ namespace GameClay.Dust.Unsafe
         public int* _userDataStream;
 
         protected bool _allocatedStreams;
+        protected System.IntPtr _freePx, _freePy, _freePz,
+            _freeT, _freeVx, _freeVy, _freeVz, _freeM, _freeL, _freeUD;
 
         protected float[] _positionStreamX_M;
         protected float[] _positionStreamY_M;

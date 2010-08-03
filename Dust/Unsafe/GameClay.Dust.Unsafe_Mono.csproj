@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}</ProjectGuid>
+    <ProjectGuid>{50460E3E-9447-449A-BF7B-50CE08699654}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Dust_Unsafe_Mono</RootNamespace>
     <AssemblyName>GameClay.Dust.Unsafe</AssemblyName>
