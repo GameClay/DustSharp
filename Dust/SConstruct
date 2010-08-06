@@ -23,13 +23,19 @@ excluded_files = test_code
 dust_files = core + effecters + emitters + math + parameters + properties + simulations
 dust_files = [f for f in dust_files if f not in excluded_files]
 
-# Build the output library
+# Build core library
 dust_cli = env.CLILibrary('GameClay.Dust.dll',
 	dust_files,
-	CSCLIBFLAGS=['-unsafe+']
+	CSCLIBFLAGS=['']
 )
-env.Install('lib/', dust_cli)
 
-# Build GameClay.Dust.Mono.dll
+# Build unsafe extensions
+dust_unsafe_cli = SConscript(['Unsafe/SConstruct'], ['env'])
+env.Requires(dust_unsafe_cli, dust_cli)
+
+# Build Mono extensions
 dust_mono_cli = SConscript(['Mono/SConstruct'], ['env'])
-env.Install('lib/', dust_mono_cli)
+env.Requires(dust_mono_cli, dust_unsafe_cli)
+
+# Return to higher level SConstruct
+Return(['dust_cli', 'dust_unsafe_cli', 'dust_mono_cli'])

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust_Mono", "Dust\Dust_Mono.csproj", "{0E44AB3B-39B3-4E9C-8611-D75922AFF759}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClay.Dust_Mono", "Dust\GameClay.Dust_Mono.csproj", "{0E44AB3B-39B3-4E9C-8611-D75922AFF759}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustBuster_Mono", "DustBuster\DustBuster_Mono.csproj", "{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dust_Mono_Mono", "Dust\Mono\Dust_Mono_Mono.csproj", "{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClay.Dust.Mono_Mono", "Dust\Mono\GameClay.Dust.Mono_Mono.csproj", "{E0C31595-A06D-4C38-8C6E-38E1BDFABE61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameClay.Dust.Unsafe_Mono", "Dust\Unsafe\GameClay.Dust.Unsafe_Mono.csproj", "{50460E3E-9447-449A-BF7B-50CE08699654}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E44AB3B-39B3-4E9C-8611-D75922AFF759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50460E3E-9447-449A-BF7B-50CE08699654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50460E3E-9447-449A-BF7B-50CE08699654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50460E3E-9447-449A-BF7B-50CE08699654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50460E3E-9447-449A-BF7B-50CE08699654}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C76AE4AE-5381-4DEE-B1FE-5910EF0689DD}.Release|Any CPU.ActiveCfg = Release|Any CPU

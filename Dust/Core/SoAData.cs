@@ -109,11 +109,19 @@ namespace GameClay.Dust
             }
         }
 
-        public object[] UserData
+        public int[] UserData
         {
             get
             {
                 return _userDataStream;
+            }
+        }
+
+        public SystemDataFlags Flags
+        {
+            get
+            {
+                return SystemDataFlags.ManagedData;
             }
         }
 
@@ -168,6 +176,10 @@ namespace GameClay.Dust
             _userDataStream[dstIndex] = _userDataStream[srcIndex];
         }
 
+        public void Clear()
+        {
+            _numParticles = 0;
+        }
         #endregion
 
         public SoAData(int maxNumParticles)
@@ -188,7 +200,7 @@ namespace GameClay.Dust
 
             _massStream = new float[MaxNumParticles];
 
-            _userDataStream = new object[MaxNumParticles];
+            _userDataStream = new int[MaxNumParticles];
         }
 
         #region Data
@@ -208,7 +220,7 @@ namespace GameClay.Dust
 
         public float[] _massStream;
 
-        public object[] _userDataStream;
+        public int[] _userDataStream;
         #endregion
     }
 }

@@ -16,6 +16,25 @@
 namespace GameClay.Dust
 {
     /// <summary>
+    /// Flags used to indicate the memory layout of the underlying data.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// These are intended for use as optimization hints, and not
+    /// as functionality requirements.
+    /// </remarks>
+    public enum SystemDataFlags : int
+    {
+        ManagedData     = 0,  // Mutually exclusive with UnmanagedData
+        UnmanagedData   = 1,
+        Vector3Position = 2,  // Vectorized position, with bit 4 clear
+        Vector3Velocity = 4,  // Vectorized velocity, with bit 5 clear
+        Vector4Position = 10, // 8 + 2, indicating both vectorized position and 4-component vector type
+        Vector4Velocity = 20, // 16 + 4, indicating both vectorized velocity and 4-component vector type
+        AlignedMemory   = 32, // The stream memory is aligned (only useful in unmanaged case)
+    }
+
+    /// <summary>
     /// Structure containing the streams of data which describe the state of the
     /// particle system.
     /// </summary>
@@ -95,13 +114,18 @@ namespace GameClay.Dust
         float[] TimeRemaining { get; }
 
         /// <summary>
-        /// An array of arbitrary data for use in user code.
+        /// An array of arbitrary integer data associated with a particle.
         /// </summary>
         /// 
         /// <remarks>
         /// No elements of Dust depend on, or modify the elements contained in <see cref="UserData"/>.
         /// </remarks>
-        object[] UserData { get; }
+        int[] UserData { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        SystemDataFlags Flags { get; }
 
         /// <summary>
         /// Copies data from a source ISystemData in to this instance.
@@ -126,5 +150,19 @@ namespace GameClay.Dust
         /// <param name="srcIndex"> Source element index. </param>
         /// <param name="dstIndex"> Destination element index. </param>
         void CopyElement(int srcIndex, int dstIndex);
+
+        /// <summary>
+        /// Clears the data streams.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This does not zero memory, or ensure that anything has happened at all
+        /// except that the value of <see cref="NumParticles"/> will be '0' following
+        /// this call.
+        ///
+        /// This method serves as a hint to know that the underlying data can consider
+        /// itself invalidated.
+        /// </remarks>
+        void Clear();
     }
 }

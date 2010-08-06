@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-__declspec(dllexport) void __cdecl AdvanceTime(
+ 
+#ifdef __WIN32
+__declspec(dllexport) void __cdecl
+#endif
+AdvanceTime(
    float dt,
    float* pX_stream,
    float* pY_stream,
@@ -22,19 +25,18 @@ __declspec(dllexport) void __cdecl AdvanceTime(
    float* vY_stream,
    float* vZ_stream,
    float* time_stream,
-   int* num_particles
+   int num_particles
    )
 {
-   const int num = *num_particles;
    int i;
-   for(i = 0; i < num; i++)
+   for(i = 0; i < num_particles; i++)
    {
       *time_stream -= dt;
       *time_stream++;
 
       *pX_stream += *vX_stream * dt;
-      *pX_stream += *vX_stream * dt;
-      *pX_stream += *vX_stream * dt;
+      *pY_stream += *vY_stream * dt;
+      *pZ_stream += *vZ_stream * dt;
 
       pX_stream++;
       pY_stream++;

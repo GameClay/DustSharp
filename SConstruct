@@ -1,2 +1,4 @@
 env = Environment(tools=['default', 'mono'])
-o = SConscript(['Dust/SConstruct'], 'env')
+
+dust_sharp = SConscript(['Dust/SConstruct'], 'env')
+unmanaged_lib = SConscript(['UnmanagedSimulation/SConstruct'], 'env')
