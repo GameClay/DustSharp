@@ -39,6 +39,7 @@
     <Compile Include="Simulation\UnsafeSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ISystemDataStreams.cs" />
+    <Compile Include="AlignedHGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameClay.Dust_Mono.csproj">
@@ -47,4 +48,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
 </Project>
